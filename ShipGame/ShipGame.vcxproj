@@ -157,12 +157,13 @@
     <ClCompile Include="ShipGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />
     <ClInclude Include="Vectors.h" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="resources\L.png" />
+    <Content Include="resources\IdleAnimation2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
