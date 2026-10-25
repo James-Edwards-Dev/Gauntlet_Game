@@ -5,7 +5,7 @@
 
 namespace GERenderer
 {
-    void drawImage(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, Vec2f position) 
+    inline void draw_image(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, Vec2f position) 
     {
         for (unsigned int col = 0; col < image.width; col++) 
         {
