@@ -20,18 +20,22 @@ public:
     const GamesEngineeringBase::Image& get_image() const {return image;}
 };
 
-// class WorldEntity : public SpriteEntity
-// {
-// private:
-//     World& world;
-// public:
-//     WorldEntity(const Vec2f& _position, const std::string& image_filename, World& _world) : SpriteEntity(_position, image_filename), world(_world) {}
-// };
+class WorldSpriteEntity : public SpriteEntity
+{
+private:
+    const World& world;
+public:
+    WorldSpriteEntity(const Vec2f& _position, const std::string& image_filename, const World& _world) : SpriteEntity(_position, image_filename), world(_world) {}
+    
+    virtual void draw(GamesEngineeringBase::Window& window) override {
+        GERenderer::drawImage(window, get_image(), get_position() - world.get_offset());
+    }
+};
 
-class HeroEntity : public SpriteEntity
+class HeroEntity : public WorldSpriteEntity
 {
 public:
-    HeroEntity(const Vec2f& _position) : SpriteEntity(_position, "resources/IdleAnimation2.png") {}
+    HeroEntity(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/IdleAnimation2.png", _world) {}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
@@ -41,7 +45,7 @@ public:
     }
     
 protected:
-    float speed = 64.0f;
+    float speed = 100.0f;
     Vec2f inputAxis{0.0f, 0.0f};
     
 };

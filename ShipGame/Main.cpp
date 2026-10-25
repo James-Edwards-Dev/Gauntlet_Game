@@ -11,7 +11,9 @@ int main()
     
     BackgroundEntity background(Vec2f(0, 0));
     
-    HeroEntity hero({100, 100});
+    World world;
+    
+    HeroEntity hero({100, 100}, world);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -35,6 +37,8 @@ int main()
         
         hero.set_input_axis(input);
         hero.update(delta_time);
+        
+        world.move_view({0.2f, 0});
         
         background.draw(window);
         hero.draw(window);
