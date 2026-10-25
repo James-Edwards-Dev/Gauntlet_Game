@@ -13,6 +13,7 @@ int main()
     
     World world;
     
+    TitleMap tile_map({0, 0}, world);
     HeroEntity hero({100, 100}, world);
     
     GamesEngineeringBase::Timer timer;
@@ -42,6 +43,7 @@ int main()
         
         background.draw(window);
         hero.draw(window);
+        // tile_map.draw(window);
         
         window.present();
     }

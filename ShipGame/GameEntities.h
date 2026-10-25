@@ -47,5 +47,33 @@ public:
 protected:
     float speed = 100.0f;
     Vec2f inputAxis{0.0f, 0.0f};
+};
+
+class TitleMap : public WorldSpriteEntity
+{
+private:
+    unsigned int size_x = 32;
+    unsigned int size_y = 32;
+
+public:
+    TitleMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
+        unsigned int size = (image.width / size_x) * (image.height / size_y);
+    }
+    void draw_tile(GamesEngineeringBase::Window& window, unsigned int tile_x, unsigned int tile_y) 
+    {
+        unsigned int start_x = tile_x * size_x;
+        for (unsigned int y = 0; y < size_y; y++) {
+            for (unsigned int x = 0; x < size_x; x++) {
+                // window.draw()
+            }
+        }
+            
+        unsigned int start_y = tile_y * size_y;
+    }
+    virtual void update(float delta_time) override {
+        // TileMap will not do anything when updating for now
+    }
+    
+private:
     
 };
