@@ -3,5 +3,5 @@
     <Platform Name="Win32" />
     <Platform Name="x64" />
   </Configurations>
-  <Project Path="Gauntlet_Project/Gauntlet_Project.vcxproj" />
+  <Project Path="ShipGame/ShipGame.vcxproj" />
 </Solution>
