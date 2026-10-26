@@ -5,7 +5,7 @@
 
 namespace GERenderer
 {
-    inline void draw_image(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, Vec2f position) 
+    inline void render_image(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, Vec2f position) 
     {
         for (unsigned int col = 0; col < image.width; col++) 
         {
@@ -23,6 +23,27 @@ namespace GERenderer
                 
                 if (image.channels == 3 || image.data[pixelIndex + 3] != 0) {
                     window.draw(x, y, &image.data[pixelIndex]);
+                }
+            }
+        }
+    }
+    inline void render_tile(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& tile_map_image, const Vec2f& location, unsigned int tile_x, unsigned int tile_y, unsigned int size_x, unsigned int size_y) 
+    {
+        unsigned int start_x = tile_x * size_x;
+        unsigned int start_y = tile_y * size_y;
+        
+        for (unsigned int col = start_y; col < start_y + 32; col++) {
+            
+            unsigned int draw_y = static_cast<int>(location.y) + col - start_y;
+            
+            for (unsigned int row = start_x; row < start_x + 32; row++) {
+                
+                unsigned int draw_x = static_cast<int>(location.x) + row - start_x;
+                
+                const unsigned int pixelIndex = (col * tile_map_image.width + row) * tile_map_image.channels;
+                
+                if (tile_map_image.channels == 3 || tile_map_image.data[pixelIndex + 3] != 0) {
+                    window.draw(draw_x, draw_y, &tile_map_image.data[pixelIndex]);
                 }
             }
         }

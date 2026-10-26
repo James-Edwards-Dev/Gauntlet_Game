@@ -13,7 +13,7 @@ int main()
     
     World world;
     
-    TitleMap tile_map({0, 0}, world);
+    TileMap tile_map({0, 0}, world);
     HeroEntity hero({100, 100}, world);
     
     GamesEngineeringBase::Timer timer;
