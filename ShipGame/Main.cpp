@@ -1,6 +1,7 @@
 
 #include "Entity.h"
 #include "GameEntities.h"
+#include "TileMap.h"
 #include "GamesEngineeringBase.h"
 #include "Vectors.h"
 
