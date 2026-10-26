@@ -39,9 +39,13 @@ namespace GERenderer
             
             unsigned int draw_y = static_cast<int>(location.y) + col - start_y;
             
+            if (draw_y < 0 || draw_y >= window.getHeight()) continue;
+            
             for (unsigned int row = start_x; row < start_x + 32; row++) {
                 
                 unsigned int draw_x = static_cast<int>(location.x) + row - start_x;
+                
+                if (draw_x < 0 || draw_x >= window.getWidth()) continue;
                 
                 const unsigned int pixelIndex = (col * tile_map_image.width + row) * tile_map_image.channels;
                 

@@ -55,16 +55,21 @@ private:
     unsigned int size_x = 32;
     unsigned int size_y = 32;
     unsigned int tiles_in_row;
+    unsigned int tiles_in_col;
+    unsigned int total_tiles;
 
 public:
     TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) 
     {
         tiles_in_row = image.width / size_x;
+        tiles_in_col = image.height / size_y;
+        total_tiles = tiles_in_row * tiles_in_col;
     }
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
     void draw_tile(GamesEngineeringBase::Window& window, const Vec2f& location, unsigned int tile_index) {
+        if (tile_index > total_tiles) { return; }
         GERenderer::render_tile(window, get_image(), location, tile_index, size_x, size_y, tiles_in_row);
     }
     

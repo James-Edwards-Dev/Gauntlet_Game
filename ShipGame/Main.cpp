@@ -43,8 +43,8 @@ int main()
         
         background.draw(window);
         
-        tile_map.draw_tile(window, {0.0f, 0.0f}, 0);
-        tile_map.draw_tile(window, {64.f, 64.0f}, 75);
+        tile_map.draw_tile(window, {-16.0f, -16.0f}, 0);
+        tile_map.draw_tile(window, {1008.f, 704.0f}, 99);
         
         hero.draw(window);
         window.present();
