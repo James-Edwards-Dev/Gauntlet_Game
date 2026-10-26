@@ -7,7 +7,7 @@
 int main()
 {
     GamesEngineeringBase::Window window;
-    window.create(1024, 720, "James's Ship Game");
+    window.create(1024, 720, "Gauntlet Project");
     
     BackgroundEntity background(Vec2f(0, 0));
     
