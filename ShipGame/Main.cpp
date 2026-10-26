@@ -39,12 +39,14 @@ int main()
         hero.set_input_axis(input);
         hero.update(delta_time);
         
-        world.move_view({0.2f, 0});
+        // world.move_view({0.2f, 0});
         
         background.draw(window);
-        hero.draw(window);
-        // tile_map.draw(window);
         
+        tile_map.draw_tile(window, {0.0f, 0.0f}, 0, 0);
+        tile_map.draw_tile(window, {64.f, 64.0f}, 5, 7);
+        
+        hero.draw(window);
         window.present();
     }
     

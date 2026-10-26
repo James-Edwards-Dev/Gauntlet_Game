@@ -22,7 +22,7 @@ public:
 
 class WorldSpriteEntity : public SpriteEntity
 {
-private:
+protected:
     const World& world;
 public:
     WorldSpriteEntity(const Vec2f& _position, const std::string& image_filename, const World& _world) : SpriteEntity(_position, image_filename), world(_world) {}
@@ -59,16 +59,26 @@ public:
     TitleMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
         unsigned int size = (image.width / size_x) * (image.height / size_y);
     }
-    void draw_tile(GamesEngineeringBase::Window& window, unsigned int tile_x, unsigned int tile_y) 
+    void draw_tile(GamesEngineeringBase::Window& window, Vec2f location, unsigned int tile_x, unsigned int tile_y) 
     {
         unsigned int start_x = tile_x * size_x;
-        for (unsigned int y = 0; y < size_y; y++) {
-            for (unsigned int x = 0; x < size_x; x++) {
-                // window.draw()
+        unsigned int start_y = tile_y * size_y;
+        
+        for (unsigned int col = start_y; col < start_y + 32; col++) {
+            
+            unsigned int draw_y = static_cast<int>(location.y) + col - start_y;
+            
+            for (unsigned int row = start_x; row < start_x + 32; row++) {
+                
+                unsigned int draw_x = static_cast<int>(location.x) + row - start_x;
+                
+                const unsigned int pixelIndex = (col * image.width + row) * image.channels;
+                
+                if (image.channels == 3 || image.data[pixelIndex + 3] != 0) {
+                    window.draw(draw_x, draw_y, &image.data[pixelIndex]);
+                }
             }
         }
-            
-        unsigned int start_y = tile_y * size_y;
     }
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now

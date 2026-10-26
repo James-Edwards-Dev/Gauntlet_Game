@@ -5,26 +5,6 @@
 
 namespace GERenderer
 {
-    inline void draw_pixel(
-        GamesEngineeringBase::Window& window, 
-        const GamesEngineeringBase::Image& image, 
-        Vec2f position, 
-        unsigned int pixel_x, 
-        unsigned int pixel_y) 
-    {
-        const int x = position.x + static_cast<int>(pixel_y);
-        if (x < 0 || x >= window.getWidth()) return;
-        
-        const int y = position.y + static_cast<int>(pixel_x);
-        if (y < 0 || y >= window.getHeight()) return;
-        
-        const unsigned int pixelIndex = (pixel_x * image.width + pixel_y) * image.channels;
-                
-        if (image.channels == 3 || image.data[pixelIndex + 3] != 0) {
-            window.draw(x, y, &image.data[pixelIndex]);
-        }
-    }
-    
     inline void draw_image(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, Vec2f position) 
     {
         for (unsigned int col = 0; col < image.width; col++) 
@@ -39,13 +19,11 @@ namespace GERenderer
                 
                 if (y < 0 || y >= window.getHeight()) continue;
                 
-                // const unsigned int pixelIndex = (row * image.width + col) * image.channels;
-                //
-                // if (image.channels == 3 || image.data[pixelIndex + 3] != 0) {
-                //     window.draw(x, y, &image.data[pixelIndex]);
-                // }
+                const unsigned int pixelIndex = (row * image.width + col) * image.channels;
                 
-                draw_pixel(window, image, position, row, col);
+                if (image.channels == 3 || image.data[pixelIndex + 3] != 0) {
+                    window.draw(x, y, &image.data[pixelIndex]);
+                }
             }
         }
     }
