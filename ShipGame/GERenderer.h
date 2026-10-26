@@ -27,8 +27,11 @@ namespace GERenderer
             }
         }
     }
-    inline void render_tile(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& tile_map_image, const Vec2f& location, unsigned int tile_x, unsigned int tile_y, unsigned int size_x, unsigned int size_y) 
+    inline void render_tile(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& tile_map_image, const Vec2f& location, unsigned int tile_index, unsigned int size_x, unsigned int size_y, unsigned int tiles_in_row) 
     {
+        unsigned int tile_x = tile_index % tiles_in_row;
+        unsigned int tile_y = tile_index / tiles_in_row;
+        
         unsigned int start_x = tile_x * size_x;
         unsigned int start_y = tile_y * size_y;
         
