@@ -13,7 +13,10 @@ private:
     unsigned int tiles_in_col;
     unsigned int total_tiles;
     
-    unsigned int layout [22][32]
+    static constexpr int layout_col = 22;
+    static constexpr int layout_row = 32;
+    
+    unsigned int layout [layout_col][layout_row]
     {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -49,23 +52,19 @@ public:
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
-    
-private:
-    void draw_tile(GamesEngineeringBase::Window& window, const Vec2f& location, unsigned int tile_index) const {
-        if (tile_index > total_tiles) { return; }
-        GERenderer::render_tile(window, get_image(), location, tile_index, size_x, size_y, tiles_in_row);
-    }
-public:
     virtual void draw(GamesEngineeringBase::Window& window) override {
-        for (unsigned int i = 0; i < 704; i++) {
-            int x = i / 22;
-            int y = i % 22;
+        int  layout_size = layout_col * layout_row;
+        for (int i = 0; i < layout_size; i++) {
+            int x = i / layout_col;
+            int y = i % layout_col;
+            
+            if (layout[y][x] > total_tiles) { return; }
             
             Vec2f location;
             location.x = x * size_x;
             location.y = y * size_y;
             
-            draw_tile(window, location - world.get_offset(), layout[y][x]);
+            GERenderer::render_tile(window, get_image(), location, layout[y][x], size_x, size_y, tiles_in_row);
         }
     }
 };

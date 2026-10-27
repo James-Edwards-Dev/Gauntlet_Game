@@ -15,7 +15,7 @@ int main()
     World world;
     
     TileMap tile_map({0, 0}, world);
-    HeroEntity hero({100, 100}, world);
+    HeroEntity hero({64.0f, 64.0f}, world);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
