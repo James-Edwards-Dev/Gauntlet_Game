@@ -37,10 +37,13 @@ public:
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
+    
+private:
     void draw_tile(GamesEngineeringBase::Window& window, const Vec2f& location, unsigned int tile_index) const {
         if (tile_index > total_tiles) { return; }
         GERenderer::render_tile(window, get_image(), location, tile_index, size_x, size_y, tiles_in_row);
     }
+public:
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (unsigned int i = 0; i < 100; i++) {
             int x = i % 10;
@@ -53,7 +56,4 @@ public:
             draw_tile(window, location - world.get_offset(), layout[x][y]);
         }
     }
-    
-private:
-    
 };
