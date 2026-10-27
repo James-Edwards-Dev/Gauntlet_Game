@@ -15,20 +15,20 @@ public:
         image.load(image_filename);
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
-        GERenderer::draw_image(window, image, get_position());
+        GERenderer::render_image(window, image, get_position());
     }
     const GamesEngineeringBase::Image& get_image() const {return image;}
 };
 
 class WorldSpriteEntity : public SpriteEntity
 {
-private:
+protected:
     const World& world;
 public:
     WorldSpriteEntity(const Vec2f& _position, const std::string& image_filename, const World& _world) : SpriteEntity(_position, image_filename), world(_world) {}
     
     virtual void draw(GamesEngineeringBase::Window& window) override {
-        GERenderer::draw_image(window, get_image(), get_position() - world.get_offset());
+        GERenderer::render_image(window, get_image(), get_position() - world.get_offset());
     }
 };
 
@@ -47,5 +47,4 @@ public:
 protected:
     float speed = 100.0f;
     Vec2f inputAxis{0.0f, 0.0f};
-    
 };

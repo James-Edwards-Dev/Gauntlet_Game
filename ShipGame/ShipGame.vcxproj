@@ -161,11 +161,13 @@
     <ClInclude Include="GameEntities.h" />
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />
+    <ClInclude Include="TileMap.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\IdleAnimation2.png" />
+    <Content Include="resources\tileset.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
