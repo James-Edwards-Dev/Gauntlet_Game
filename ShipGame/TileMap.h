@@ -12,6 +12,20 @@ private:
     unsigned int tiles_in_row;
     unsigned int tiles_in_col;
     unsigned int total_tiles;
+    
+    unsigned int layout [10][10]
+    {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 70, 70, 70, 70, 70, 70, 70, 70, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    };
 
 public:
     TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) 
@@ -23,9 +37,21 @@ public:
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
-    void draw_tile(GamesEngineeringBase::Window& window, const Vec2f& location, unsigned int tile_index) {
+    void draw_tile(GamesEngineeringBase::Window& window, const Vec2f& location, unsigned int tile_index) const {
         if (tile_index > total_tiles) { return; }
         GERenderer::render_tile(window, get_image(), location, tile_index, size_x, size_y, tiles_in_row);
+    }
+    virtual void draw(GamesEngineeringBase::Window& window) override {
+        for (unsigned int i = 0; i < 100; i++) {
+            int x = i % 10;
+            int y = i / 10;
+            
+            Vec2f location;
+            location.x = x * size_x;
+            location.y = y * size_y;
+            
+            draw_tile(window, location - world.get_offset(), layout[x][y]);
+        }
     }
     
 private:
