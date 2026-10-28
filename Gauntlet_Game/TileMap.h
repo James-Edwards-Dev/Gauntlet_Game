@@ -18,7 +18,7 @@ private:
     static constexpr int layout_col = 22;
     static constexpr int layout_row = 32;
     
-    int* layout;
+    std::unique_ptr<int[]> layout;
     
     unsigned int layout_old [layout_col][layout_row]
     {
@@ -53,9 +53,6 @@ public:
         tiles_in_col = image.height / size_y;
         total_tiles = tiles_in_row * tiles_in_col;
     }
-    ~TileMap() {
-        delete[] layout;
-    }
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
@@ -87,7 +84,7 @@ public:
         int height;
         infile >> width >> height;
         
-        layout = new int[width * height];
+        layout = std::unique_ptr<int[]>(new int[width * height]);
         
         std::string line;
         int next_array_index = 0;
