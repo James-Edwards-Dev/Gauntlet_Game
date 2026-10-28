@@ -64,7 +64,7 @@ public:
             location.x = x * size_x;
             location.y = y * size_y;
             
-            GERenderer::render_tile(window, get_image(), location, layout[y][x], size_x, size_y, tiles_in_row);
+            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[y][x], size_x, size_y, tiles_in_row);
         }
     }
 };
