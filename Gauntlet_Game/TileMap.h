@@ -30,8 +30,8 @@ public:
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
-            int x = i % width_in_tiles;
-            int y = i / width_in_tiles;
+            int x = i / width_in_tiles;
+            int y = i % width_in_tiles;
             
             if (layout[i] >= tiles_in_sheet) continue;
             
@@ -71,15 +71,16 @@ public:
                 }
                 else {
                     for (int i = 0; i < std::stoi(word); i++) {
-                        // std::cout << next_tile << " ";
+                        std::cout << next_tile << " ";
                         layout[next_array_index] = next_tile;
                         next_array_index++;
                     }
                 }
                 next_data_is_tile = !next_data_is_tile;
             }
-            // std::cout << "\n";
+            std::cout << "\n";
         }
+        infile.close();
         // for (int i = 0; i < size_in_titles; i++) {
         //     std::cout << layout[i] << " ";
         // }

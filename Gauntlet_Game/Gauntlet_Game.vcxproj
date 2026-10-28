@@ -167,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\IdleAnimation2.png" />
-    <Content Include="resources\level_1.txt" />
+    <Content Include="resources\tileset_map.txt" />
     <Content Include="resources\tileset.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
