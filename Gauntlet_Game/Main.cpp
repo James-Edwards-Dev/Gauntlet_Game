@@ -27,7 +27,7 @@ int main()
     {
         delta_time = timer.dt();
         
-        std::cout << round(1 / delta_time) << "\n";
+        // std::cout << round(1 / delta_time) << "\n";
         
         window.checkInput();
         

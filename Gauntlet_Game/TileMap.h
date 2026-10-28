@@ -9,66 +9,37 @@
 class TileMap : public WorldSpriteEntity
 {
 private:
-    unsigned int size_x = 32;
-    unsigned int size_y = 32;
-    unsigned int tiles_in_row;
-    unsigned int tiles_in_col;
-    unsigned int total_tiles;
     
-    static constexpr int layout_col = 22;
-    static constexpr int layout_row = 32;
+    int width_in_tiles = 0;
+    int height_in_tiles = 0;
+    int size_in_titles = 0;
     
-    std::unique_ptr<int[]> layout;
+    int tile_width_pixels = 32;
+    int tile_height_pixels = 32;
     
-    unsigned int layout_old [layout_col][layout_row]
-    {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+    const int tiles_in_sheet = 100;
+    
+    int* layout;
 
 public:
-    TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) 
-    {
-        tiles_in_row = image.width / size_x;
-        tiles_in_col = image.height / size_y;
-        total_tiles = tiles_in_row * tiles_in_col;
+    TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
+        
     }
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
-        int  layout_size = layout_col * layout_row;
-        for (int i = 0; i < layout_size; i++) {
-            int x = i / layout_col;
-            int y = i % layout_col;
+        for (int i = 0; i < size_in_titles; i++) {
+            int x = i % width_in_tiles;
+            int y = i / width_in_tiles;
             
-            if (layout_old[y][x] > total_tiles) { return; }
+            if (layout[i] >= tiles_in_sheet) continue;
             
             Vec2f location;
-            location.x = x * size_x;
-            location.y = y * size_y;
+            location.x = x * tile_width_pixels;
+            location.y = y * tile_height_pixels;
             
-            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout_old[y][x], size_x, size_y, tiles_in_row);
+            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[i], tile_width_pixels, tile_height_pixels, width_in_tiles);
         }
     }
     
@@ -80,11 +51,10 @@ public:
             return;
         }
         
-        int width;
-        int height;
-        infile >> width >> height;
+        infile >> width_in_tiles >> height_in_tiles;
+        size_in_titles = width_in_tiles * height_in_tiles;
         
-        layout = std::unique_ptr<int[]>(new int[width * height]);
+        layout = new int[size_in_titles];
         
         std::string line;
         int next_array_index = 0;
@@ -110,8 +80,8 @@ public:
             }
             // std::cout << "\n";
         }
-        for (int i = 0; i < width * height; i++) {
-            std::cout << layout[i] << " ";
-        }
+        // for (int i = 0; i < size_in_titles; i++) {
+        //     std::cout << layout[i] << " ";
+        // }
     }
 };
