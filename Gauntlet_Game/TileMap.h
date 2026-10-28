@@ -18,6 +18,7 @@ private:
     int tile_height_pixels = 32;
     
     const int tiles_in_sheet = 100;
+    const int tiles_per_row = 10;
     
     int* layout;
 
@@ -30,8 +31,8 @@ public:
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
-            int x = i / width_in_tiles;
-            int y = i % width_in_tiles;
+            int x = i % width_in_tiles;
+            int y = i / width_in_tiles;
             
             if (layout[i] >= tiles_in_sheet) continue;
             
@@ -39,7 +40,7 @@ public:
             location.x = x * tile_width_pixels;
             location.y = y * tile_height_pixels;
             
-            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[i], tile_width_pixels, tile_height_pixels, width_in_tiles);
+            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
         }
     }
     
@@ -52,6 +53,7 @@ public:
         }
         
         infile >> width_in_tiles >> height_in_tiles;
+
         size_in_titles = width_in_tiles * height_in_tiles;
         
         layout = new int[size_in_titles];
@@ -71,18 +73,13 @@ public:
                 }
                 else {
                     for (int i = 0; i < std::stoi(word); i++) {
-                        std::cout << next_tile << " ";
                         layout[next_array_index] = next_tile;
                         next_array_index++;
                     }
                 }
                 next_data_is_tile = !next_data_is_tile;
             }
-            std::cout << "\n";
         }
         infile.close();
-        // for (int i = 0; i < size_in_titles; i++) {
-        //     std::cout << layout[i] << " ";
-        // }
     }
 };
