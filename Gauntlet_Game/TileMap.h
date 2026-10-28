@@ -30,8 +30,8 @@ public:
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
-            int x = i / width_in_tiles;
-            int y = i % width_in_tiles;
+            int x = i / height_in_tiles;
+            int y = i % height_in_tiles;
             
             if (layout[i] >= tiles_in_sheet) continue;
             
