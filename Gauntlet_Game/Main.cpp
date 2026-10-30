@@ -20,7 +20,7 @@ int main()
     // tile_map.load("resources/tileset_map.txt");
     
     HeroEntity hero({64.0f, 64.0f}, world);
-    Rect_Collider test_rect(32.0f, 32.0f, {128.0f, 128.0f});
+    Rect_Collider test_rect(32.0f, 32.0f, {128.0f, 128.0f}, world);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -47,7 +47,9 @@ int main()
         hero.set_input_axis(input);
         hero.update(delta_time);
         
-        // world.move_view({0.2f, 0});
+        test_rect.update();
+        
+        world.move_view({0.2f, 0});
         
         background.draw(window);
         

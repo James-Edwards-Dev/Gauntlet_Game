@@ -37,7 +37,7 @@ class HeroEntity : public WorldSpriteEntity
 public:
     HeroEntity(const Vec2f& _position, const World& _world) 
     : WorldSpriteEntity(_position, "resources/IdleAnimation2.png", _world)
-    , collider(get_image().width, get_image().height, _position){}
+    , collider(get_image().width, get_image().height, _position, _world){}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
@@ -48,7 +48,7 @@ public:
         move(get_input_axis() * speed * delta_time);
         
         // Moving collider
-        collider.set_position(get_position());
+        collider.set_position(get_position() - world.get_offset());
     }
     
 protected:
