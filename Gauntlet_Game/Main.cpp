@@ -53,6 +53,7 @@ int main()
         background.draw(window);
         
         tile_map.draw(window);
+        tile_map.draw_colliders(window);
         
         hero.draw(window);
 
