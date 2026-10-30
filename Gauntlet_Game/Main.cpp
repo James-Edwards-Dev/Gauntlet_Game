@@ -20,7 +20,6 @@ int main()
     // tile_map.load("resources/tileset_map.txt");
     
     HeroEntity hero({64.0f, 64.0f}, world);
-    Rect_Collider test_rect(32.0f, 32.0f, {128.0f, 128.0f}, world);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -47,7 +46,7 @@ int main()
         hero.set_input_axis(input);
         hero.update(delta_time);
         
-        test_rect.update();
+        tile_map.update(delta_time);
         
         world.move_view({0.2f, 0});
         
@@ -56,15 +55,8 @@ int main()
         tile_map.draw(window);
         
         hero.draw(window);
-        
-        unsigned char r = 0;
-        unsigned char g = 255;
-        if (hero.get_collider().is_overlapping(test_rect)) {
-            r = 255;
-            g = 0;
-        }
-        hero.get_collider().draw_debug_lines(window, r, 0, g);
-        test_rect.draw_debug_lines(window, r, 0, g);
+
+        hero.get_collider().draw_debug_lines(window);
         
         window.present();
     }

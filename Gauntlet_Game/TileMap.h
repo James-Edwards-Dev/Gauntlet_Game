@@ -3,6 +3,8 @@
 #include "Vectors.h"
 #include "GameEntities.h"
 #include "GERenderer.h"
+#include "Data_Structs.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -21,6 +23,9 @@ private:
     const int tiles_per_row = 10;
     
     int* layout;
+    
+    // Stack containing the colliders of all impassable tiles
+    Stack<Rect_Collider*> collider_stack;
 
 public:
     TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
@@ -28,9 +33,12 @@ public:
     }
     ~TileMap() {
         delete[] layout;
+        clear_stack(collider_stack);
     }
     virtual void update(float delta_time) override {
-        // TileMap will not do anything when updating for now
+        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
+            n->data->update();
+        }
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
@@ -77,6 +85,15 @@ public:
                 else {
                     for (int i = 0; i < std::stoi(word); i++) {
                         layout[next_array_index] = next_tile;
+                        // Creating Rects of Collision
+                        // TODO change this to use Enums instead of the hardcoded number 13
+                        if (next_tile == 13) {
+                            float collider_x = (next_array_index % width_in_tiles) * tile_width_pixels;
+                            float collider_y = (next_array_index / width_in_tiles) * tile_height_pixels;
+                            
+                            collider_stack.push(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), world));
+                        }
+                        
                         next_array_index++;
                     }
                 }
