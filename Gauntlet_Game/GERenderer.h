@@ -5,7 +5,7 @@
 
 namespace GERenderer
 {
-    inline void render_rect_outline(GamesEngineeringBase::Window& window, float width, float height, Vec2f position) 
+    inline void render_rect_outline(GamesEngineeringBase::Window& window, float width, float height, Vec2f position, unsigned char r = 255, unsigned char g = 0, unsigned char b = 0) 
     {
         const int top = static_cast<int>(position.y);
         const int bottom = static_cast<int>(position.y + height);
@@ -24,10 +24,10 @@ namespace GERenderer
             if (x < 0 || x >= window.getWidth()) continue;
             
             if (top >= 0) {
-                window.draw(x, top, 255, 0, 0);
+                window.draw(x, top, r, g, b);
             }
             if (bottom < window.getHeight()) {
-                window.draw(x, bottom, 255, 0, 0);
+                window.draw(x, bottom, r, g, b);
             }
         }
         // Drawing left and right lines
@@ -39,10 +39,10 @@ namespace GERenderer
             if (y < 0 || y >= window.getHeight()) continue;
             
             if (left >= 0) {
-                window.draw(left, y, 255, 0, 0);
+                window.draw(left, y, r, g, b);
             }
             if (right < window.getWidth()) {
-                window.draw(right, y, 255, 0, 0);
+                window.draw(right, y, r, g, b);
             }
         }
     }
