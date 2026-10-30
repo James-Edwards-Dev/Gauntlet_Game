@@ -26,6 +26,9 @@ public:
     TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
         
     }
+    ~TileMap() {
+        delete[] layout;
+    }
     virtual void update(float delta_time) override {
         // TileMap will not do anything when updating for now
     }
