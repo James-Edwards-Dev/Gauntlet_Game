@@ -5,6 +5,48 @@
 
 namespace GERenderer
 {
+    inline void render_rect_outline(GamesEngineeringBase::Window& window, float width, float height, Vec2f position) 
+    {
+        const int top = static_cast<int>(position.y);
+        const int bottom = static_cast<int>(position.y + height);
+        const int left = static_cast<int>(position.x); 
+        const int right = static_cast<int>(position.x + width);
+        
+        // If rect is offscreen don't draw
+        if (right < 0 || left >= static_cast<int>(window.getWidth())) return;
+        if (bottom < 0 || top >= static_cast<int>(window.getHeight())) return;
+        
+        // Drawing top if top and bottom lines
+        for (unsigned int col = 0; col <= width; col++) 
+        {
+            const int x = position.x + static_cast<int>(col);
+            
+            if (x < 0 || x >= window.getWidth()) continue;
+            
+            if (top >= 0) {
+                window.draw(x, top, 255, 0, 0);
+            }
+            if (bottom < window.getHeight()) {
+                window.draw(x, bottom, 255, 0, 0);
+            }
+        }
+        // Drawing left and right lines
+        // We are starting at 1 and checking if < instead of <= height so that corners are only drawn once
+        for (unsigned int row = 1; row < height; row++) 
+        {
+            const int y = position.y + static_cast<int>(row);
+            
+            if (y < 0 || y >= window.getHeight()) continue;
+            
+            if (left >= 0) {
+                window.draw(left, y, 255, 0, 0);
+            }
+            if (right < window.getWidth()) {
+                window.draw(right, y, 255, 0, 0);
+            }
+        }
+    }
+    
     inline void render_image(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, Vec2f position) 
     {
         for (unsigned int col = 0; col < image.width; col++) 

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "GamesEngineeringBase.h"
+#include "GERenderer.h"
 #include "Vectors.h"
 
 class Collider 
@@ -25,5 +26,6 @@ public:
     Rect_Collider(float width, float height, const Vec2f& position) : Collider(position), width_(width), height_(height) {}
     
     virtual void draw_debug_lines(GamesEngineeringBase::Window& window) override {
+        GERenderer::render_rect_outline(window, width_, height_, get_position());
     }
 };

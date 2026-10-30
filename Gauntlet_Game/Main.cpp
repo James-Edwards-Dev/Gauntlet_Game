@@ -55,6 +55,9 @@ int main()
         tile_map.draw(window);
         
         hero.draw(window);
+        
+        rect.draw_debug_lines(window);
+        
         window.present();
     }
     
