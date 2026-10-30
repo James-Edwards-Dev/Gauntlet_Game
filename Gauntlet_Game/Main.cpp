@@ -21,8 +21,6 @@ int main()
     
     HeroEntity hero({64.0f, 64.0f}, world);
     
-    Rect_Collider rect(32, 32, {32.0f, 0.0f});
-    
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
     
@@ -56,7 +54,7 @@ int main()
         
         hero.draw(window);
         
-        rect.draw_debug_lines(window);
+        hero.get_collider().draw_debug_lines(window);
         
         window.present();
     }

@@ -35,16 +35,25 @@ public:
 class HeroEntity : public WorldSpriteEntity
 {
 public:
-    HeroEntity(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/IdleAnimation2.png", _world) {}
+    HeroEntity(const Vec2f& _position, const World& _world) 
+    : WorldSpriteEntity(_position, "resources/IdleAnimation2.png", _world)
+    , collider(get_image().width, get_image().height, _position){}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
     
+    const Rect_Collider& get_collider() const {return collider;}
+    
     virtual void update(float delta_time) override {
         move(get_input_axis() * speed * delta_time);
+        
+        // Moving collider
+        collider.set_position(get_position());
     }
     
 protected:
     float speed = 100.0f;
     Vec2f inputAxis{0.0f, 0.0f};
+    
+    Rect_Collider collider;
 };

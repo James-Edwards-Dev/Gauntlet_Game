@@ -11,7 +11,7 @@ class Collider
 public:
     Collider(const Vec2f& position) : position_(position) {}
     
-    virtual void draw_debug_lines(GamesEngineeringBase::Window& window) =0;
+    virtual void draw_debug_lines(GamesEngineeringBase::Window& window) const =0;
     
     Vec2f get_position() const {return position_;}
     void set_position(const Vec2f& position) {position_ = position;}
@@ -25,7 +25,7 @@ class Rect_Collider : public Collider
 public:
     Rect_Collider(float width, float height, const Vec2f& position) : Collider(position), width_(width), height_(height) {}
     
-    virtual void draw_debug_lines(GamesEngineeringBase::Window& window) override {
+    virtual void draw_debug_lines(GamesEngineeringBase::Window& window) const override {
         GERenderer::render_rect_outline(window, width_, height_, get_position());
     }
 };
