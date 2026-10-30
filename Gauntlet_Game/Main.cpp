@@ -1,4 +1,5 @@
 
+#include "Collision.h"
 #include "Entity.h"
 #include "GameEntities.h"
 #include "TileMap.h"
@@ -19,6 +20,8 @@ int main()
     // tile_map.load("resources/tileset_map.txt");
     
     HeroEntity hero({64.0f, 64.0f}, world);
+    
+    Rect_Collider rect(32, 32, {32.0f, 0.0f});
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
