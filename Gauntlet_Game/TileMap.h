@@ -54,6 +54,15 @@ public:
             GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
         }
     }
+    bool is_overlapping(const Rect_Collider& collider) {
+        bool colliding = false;
+        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
+            if (n->data->is_overlapping(collider)) {
+                colliding = true;
+            }
+        }
+        return colliding;
+    }
     void draw_colliders(GamesEngineeringBase::Window& window, unsigned char r=255, unsigned char g=0, unsigned char b=0) {
         for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
             n->data->draw_debug_lines(window);

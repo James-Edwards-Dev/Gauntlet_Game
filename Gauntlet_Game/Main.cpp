@@ -56,8 +56,12 @@ int main()
         tile_map.draw_colliders(window);
         
         hero.draw(window);
-
-        hero.get_collider().draw_debug_lines(window);
+        if (tile_map.is_overlapping(hero.get_collider())) {
+            hero.get_collider().draw_debug_lines(window, 255, 0, 0);
+        }
+        else {
+            hero.get_collider().draw_debug_lines(window, 0, 0, 255);
+        }
         
         window.present();
     }
