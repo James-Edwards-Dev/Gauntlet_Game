@@ -13,13 +13,13 @@ int main()
     
     BackgroundEntity background(Vec2f(0, 0));
     
-    World world;
+    Camera camera;
     
-    TileMap tile_map({0, 0}, world);
+    TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/test_map.txt");
     // tile_map.load("resources/tileset_map.txt");
     
-    HeroEntity hero({64.0f, 64.0f}, world);
+    HeroEntity hero({64.0f, 64.0f}, camera);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();

@@ -28,7 +28,7 @@ private:
     Stack<Rect_Collider*> collider_stack;
 
 public:
-    TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
+    TileMap(const Vec2f& _position, const Camera& _camera) : WorldSpriteEntity(_position, "resources/tileset.png", _camera) {
         
     }
     ~TileMap() {
@@ -124,7 +124,7 @@ public:
                             float collider_x = (next_array_index % width_in_tiles) * tile_width_pixels;
                             float collider_y = (next_array_index / width_in_tiles) * tile_height_pixels;
                             
-                            collider_stack.push(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), world));
+                            collider_stack.push(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), camera));
                         }
                         
                         next_array_index++;

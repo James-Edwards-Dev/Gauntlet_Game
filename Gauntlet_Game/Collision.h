@@ -3,15 +3,15 @@
 #include "GamesEngineeringBase.h"
 #include "GERenderer.h"
 #include "Vectors.h"
-#include "World.h"
+#include "Camera.h"
 
 class Collider 
 {
     Vec2f position_;
-    const World& world_;
+    const Camera& camera_;
     
 public:
-    Collider(const Vec2f& position, const World& world) : position_(position), world_(world) {}
+    Collider(const Vec2f& position, const Camera& _camera) : position_(position), camera_(_camera) {}
     
     virtual void draw_debug_lines(GamesEngineeringBase::Window& window, unsigned char r = 255, unsigned char b = 0, unsigned char g = 0) const =0;
     
@@ -25,7 +25,7 @@ class Rect_Collider : public Collider
     float height_;
     
 public:
-    Rect_Collider(float width, float height, const Vec2f& position, const World& world) : Collider(position, world), width_(width), height_(height) {}
+    Rect_Collider(float width, float height, const Vec2f& position, const Camera& camera) : Collider(position, camera), width_(width), height_(height) {}
     
     virtual void draw_debug_lines(GamesEngineeringBase::Window& window, unsigned char r = 255, unsigned char b = 0, unsigned char g = 0) const override {
         GERenderer::render_rect_outline(window, width_, height_, get_position(), r, g ,b );
