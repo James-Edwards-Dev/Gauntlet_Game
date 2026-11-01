@@ -43,25 +43,20 @@ int main()
         if (window.keyPressed('A')) input.x = -1.0f;
         if (window.keyPressed('D')) input.x = 1.0f ;
         
-        hero.set_input_axis(input);
-        hero.update(delta_time);
+        // world.move_view({0.2f, 0.2f});
         
         tile_map.update(delta_time);
         
-        world.move_view({0.2f, 0});
+        hero.set_input_axis(input);
+        hero.update(delta_time);
+        
+        tile_map.check_collision(hero, hero.get_collider());
         
         background.draw(window);
         
         tile_map.draw(window);
         tile_map.draw_colliders(window);
-        
         hero.draw(window);
-        if (tile_map.is_overlapping(hero.get_collider())) {
-            hero.get_collider().draw_debug_lines(window, 255, 0, 0);
-        }
-        else {
-            hero.get_collider().draw_debug_lines(window, 0, 0, 255);
-        }
         
         window.present();
     }
