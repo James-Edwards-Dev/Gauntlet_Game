@@ -27,8 +27,8 @@ protected:
 public:
     WorldSpriteEntity(const Vec2f& _position, const std::string& image_filename, const World& _world) : SpriteEntity(_position, image_filename), world(_world) {}
     
-    virtual void draw(GamesEngineeringBase::Window& window) override {
-        GERenderer::render_image(window, get_image(), get_position() - world.get_offset());
+    virtual void update(float delta_time) override {
+        set_position(get_position() + world.get_offset_change());
     }
 };
 
@@ -45,10 +45,11 @@ public:
     const Rect_Collider& get_collider() const {return collider;}
     
     virtual void update(float delta_time) override {
-        move(get_input_axis() * speed * delta_time);
+        WorldSpriteEntity::update(delta_time);
         
+        move(get_input_axis() * speed * delta_time);
         // Moving collider
-        collider.set_position(get_position() - world.get_offset());
+        collider.set_position(get_position());
     }
     
 protected:
