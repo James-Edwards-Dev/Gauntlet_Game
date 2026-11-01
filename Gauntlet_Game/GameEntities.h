@@ -28,7 +28,7 @@ public:
     WorldSpriteEntity(const Vec2f& _position, const std::string& image_filename, const World& _world) : SpriteEntity(_position, image_filename), world(_world) {}
     
     virtual void update(float delta_time) override {
-        set_position(get_position() + world.get_offset_change());
+        // Doesn't do anything for now
     }
 };
 

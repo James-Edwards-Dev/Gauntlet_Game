@@ -15,10 +15,6 @@ public:
     
     virtual void draw_debug_lines(GamesEngineeringBase::Window& window, unsigned char r = 255, unsigned char b = 0, unsigned char g = 0) const =0;
     
-    void update() {
-        position_ = position_ + world_.get_offset_change();
-    }
-    
     Vec2f get_position() const {return position_;}
     void set_position(const Vec2f& position) {position_ = position;}
 };

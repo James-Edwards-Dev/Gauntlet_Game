@@ -43,8 +43,6 @@ int main()
         if (window.keyPressed('A')) input.x = -1.0f;
         if (window.keyPressed('D')) input.x = 1.0f ;
         
-        // world.move_view({0.2f, 0.2f});
-        
         tile_map.update(delta_time);
         
         hero.set_input_axis(input);

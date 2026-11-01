@@ -35,11 +35,6 @@ public:
         delete[] layout;
         clear_stack(collider_stack);
     }
-    virtual void update(float delta_time) override {
-        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
-            n->data->update();
-        }
-    }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
             int x = i % width_in_tiles;
@@ -51,7 +46,7 @@ public:
             location.x = x * tile_width_pixels;
             location.y = y * tile_height_pixels;
             
-            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
+            GERenderer::render_tile(window, get_image(), location, layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
         }
     }
     void draw_colliders(GamesEngineeringBase::Window& window, unsigned char r=255, unsigned char g=0, unsigned char b=0) {
