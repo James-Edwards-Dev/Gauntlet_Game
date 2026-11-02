@@ -14,8 +14,6 @@ int main()
     GamesEngineeringBase::Window window;
     window.create(window_width, window_height, "Gauntlet_Game");
     
-    BackgroundEntity background(Vec2f(0, 0));
-    
     FollowCamera camera(window_width, window_height);
     
     TileMap tile_map({0, 0}, camera);
