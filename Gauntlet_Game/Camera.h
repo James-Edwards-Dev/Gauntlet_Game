@@ -17,7 +17,9 @@ public:
 
 class FollowCamera : public Camera
 {
-    float speed = 50.0f;
+    const float min_speed = 55.0f;
+    const float max_speed = 125.0f;
+    float speed = min_speed;
     
     int num_of_targets = 0;
     static constexpr int max_num_of_targets = 4;
@@ -65,6 +67,14 @@ public:
     void update(float delta_time) {
         // Calculate distance from target squared
         float distanceSquared = camera_offset.distanceSquared(calc_target_location());
+        
+        // Speed up when far away
+        if (distanceSquared > 1500.0f) {
+            speed = 150.0f;
+        }
+        else {
+            speed = 55.0f;
+        }
         
         // Moving camera
         if (distanceSquared > 0.1f) {
