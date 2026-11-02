@@ -17,6 +17,8 @@ public:
 
 class FollowCamera : public Camera
 {
+    float speed = 50.0f;
+    
     int num_of_targets = 0;
     static constexpr int max_num_of_targets = 4;
     const PositionEntity* Targets[max_num_of_targets];
@@ -47,15 +49,27 @@ public:
     }
     
 private:
+    // Calculate the desired camera location
     Vec2f calc_target_location() const {
         if (num_of_targets >= max_num_of_targets) {return camera_offset;}
         
-        return  Targets[0]->get_position() - centre;
+        return  Targets[0]->get_position() + Vec2f{16.0f, 16.0f} - centre;
     }
     
 public:
     // Moves camera to target location instantly
-    void update() {
+    void snap_to_target_location() {
         camera_offset = calc_target_location();
+    }
+    // Moves camera towards target location
+    void update(float delta_time) {
+        // Calculate distance from target squared
+        float distanceSquared = camera_offset.distanceSquared(calc_target_location());
+        
+        // Moving camera
+        if (distanceSquared > 0.1f) {
+            Vec2f direction = (calc_target_location() - camera_offset).normalize();
+            camera_offset = camera_offset + direction * delta_time * speed;
+        }
     }
 };

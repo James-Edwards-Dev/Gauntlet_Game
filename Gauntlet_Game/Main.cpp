@@ -24,6 +24,7 @@ int main()
     
     HeroEntity hero({64.0f, 64.0f}, camera);
     camera.add_target(&hero);
+    camera.snap_to_target_location();
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -54,7 +55,7 @@ int main()
         
         tile_map.check_collision(hero, hero.get_collider());
         
-        camera.update();
+        camera.update(delta_time);
         
         tile_map.draw(window);
         // tile_map.draw_colliders(window);
