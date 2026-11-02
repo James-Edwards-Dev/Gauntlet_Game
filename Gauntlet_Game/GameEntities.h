@@ -44,11 +44,18 @@ protected:
     float defence;
 public:
     CombatSprite(const Vec2f& _position, const std::string& image_filename, const Camera& _camera, const float _max_health = 100, const float _defense = 0) 
-    : WorldSpriteEntity(_position, image_filename, _camera), max_health(_max_health), health(_max_health), defence(_defense)
-    {
-        
-    }
+    : WorldSpriteEntity(_position, image_filename, _camera), max_health(_max_health), health(_max_health), defence(_defense) {}
     
+    void damage(const float damage) 
+    {
+        // Uses defense - 100 to take a percentage of damage
+        // For example if defense is, the entity will take 75% of damage
+        float applied_damage = ((100 - defence) / 100) * damage;
+        health -= applied_damage;
+        
+        std::cout << "Health: " << health << "\n";
+        if (health <= 0.0f) {std::cout << "You died\n";}
+    }
 };
 
 class HeroEntity : public CombatSprite
