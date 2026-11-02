@@ -164,7 +164,7 @@
     <ClInclude Include="GERenderer.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Vectors.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data_Structs.h" />

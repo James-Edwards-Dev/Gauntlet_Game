@@ -28,17 +28,12 @@ private:
     Stack<Rect_Collider*> collider_stack;
 
 public:
-    TileMap(const Vec2f& _position, const World& _world) : WorldSpriteEntity(_position, "resources/tileset.png", _world) {
+    TileMap(const Vec2f& _position, const Camera& _camera) : WorldSpriteEntity(_position, "resources/tileset.png", _camera) {
         
     }
     ~TileMap() {
         delete[] layout;
         clear_stack(collider_stack);
-    }
-    virtual void update(float delta_time) override {
-        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
-            n->data->update();
-        }
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
@@ -51,7 +46,7 @@ public:
             location.x = x * tile_width_pixels;
             location.y = y * tile_height_pixels;
             
-            GERenderer::render_tile(window, get_image(), location - world.get_offset(), layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
+            GERenderer::render_tile(window, get_image(), location - camera.camera_offset, layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
         }
     }
     void draw_colliders(GamesEngineeringBase::Window& window, unsigned char r=255, unsigned char g=0, unsigned char b=0) {
@@ -129,7 +124,7 @@ public:
                             float collider_x = (next_array_index % width_in_tiles) * tile_width_pixels;
                             float collider_y = (next_array_index / width_in_tiles) * tile_height_pixels;
                             
-                            collider_stack.push(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), world));
+                            collider_stack.push(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), camera));
                         }
                         
                         next_array_index++;

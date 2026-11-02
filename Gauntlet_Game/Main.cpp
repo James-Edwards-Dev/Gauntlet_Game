@@ -8,14 +8,17 @@
 
 int main()
 {
+    unsigned int window_width = 640;
+    unsigned int window_height= 480;
+    
     GamesEngineeringBase::Window window;
-    window.create(1024, 704, "James's Ship Game");
+    window.create(window_width, window_height, "Gauntlet_Game");
     
     BackgroundEntity background(Vec2f(0, 0));
     
-    World world;
+    FollowCamera camera(window_width, window_height);
     
-    TileMap tile_map({0, 0}, world);
+    TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/test_map.txt");
     // tile_map.load("resources/tileset_map.txt");
     
@@ -46,8 +49,6 @@ int main()
         if (window.keyPressed('A')) input.x = -1.0f;
         if (window.keyPressed('D')) input.x = 1.0f ;
         
-        // world.move_view({0.2f, 0.2f});
-        
         tile_map.update(delta_time);
         
         hero.set_input_axis(input);
@@ -55,10 +56,10 @@ int main()
         
         tile_map.check_collision(hero, hero.get_collider());
         
-        background.draw(window);
+        camera.update(delta_time);
         
         tile_map.draw(window);
-        tile_map.draw_colliders(window);
+        // tile_map.draw_colliders(window);
         hero.draw(window);
         
         GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {0.0f, 0.0f});
