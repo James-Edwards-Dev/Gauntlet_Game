@@ -19,6 +19,9 @@ int main()
     tile_map.load("resources/test_map.txt");
     // tile_map.load("resources/tileset_map.txt");
     
+    GamesEngineeringBase::Image text_image;
+    text_image.load("resources/Valor8x8_CP437_transparent.png");
+    
     HeroEntity hero({64.0f, 64.0f}, world);
     
     GamesEngineeringBase::Timer timer;
@@ -57,6 +60,8 @@ int main()
         tile_map.draw(window);
         tile_map.draw_colliders(window);
         hero.draw(window);
+        
+        GERenderer::render_string(window, text_image, "A1", {0.0f, 0.0f});
         
         window.present();
     }

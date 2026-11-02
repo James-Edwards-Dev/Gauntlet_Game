@@ -77,13 +77,13 @@ namespace GERenderer
         unsigned int start_x = tile_x * size_x;
         unsigned int start_y = tile_y * size_y;
         
-        for (unsigned int col = start_y; col < start_y + 32; col++) {
+        for (unsigned int col = start_y; col < start_y + size_y; col++) {
             
             unsigned int draw_y = static_cast<int>(location.y) + col - start_y;
             
             if (draw_y < 0 || draw_y >= window.getHeight()) continue;
             
-            for (unsigned int row = start_x; row < start_x + 32; row++) {
+            for (unsigned int row = start_x; row < start_x + size_x; row++) {
                 
                 unsigned int draw_x = static_cast<int>(location.x) + row - start_x;
                 
@@ -95,6 +95,19 @@ namespace GERenderer
                     window.draw(draw_x, draw_y, &tile_map_image.data[pixelIndex]);
                 }
             }
+        }
+    }
+    inline void render_char(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, unsigned char character, Vec2f position) 
+    {
+        int value = character;
+        render_tile(window, image, position, value, 8, 8, 16);
+    }
+    inline void render_string(GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& image, std::string text, Vec2f position) 
+    {
+        int length = text.length();
+        for (int i = 0; i < length; i++) {
+            render_char(window, image, text[i], position);
+            position.x = position.x + 8;
         }
     }
 }
