@@ -25,7 +25,9 @@ int main()
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
-    HeroEntity hero({64.0f, 64.0f}, world);
+    HeroEntity hero({64.0f, 64.0f}, camera);
+    camera.add_target(&hero);
+    camera.snap_to_target_location();
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
