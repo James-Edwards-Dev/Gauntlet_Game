@@ -56,6 +56,11 @@ public:
         std::cout << "Health: " << health << "\n";
         if (health <= 0.0f) {std::cout << "You died\n";}
     }
+    void heal(const float heal) {
+        health += heal;
+        if (health >= max_health) { health = max_health; }
+        std::cout << "Health: " << health << "\n";
+    }
 };
 
 class HeroEntity : public CombatSprite
