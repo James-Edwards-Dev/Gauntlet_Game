@@ -172,6 +172,7 @@
     <Content Include="resources\test_map.txt" />
     <Content Include="resources\tileset_map.txt" />
     <Content Include="resources\tileset.png" />
+    <Content Include="resources\Valor8x8_CP437_transparent.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
