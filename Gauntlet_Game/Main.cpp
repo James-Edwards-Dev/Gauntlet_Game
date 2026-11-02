@@ -32,7 +32,7 @@ int main()
     {
         delta_time = timer.dt();
         
-        // std::cout << round(1 / delta_time) << "\n";
+        int fps = round(10 / delta_time);
         
         window.checkInput();
         
@@ -61,7 +61,7 @@ int main()
         tile_map.draw_colliders(window);
         hero.draw(window);
         
-        GERenderer::render_string(window, text_image, "A1", {0.0f, 0.0f});
+        GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {0.0f, 0.0f});
         
         window.present();
     }
