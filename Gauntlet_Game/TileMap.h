@@ -46,7 +46,7 @@ public:
             location.x = x * tile_width_pixels;
             location.y = y * tile_height_pixels;
             
-            GERenderer::render_tile(window, get_image(), location, layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
+            GERenderer::render_tile(window, get_image(), location - camera.camera_offset, layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
         }
     }
     void draw_colliders(GamesEngineeringBase::Window& window, unsigned char r=255, unsigned char g=0, unsigned char b=0) {

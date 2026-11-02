@@ -8,6 +8,7 @@
 class Collider 
 {
     Vec2f position_;
+protected:
     const Camera& camera_;
     
 public:
@@ -28,7 +29,7 @@ public:
     Rect_Collider(float width, float height, const Vec2f& position, const Camera& camera) : Collider(position, camera), width_(width), height_(height) {}
     
     virtual void draw_debug_lines(GamesEngineeringBase::Window& window, unsigned char r = 255, unsigned char b = 0, unsigned char g = 0) const override {
-        GERenderer::render_rect_outline(window, width_, height_, get_position(), r, g ,b );
+        GERenderer::render_rect_outline(window, width_, height_, get_position() - camera_.camera_offset, r, g ,b );
     }
     
     float get_width() const{return width_;}

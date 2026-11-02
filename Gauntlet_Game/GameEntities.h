@@ -27,6 +27,10 @@ protected:
 public:
     WorldSpriteEntity(const Vec2f& _position, const std::string& image_filename, const Camera& _camera) : SpriteEntity(_position, image_filename), camera(_camera) {}
     
+    virtual void draw(GamesEngineeringBase::Window& window) override {
+        GERenderer::render_image(window, image, get_position() - camera.camera_offset);
+    }
+    
     virtual void update(float delta_time) override {
         // Doesn't do anything for now
     }
