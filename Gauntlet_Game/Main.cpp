@@ -8,18 +8,22 @@
 
 int main()
 {
+    unsigned int window_width = 1024;
+    unsigned int window_height= 1024;
+    
     GamesEngineeringBase::Window window;
-    window.create(1024, 704, "James's Ship Game");
+    window.create(window_width, window_height, "Gauntlet_Game");
     
     BackgroundEntity background(Vec2f(0, 0));
     
-    Camera camera;
+    FollowCamera camera(window_width, window_height);
     
     TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/test_map.txt");
     // tile_map.load("resources/tileset_map.txt");
     
     HeroEntity hero({64.0f, 64.0f}, camera);
+    camera.add_target(&hero);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -50,10 +54,10 @@ int main()
         
         tile_map.check_collision(hero, hero.get_collider());
         
-        background.draw(window);
+        camera.update();
         
         tile_map.draw(window);
-        tile_map.draw_colliders(window);
+        // tile_map.draw_colliders(window);
         hero.draw(window);
         
         window.present();
