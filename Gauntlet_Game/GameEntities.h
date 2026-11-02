@@ -18,6 +18,11 @@ public:
         GERenderer::render_image(window, image, get_position());
     }
     const GamesEngineeringBase::Image& get_image() const {return image;}
+    
+    Vec2f get_centre() const {
+        Vec2f size =  Vec2f(static_cast<float>(get_image().width), static_cast<float>(get_image().height));
+        return get_position() + size;
+    }
 };
 
 class WorldSpriteEntity : public SpriteEntity
@@ -44,6 +49,8 @@ protected:
     float defence;
     float speed;
     
+    bool alive = true;
+    
     Rect_Collider collider;
 public:
     CombatSprite(const Vec2f& _position, const std::string& image_filename, const Camera& _camera, const float _max_health = 100, const float _speed = 100, const float _defense = 0) 
@@ -57,6 +64,7 @@ public:
     }
     
     const Rect_Collider& get_collider() const {return collider;}
+    bool is_alive() const {return alive;}
     
     void damage(const float damage) 
     {

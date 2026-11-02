@@ -1,9 +1,11 @@
 
 #include "Collision.h"
+#include "Enemys.h"
 #include "Entity.h"
 #include "GameEntities.h"
 #include "TileMap.h"
 #include "GamesEngineeringBase.h"
+#include "Managers.h"
 #include "Vectors.h"
 
 int main()
@@ -13,6 +15,8 @@ int main()
     
     GamesEngineeringBase::Window window;
     window.create(window_width, window_height, "Gauntlet_Game");
+    
+    PlayerManager player_manager;
     
     FollowCamera camera(window_width, window_height);
     
@@ -24,8 +28,11 @@ int main()
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
     HeroEntity hero({64.0f, 64.0f}, camera);
+    player_manager.add(&hero);
     camera.add_target(&hero);
     camera.snap_to_target_location();
+    
+    Enemy enemy({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -53,6 +60,7 @@ int main()
         
         hero.set_input_axis(input);
         hero.update(delta_time);
+        enemy.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
         
@@ -61,6 +69,7 @@ int main()
         tile_map.draw(window);
         // tile_map.draw_colliders(window);
         hero.draw(window);
+        enemy.draw(window);
         
         GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
         

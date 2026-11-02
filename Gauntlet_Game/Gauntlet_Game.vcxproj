@@ -158,11 +158,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="enemys.h" />
+    <ClInclude Include="Enemys.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameEntities.h" />
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />
+    <ClInclude Include="Managers.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="Camera.h" />
