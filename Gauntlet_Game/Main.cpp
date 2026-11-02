@@ -8,8 +8,8 @@
 
 int main()
 {
-    unsigned int window_width = 1024;
-    unsigned int window_height= 1024;
+    unsigned int window_width = 640;
+    unsigned int window_height= 480;
     
     GamesEngineeringBase::Window window;
     window.create(window_width, window_height, "Gauntlet_Game");
