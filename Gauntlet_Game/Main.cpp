@@ -63,6 +63,7 @@ int main()
         enemy.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
+        tile_map.check_collision(enemy, enemy.get_collider());
         
         camera.update(delta_time);
         
