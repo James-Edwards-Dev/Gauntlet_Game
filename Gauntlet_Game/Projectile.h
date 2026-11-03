@@ -36,4 +36,7 @@ public:
     void draw_collider(GamesEngineeringBase::Window& window) const {
         GERenderer::render_rect_outline(window, collider_.get_width(), collider_.get_height(), collider_.get_position() - camera.camera_offset);
     }
+    void hit(CombatSprite& entity) const{
+        entity.damage(hit_damage_);
+    }
 };
