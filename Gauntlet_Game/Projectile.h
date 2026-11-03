@@ -20,7 +20,7 @@ class Projectile : public WorldSpriteEntity
     
 public:
     Projectile(Vec2f position, const float damage, const float speed, Vec2f direction, Target_Type target, const Camera& camera_) : 
-    WorldSpriteEntity(position, "resources/Arrow01(32x32).png", camera_), 
+    WorldSpriteEntity(position, "resources/projectile.png", camera_), 
     hit_damage_(damage), speed_(speed), direction_(direction), target_type_(target), 
     collider_(get_image().width - 8, get_image().height - 20, position + Vec2f(4, 10), camera_) 
     {
