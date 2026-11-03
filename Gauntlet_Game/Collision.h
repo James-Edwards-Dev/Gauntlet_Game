@@ -42,10 +42,10 @@ public:
             && get_position().y + get_height() >= otherRect.get_position().y &&
             otherRect.get_position().y + otherRect.get_height() >= get_position().y);
     }
-    
-    void push_collide(PositionEntity& other_entity, const Rect_Collider& other_collider) const {
+private:
+    Vec2f calculate_min_overlap_distance(const Rect_Collider& other_collider) const {
         // Calculate overlap distance
-        float left_distance = other_entity.get_position().x + other_collider.get_width() - get_position().x ;
+        float left_distance = other_collider.get_position().x + other_collider.get_width() - get_position().x ;
         float right_distance = get_position().x + get_width() - other_collider.get_position().x;
         float top_distance = other_collider.get_position().y + other_collider.get_height() - get_position().y;
         float bottom_distance = get_position().y + get_height() - other_collider.get_position().y;
@@ -67,11 +67,16 @@ public:
         }
         // Calculate min overall distance and move player in that direction
         if (abs(distance_x) < abs(distance_y)) {
-            other_entity.set_position(other_entity.get_position() + Vec2f(distance_x, 0));
+            return {distance_x, 0.f};
         }
-        else {
-            other_entity.set_position(other_entity.get_position() + Vec2f(0, distance_y));
-        }
-        
+        return {0.f, distance_y};
+    }
+public:
+    void push_collide(PositionEntity& other_entity, const Rect_Collider& other_collider) const {
+        other_entity.set_position(other_entity.get_position() + calculate_min_overlap_distance(other_collider));
+    }
+    void block_collide(PositionEntity& this_entity, PositionEntity& other_entity, const Rect_Collider& other_collider) const {
+        this_entity.set_position(this_entity.get_position() - calculate_min_overlap_distance(other_collider) / 2);
+        other_entity.set_position(other_entity.get_position() + calculate_min_overlap_distance(other_collider) / 2);
     }
 };

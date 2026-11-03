@@ -16,8 +16,11 @@ struct Vec2f
     Vec2f operator-(const Vec2f n) const {
         return Vec2f{x - n.x, y - n.y};
     }
-    Vec2f operator*(const float scalar) const{
+    Vec2f operator*(const float scalar) const {
         return Vec2f{x * scalar, y *scalar};
+    }
+    Vec2f operator/(const float quotient) const {
+        return Vec2f{x / quotient, y / quotient};
     }
     float length() const {
         return std::sqrt(x * x + y * y);

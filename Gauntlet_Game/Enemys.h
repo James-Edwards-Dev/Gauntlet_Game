@@ -85,9 +85,10 @@ public:
             
             // Collision with player
             for (unsigned int i = 0; i < players.get_player_count(); i++) {
+                PositionEntity* player = players.players[i];
                 Rect_Collider player_collider = players.players[i]->get_collider();
                 if (enemy_collider.is_overlapping(player_collider)) {
-                    player_collider.push_collide(*enemy, enemy_collider);
+                    player_collider.block_collide(*player, *enemy, enemy_collider);
                     
                     std::cout << "Overlapping player " << i + 1 << "\n";
                 }
