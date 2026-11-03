@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Data_Structs.h"
-#include "Enemys.h"
+
 #include "GameEntities.h"
+#include "Camera.h"
 
 class HeroEntity : public CombatSprite
 {
@@ -40,4 +40,24 @@ public:
     
     unsigned int get_player_count() const { return player_count; }
     unsigned int get_max_players() const { return max_players; }
+    
+    void update(float delta_time, FollowCamera& camera) const {
+        if (player_count > 0) {
+            Vec2f* player_locations = new Vec2f[player_count];
+            for (unsigned int i = 0; i < player_count; i++) {
+                player_locations[i] = players[i]->get_position();
+            }
+            camera.update(delta_time, player_locations, player_count);
+        }
+    }
+    
+    void reset_camera(FollowCamera& camera) const {
+        if (player_count <= 0) return;
+        
+        Vec2f* player_locations = new Vec2f[player_count];
+        for (unsigned int i = 0; i < player_count; i++) {
+            player_locations[i] = players[i]->get_position();
+        }
+        camera.snap_to_target_location(player_locations, player_count);
+    }
 };

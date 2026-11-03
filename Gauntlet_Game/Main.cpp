@@ -30,8 +30,8 @@ int main()
     
     HeroEntity hero({64.0f, 64.0f}, camera);
     player_manager.add(&hero);
-    camera.add_target(&hero);
-    camera.snap_to_target_location();
+    
+    player_manager.reset_camera(camera);
     
     Enemy enemy1({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
     Enemy enemy2({352.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
@@ -62,14 +62,13 @@ int main()
         
         tile_map.update(delta_time);
         
+        player_manager.update(delta_time, camera);
         hero.set_input_axis(input);
         hero.update(delta_time);
         enemy_manager.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
         enemy_manager.check_collision(tile_map, player_manager, delta_time);
-        
-        camera.update(delta_time);
         
         tile_map.draw(window);
         // tile_map.draw_colliders(window);
