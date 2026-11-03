@@ -49,6 +49,9 @@ public:
             GERenderer::render_tile(window, get_image(), location - camera.camera_offset, layout[i], tile_width_pixels, tile_height_pixels, tiles_per_row);
         }
     }
+    virtual void update(float delta_time) override {
+        // Doesn't do anything 
+    }
     void draw_colliders(GamesEngineeringBase::Window& window, unsigned char r=255, unsigned char g=0, unsigned char b=0) {
         for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
             n->data->draw_debug_lines(window);

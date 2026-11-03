@@ -164,12 +164,14 @@
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />
     <ClInclude Include="Players.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data_Structs.h" />
+    <Content Include="resources\Arrow01(32x32).png" />
     <Content Include="resources\IdleAnimation2.png" />
     <Content Include="resources\test_map.txt" />
     <Content Include="resources\tileset_map.txt" />

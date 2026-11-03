@@ -1,11 +1,11 @@
 
 #include "Collision.h"
 #include "Enemys.h"
-#include "Entity.h"
 #include "GameEntities.h"
 #include "TileMap.h"
 #include "GamesEngineeringBase.h"
 #include "Players.h"
+#include "Projectile.h"
 #include "Vectors.h"
 
 int main()
@@ -38,6 +38,8 @@ int main()
     enemy_manager.add(&enemy1);
     enemy_manager.add(&enemy2);
     
+    Projectile projectile = Projectile({32.0f, 32.0f}, 20, 150, Vec2f(1, 0), PLAYER, camera);
+    
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
     
@@ -66,15 +68,15 @@ int main()
         hero.set_input_axis(input);
         hero.update(delta_time);
         enemy_manager.update(delta_time);
+        projectile.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
         enemy_manager.check_collision(tile_map, player_manager, delta_time);
         
         tile_map.draw(window);
-        // tile_map.draw_colliders(window);
+        projectile.draw(window);
         hero.draw(window);
         enemy_manager.draw(window);
-        enemy_manager.draw_colliders(window);
         
         GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
         

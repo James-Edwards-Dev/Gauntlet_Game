@@ -35,10 +35,6 @@ public:
     virtual void draw(GamesEngineeringBase::Window& window) override {
         GERenderer::render_image(window, image, get_position() - camera.camera_offset);
     }
-    
-    virtual void update(float delta_time) override {
-        // Doesn't do anything for now
-    }
 };
 
 class CombatSprite : public WorldSpriteEntity
@@ -71,7 +67,6 @@ public:
         collider(get_image().width, get_image().height, _position, _camera) {}
     
     virtual void update(float delta_time) override {
-        WorldSpriteEntity::update(delta_time);
         // Moving collider
         collider.set_position(get_position());
     }
