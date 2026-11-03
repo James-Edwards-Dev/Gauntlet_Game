@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "GameEntities.h"
-#include "Managers.h"
+#include "Players.h"
 #include "TileMap.h"
 
 class Enemy : public CombatSprite

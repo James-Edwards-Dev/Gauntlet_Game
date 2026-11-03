@@ -82,22 +82,3 @@ public:
         std::cout << "Health: " << health << "\n";
     }
 };
-
-class HeroEntity : public CombatSprite
-{
-public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, const float _max_health = 100, const float _speed = 100, const float _defense = 0) 
-    : CombatSprite(_position, "resources/IdleAnimation2.png", _camera, _max_health, _speed, _defense) {}
-    
-    void set_input_axis(const Vec2f& input) {inputAxis = input;}
-    const Vec2f& get_input_axis() const {return inputAxis;}
-    
-    virtual void update(float delta_time) override {
-        move(get_input_axis() * speed * delta_time);
-        
-        CombatSprite::update(delta_time);
-    }
-    
-protected:
-    Vec2f inputAxis{0.0f, 0.0f};
-};

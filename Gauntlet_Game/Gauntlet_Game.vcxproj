@@ -163,7 +163,7 @@
     <ClInclude Include="GameEntities.h" />
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />
-    <ClInclude Include="Managers.h" />
+    <ClInclude Include="Players.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="Camera.h" />
