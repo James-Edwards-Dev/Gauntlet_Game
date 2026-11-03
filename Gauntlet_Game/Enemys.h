@@ -2,6 +2,7 @@
 
 #include "GameEntities.h"
 #include "Managers.h"
+#include "TileMap.h"
 
 class Enemy : public CombatSprite
 {
@@ -47,5 +48,45 @@ private:
             }
         }
         return closest_player;
+    }
+};
+
+class EnemyManager
+{
+    doubly_linked_list<Enemy*> Enemys_List;
+    
+public:
+    void add(Enemy* enemy) {
+        Enemys_List.append(enemy);
+    }
+    void update(float delta_time) {
+        for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) {
+            Enemy* enemy = node->data;
+            enemy->update(delta_time);
+        }
+    }
+    void draw(GamesEngineeringBase::Window& window) const {
+        for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) {
+            Enemy* enemy = node->data;
+            enemy->draw(window);
+        }
+    }
+    void draw_colliders(GamesEngineeringBase::Window& window) const {
+        for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) {
+            Enemy* enemy = node->data;
+            enemy->get_collider().draw_debug_lines(window);
+        }
+    }
+    void check_collision(TileMap& tile_map, PlayerManager& players) {
+        for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) 
+        {
+            Enemy* enemy = node->data;
+            tile_map.check_collision(*enemy, enemy->get_collider());
+            for (unsigned int i = 0; i < players.get_player_count(); i++) {
+                if (enemy->get_collider().is_overlapping(players.players[0]->get_collider())) {
+                    std::cout << "Overlapping player " << i + 1 << "\n";
+                }
+            }
+        }
     }
 };

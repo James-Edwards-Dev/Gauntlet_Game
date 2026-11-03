@@ -1,11 +1,17 @@
 ﻿#pragma once
+#include "Data_Structs.h"
+#include "Enemys.h"
 #include "GameEntities.h"
 
-struct PlayerManager
+class Enemy;
+
+class PlayerManager
 {
     static constexpr unsigned int max_players = 4;
-    HeroEntity* players[max_players]{};
     unsigned int player_count = 0;
+    
+public:
+    HeroEntity* players[max_players]{};
     
     bool add(HeroEntity* player) {
         if (player_count >= max_players) {return false;}

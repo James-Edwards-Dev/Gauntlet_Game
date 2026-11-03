@@ -17,6 +17,7 @@ int main()
     window.create(window_width, window_height, "Gauntlet_Game");
     
     PlayerManager player_manager;
+    EnemyManager enemy_manager;
     
     FollowCamera camera(window_width, window_height);
     
@@ -32,7 +33,10 @@ int main()
     camera.add_target(&hero);
     camera.snap_to_target_location();
     
-    Enemy enemy({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
+    Enemy enemy1({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
+    Enemy enemy2({352.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
+    enemy_manager.add(&enemy1);
+    enemy_manager.add(&enemy2);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -60,17 +64,18 @@ int main()
         
         hero.set_input_axis(input);
         hero.update(delta_time);
-        enemy.update(delta_time);
+        enemy_manager.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
-        tile_map.check_collision(enemy, enemy.get_collider());
+        enemy_manager.check_collision(tile_map, player_manager);
         
         camera.update(delta_time);
         
         tile_map.draw(window);
         // tile_map.draw_colliders(window);
         hero.draw(window);
-        enemy.draw(window);
+        enemy_manager.draw(window);
+        enemy_manager.draw_colliders(window);
         
         GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
         
