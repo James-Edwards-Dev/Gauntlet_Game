@@ -99,7 +99,7 @@ public:
                 Enemy* other_enemy = other_node->data;
                 Rect_Collider other_collider = other_enemy->get_collider();
                 if (enemy_collider.is_overlapping(other_collider)) {
-                    enemy_collider.push_collide(*other_enemy, other_collider);
+                    enemy_collider.block_collide(*enemy, *other_enemy, other_collider);
                 }
             }
             
