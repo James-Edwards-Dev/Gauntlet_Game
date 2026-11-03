@@ -67,7 +67,7 @@ int main()
         enemy_manager.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
-        enemy_manager.check_collision(tile_map, player_manager);
+        enemy_manager.check_collision(tile_map, player_manager, delta_time);
         
         camera.update(delta_time);
         

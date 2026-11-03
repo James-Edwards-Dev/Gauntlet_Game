@@ -15,9 +15,10 @@ public:
         const Camera& _camera, 
         const PlayerManager& _player_manager,
         const float _max_health = 100, 
+        const float _melee_damage = 30,
         const float _speed = 80, 
         const float _defense = 0) 
-    : CombatSprite(_position, image_filename, _camera, _max_health, _speed, _defense), player_manager(_player_manager){}
+    : CombatSprite(_position, image_filename, _camera, _max_health, _melee_damage, _speed, _defense), player_manager(_player_manager){}
     
     virtual void update(float delta_time) override {
         HeroEntity* target = find_closest_hero();
@@ -77,7 +78,7 @@ public:
             enemy->get_collider().draw_debug_lines(window);
         }
     }
-    void check_collision(TileMap& tile_map, PlayerManager& players) {
+    void check_collision(TileMap& tile_map, PlayerManager& players, float delta_time) {
         for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) 
         {
             Enemy* enemy = node->data;
@@ -85,10 +86,12 @@ public:
             
             // Collision with player
             for (unsigned int i = 0; i < players.get_player_count(); i++) {
-                PositionEntity* player = players.players[i];
+                HeroEntity* player = players.players[i];
                 Rect_Collider player_collider = players.players[i]->get_collider();
                 if (enemy_collider.is_overlapping(player_collider)) {
                     player_collider.block_collide(*player, *enemy, enemy_collider);
+                    enemy->apply_melee_damage(*player, delta_time);
+                    player->apply_melee_damage(*enemy, delta_time);
                     
                     std::cout << "Overlapping player " << i + 1 << "\n";
                 }

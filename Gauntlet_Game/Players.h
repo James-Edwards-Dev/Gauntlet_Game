@@ -6,8 +6,8 @@
 class HeroEntity : public CombatSprite
 {
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, const float _max_health = 100, const float _speed = 100, const float _defense = 0) 
-    : CombatSprite(_position, "resources/IdleAnimation2.png", _camera, _max_health, _speed, _defense) {}
+    HeroEntity(const Vec2f& _position, const Camera& _camera, const float _max_health = 100, const float _melee_damage = 50, const float _speed = 100, const float _defense = 0) 
+    : CombatSprite(_position, "resources/IdleAnimation2.png", _camera, _max_health, _melee_damage, _speed, _defense) {}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
