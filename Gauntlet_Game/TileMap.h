@@ -57,34 +57,7 @@ public:
     void check_collision(SpriteEntity& entity, const Rect_Collider& collider) {
         for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
             if (n->data->is_overlapping(collider)) {
-                // Calculate overlap distance
-                float left_distance = entity.get_position().x + entity.get_image().width - n->data->get_position().x ;
-                float right_distance = n->data->get_position().x + n->data->get_width() - entity.get_position().x;
-                float top_distance = entity.get_position().y + entity.get_image().height - n->data->get_position().y;
-                float bottom_distance = n->data->get_position().y + n->data->get_height() - entity.get_position().y;
-                
-                // Calculate min x and y overlap distance
-                float distance_x;
-                if (abs(left_distance) < abs(right_distance)) {
-                    distance_x = -left_distance;
-                }
-                else { 
-                    distance_x = right_distance;
-                }
-                float distance_y;
-                if (abs(top_distance) < abs(bottom_distance)) {
-                    distance_y = -top_distance;
-                }
-                else {
-                    distance_y = bottom_distance;
-                }
-                // Calculate min overall distance and move player in that direction
-                if (abs(distance_x) < abs(distance_y)) {
-                    entity.set_position(entity.get_position() + Vec2f(distance_x, 0));
-                }
-                else {
-                    entity.set_position(entity.get_position() + Vec2f(0, distance_y));
-                }
+                n->data->push_collide(entity, collider);
             }
         }
     }
