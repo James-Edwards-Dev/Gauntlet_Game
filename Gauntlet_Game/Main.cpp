@@ -33,8 +33,8 @@ int main()
     
     player_manager.reset_camera(camera);
     
-    Enemy enemy1({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
-    Enemy enemy2({352.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
+    Enemy enemy1({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager, Entity_Data(E_Goblin));
+    Enemy enemy2({352.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager, Entity_Data(E_Goblin));
     enemy_manager.add(&enemy1);
     enemy_manager.add(&enemy2);
     

@@ -160,6 +160,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Enemys.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Entity_Data.h" />
     <ClInclude Include="GameEntities.h" />
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />

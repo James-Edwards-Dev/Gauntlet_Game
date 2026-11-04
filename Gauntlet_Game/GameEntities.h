@@ -4,6 +4,7 @@
 
 #include "GERenderer.h"
 #include "Camera.h"
+#include "Entity_Data.h"
 
 class SpriteEntity : public VisualEntity
 {
@@ -40,33 +41,21 @@ public:
 class CombatSprite : public WorldSpriteEntity
 {
 protected:
-    float max_health;
     float health;
-    float melee_damage;
-    float projectile_damage;
-    float defence;
-    float speed;
-    
     bool alive = true;
     
+    Entity_Data entity_data_;
     Rect_Collider collider;
+    
 public:
     CombatSprite(
         const Vec2f& _position, 
         const std::string& image_filename, 
-        const Camera& _camera, 
-        const float _max_health = 100,
-        const float _melee_damage = 20,
-        const float _projectile_damage = 20,
-        const float _speed = 60, 
-        const float _defense = 0) 
+        const Camera& _camera,
+        Entity_Data entity_data) 
     : WorldSpriteEntity( _position, image_filename, _camera), 
-        max_health(_max_health), 
-        health(_max_health),
-        melee_damage(_melee_damage),
-        projectile_damage(_projectile_damage),
-        speed(_speed), 
-        defence(_defense), 
+        entity_data_(entity_data),
+        health(entity_data.max_health),
         collider(get_image().width, get_image().height, _position, _camera) {}
     
     virtual void update(float delta_time) override {
@@ -81,7 +70,7 @@ public:
     {
         // Uses defense - 100 to take a percentage of damage
         // For example if defense is, the entity will take 75% of damage
-        float applied_damage = ((100 - defence) / 100) * damage;
+        float applied_damage = ((100 - entity_data_.defense) / 100) * damage;
         health -= applied_damage;
         
         std::cout << "Health: " << health << "\n";
@@ -89,10 +78,10 @@ public:
     }
     void heal(const float heal) {
         health += heal;
-        if (health >= max_health) { health = max_health; }
+        if (health >= entity_data_.max_health) { health = entity_data_.max_health; }
         std::cout << "Health: " << health << "\n";
     }
     void apply_melee_damage(CombatSprite& other_entity, float delta_time) const {
-        other_entity.damage(melee_damage * delta_time);
+        other_entity.damage(entity_data_.melee_damage * delta_time);
     }
 };

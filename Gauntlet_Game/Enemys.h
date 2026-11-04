@@ -14,12 +14,8 @@ public:
         const std::string& image_filename, 
         const Camera& _camera, 
         const PlayerManager& _player_manager,
-        const float _max_health = 100, 
-        const float _melee_damage = 20,
-        const float _projectile_damage = 20,
-        const float _speed = 60, 
-        const float _defense = 0) 
-    : CombatSprite(_position, image_filename, _camera, _max_health, _melee_damage, _projectile_damage, _speed, _defense), player_manager(_player_manager){}
+        Entity_Data entity_data) 
+    : CombatSprite(_position, image_filename, _camera, entity_data), player_manager(_player_manager){}
     
     virtual void update(float delta_time) override {
         HeroEntity* target = find_closest_hero();
@@ -28,10 +24,10 @@ public:
         
         CombatSprite::update(delta_time);
     }
-    virtual void move(float delta_time, HeroEntity* target)  {
+    void move(float delta_time, HeroEntity* target) {
         if (target == nullptr) {return;}
         Vec2f direction = (target->get_position() - get_position()).normalize();
-        set_position(get_position() + direction * delta_time * speed) ;
+        set_position(get_position() + direction * delta_time * entity_data_.speed) ;
     }
     
 private:

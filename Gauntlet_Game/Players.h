@@ -6,19 +6,14 @@
 class HeroEntity : public CombatSprite
 {
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, const std::string& image_filename, 
-        const float _melee_damage = 50, 
-        const float _projectile_damage = 50, 
-        const float _defense = 0, 
-        const float _speed = 60, 
-        const float _max_health = 100) 
-    : CombatSprite(_position, image_filename, _camera, _max_health, _melee_damage, _projectile_damage, _speed, _defense) {}
+    HeroEntity(const Vec2f& _position, const Camera& _camera, const std::string& image_filename, Entity_Data entity_data) 
+    : CombatSprite(_position, image_filename, _camera,entity_data) {}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
     
     virtual void update(float delta_time) override {
-        move(get_input_axis() * speed * delta_time);
+        move(get_input_axis() * entity_data_.speed * delta_time);
         
         CombatSprite::update(delta_time);
     }
@@ -31,7 +26,7 @@ class PlayerKnight : public HeroEntity
 {
 public:
     PlayerKnight(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", 100, 50, 40, 60) {}
+    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", Entity_Data(P_Knight)) {}
     
 };
 
@@ -39,7 +34,7 @@ class PlayerRogue : public HeroEntity
 {
 public:
     PlayerRogue(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", 50, 70, 10, 120) {}
+    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", Entity_Data(P_Rogue)) {}
     
 };
 
@@ -47,7 +42,7 @@ class PlayerWizard : public HeroEntity
 {
 public:
     PlayerWizard(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", 30, 100, 0, 75) {}
+    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", Entity_Data(P_Wizard)) {}
     
 };
 
