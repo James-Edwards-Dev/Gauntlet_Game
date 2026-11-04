@@ -28,13 +28,15 @@ int main()
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
+    // PlayerWarrior hero({96.0f, 64.0f}, camera);
     PlayerRogue hero({96.0f, 64.0f}, camera);
+    // PlayerWizard hero({96.0f, 64.0f}, camera);
     player_manager.add(&hero);
     
     player_manager.reset_camera(camera);
     
-    Enemy enemy1({320.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager, Entity_Data(E_Goblin));
-    Enemy enemy2({352.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager, Entity_Data(E_Goblin));
+    Enemy enemy1({320.f, 320.f}, camera, player_manager, Entity_Data(E_Goblin));
+    Enemy enemy2({352.f, 320.f}, camera, player_manager, Entity_Data(E_Goblin));
     enemy_manager.add(&enemy1);
     enemy_manager.add(&enemy2);
     

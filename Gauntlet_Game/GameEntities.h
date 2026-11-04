@@ -50,10 +50,9 @@ protected:
 public:
     CombatSprite(
         const Vec2f& _position, 
-        const std::string& image_filename, 
         const Camera& _camera,
         Entity_Data entity_data) 
-    : WorldSpriteEntity( _position, image_filename, _camera), 
+    : WorldSpriteEntity( _position, entity_data.sprite_img_filepath, _camera), 
         entity_data_(entity_data),
         health(entity_data.max_health),
         collider(get_image().width, get_image().height, _position, _camera) {}

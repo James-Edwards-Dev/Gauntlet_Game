@@ -11,11 +11,10 @@ protected:
 public:
     Enemy(
         const Vec2f& _position, 
-        const std::string& image_filename, 
         const Camera& _camera, 
         const PlayerManager& _player_manager,
         Entity_Data entity_data) 
-    : CombatSprite(_position, image_filename, _camera, entity_data), player_manager(_player_manager){}
+    : CombatSprite(_position, _camera, entity_data), player_manager(_player_manager){}
     
     virtual void update(float delta_time) override {
         HeroEntity* target = find_closest_hero();

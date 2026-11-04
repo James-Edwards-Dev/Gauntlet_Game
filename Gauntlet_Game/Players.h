@@ -6,8 +6,8 @@
 class HeroEntity : public CombatSprite
 {
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, const std::string& image_filename, Entity_Data entity_data) 
-    : CombatSprite(_position, image_filename, _camera,entity_data) {}
+    HeroEntity(const Vec2f& _position, const Camera& _camera, Entity_Data entity_data) 
+    : CombatSprite(_position, _camera,entity_data) {}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
@@ -22,11 +22,11 @@ protected:
     Vec2f inputAxis{0.0f, 0.0f};
 };
 
-class PlayerKnight : public HeroEntity
+class PlayerWarrior : public HeroEntity
 {
 public:
-    PlayerKnight(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", Entity_Data(P_Knight)) {}
+    PlayerWarrior(const Vec2f& _position, const Camera& _camera) 
+    : HeroEntity(_position, _camera, Entity_Data(P_Warrior)) {}
     
 };
 
@@ -34,7 +34,7 @@ class PlayerRogue : public HeroEntity
 {
 public:
     PlayerRogue(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", Entity_Data(P_Rogue)) {}
+    : HeroEntity(_position, _camera, Entity_Data(P_Rogue)) {}
     
 };
 
@@ -42,7 +42,7 @@ class PlayerWizard : public HeroEntity
 {
 public:
     PlayerWizard(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", Entity_Data(P_Wizard)) {}
+    : HeroEntity(_position, _camera, Entity_Data(P_Wizard)) {}
     
 };
 

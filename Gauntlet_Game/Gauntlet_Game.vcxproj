@@ -172,12 +172,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data_Structs.h" />
-    <Content Include="resources\IdleAnimation2.png" />
+    <Content Include="resources\goblin.png" />
+    <Content Include="resources\rogue.png" />
     <Content Include="resources\test_map.txt" />
     <Content Include="resources\tileset_map.txt" />
     <Content Include="resources\tileset.png" />
     <Content Include="resources\projectile.png" />
     <Content Include="resources\Valor8x8_CP437_transparent.png" />
+    <Content Include="resources\warrior.png" />
+    <Content Include="resources\wizard.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
