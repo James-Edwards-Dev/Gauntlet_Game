@@ -28,7 +28,7 @@ int main()
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
-    HeroEntity hero({64.0f, 64.0f}, camera);
+    PlayerRogue hero({96.0f, 64.0f}, camera);
     player_manager.add(&hero);
     
     player_manager.reset_camera(camera);
@@ -37,8 +37,6 @@ int main()
     Enemy enemy2({352.f, 320.f}, "resources/IdleAnimation2.png", camera, player_manager);
     enemy_manager.add(&enemy1);
     enemy_manager.add(&enemy2);
-    
-    Projectile projectile = Projectile({32.0f, 32.0f}, 20, 150, Vec2f(1, 0), PLAYER, camera);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -68,13 +66,11 @@ int main()
         hero.set_input_axis(input);
         hero.update(delta_time);
         enemy_manager.update(delta_time);
-        projectile.update(delta_time);
         
         tile_map.check_collision(hero, hero.get_collider());
         enemy_manager.check_collision(tile_map, player_manager, delta_time);
         
         tile_map.draw(window);
-        projectile.draw(window);
         hero.draw(window);
         enemy_manager.draw(window);
         

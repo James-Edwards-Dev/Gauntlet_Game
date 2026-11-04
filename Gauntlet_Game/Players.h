@@ -6,8 +6,13 @@
 class HeroEntity : public CombatSprite
 {
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, const float _max_health = 100, const float _melee_damage = 50, const float _speed = 100, const float _defense = 0) 
-    : CombatSprite(_position, "resources/IdleAnimation2.png", _camera, _max_health, _melee_damage, _speed, _defense) {}
+    HeroEntity(const Vec2f& _position, const Camera& _camera, const std::string& image_filename, 
+        const float _melee_damage = 50, 
+        const float _projectile_damage = 50, 
+        const float _defense = 0, 
+        const float _speed = 60, 
+        const float _max_health = 100) 
+    : CombatSprite(_position, image_filename, _camera, _max_health, _melee_damage, _projectile_damage, _speed, _defense) {}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input;}
     const Vec2f& get_input_axis() const {return inputAxis;}
@@ -21,6 +26,31 @@ public:
 protected:
     Vec2f inputAxis{0.0f, 0.0f};
 };
+
+class PlayerKnight : public HeroEntity
+{
+public:
+    PlayerKnight(const Vec2f& _position, const Camera& _camera) 
+    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", 100, 50, 40, 60) {}
+    
+};
+
+class PlayerRogue : public HeroEntity
+{
+public:
+    PlayerRogue(const Vec2f& _position, const Camera& _camera) 
+    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", 50, 70, 10, 120) {}
+    
+};
+
+class PlayerWizard : public HeroEntity
+{
+public:
+    PlayerWizard(const Vec2f& _position, const Camera& _camera) 
+    : HeroEntity(_position, _camera, "resources/IdleAnimation2.png", 30, 100, 0, 75) {}
+    
+};
+
 
 class PlayerManager
 {

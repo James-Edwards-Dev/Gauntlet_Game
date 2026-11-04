@@ -15,10 +15,11 @@ public:
         const Camera& _camera, 
         const PlayerManager& _player_manager,
         const float _max_health = 100, 
-        const float _melee_damage = 30,
-        const float _speed = 80, 
+        const float _melee_damage = 20,
+        const float _projectile_damage = 20,
+        const float _speed = 60, 
         const float _defense = 0) 
-    : CombatSprite(_position, image_filename, _camera, _max_health, _melee_damage, _speed, _defense), player_manager(_player_manager){}
+    : CombatSprite(_position, image_filename, _camera, _max_health, _melee_damage, _projectile_damage, _speed, _defense), player_manager(_player_manager){}
     
     virtual void update(float delta_time) override {
         HeroEntity* target = find_closest_hero();

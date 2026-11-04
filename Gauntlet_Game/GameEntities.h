@@ -43,6 +43,7 @@ protected:
     float max_health;
     float health;
     float melee_damage;
+    float projectile_damage;
     float defence;
     float speed;
     
@@ -55,13 +56,15 @@ public:
         const std::string& image_filename, 
         const Camera& _camera, 
         const float _max_health = 100,
-        const float _melee_damage = 50,
-        const float _speed = 100, 
+        const float _melee_damage = 20,
+        const float _projectile_damage = 20,
+        const float _speed = 60, 
         const float _defense = 0) 
     : WorldSpriteEntity( _position, image_filename, _camera), 
         max_health(_max_health), 
         health(_max_health),
         melee_damage(_melee_damage),
+        projectile_damage(_projectile_damage),
         speed(_speed), 
         defence(_defense), 
         collider(get_image().width, get_image().height, _position, _camera) {}
