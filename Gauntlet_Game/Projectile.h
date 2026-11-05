@@ -30,4 +30,6 @@ public:
     void draw_collider(GamesEngineeringBase::Window& window) const;
     
     void hit(CombatSprite& entity) const;
+    
+    const Target_Type& get_target_type() const;
 };

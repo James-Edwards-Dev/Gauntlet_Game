@@ -1,5 +1,6 @@
 
 #include "Collision.h"
+#include "Collision_Manager.h"
 #include "Enemys.h"
 #include "GameEntities.h"
 #include "TileMap.h"
@@ -20,12 +21,13 @@ int main()
     EnemyManager enemy_manager;
     doubly_linked_list<Projectile*> projectile_manager;
     
-    
     FollowCamera camera(window_width, window_height);
     
     TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/test_map.txt");
     // tile_map.load("resources/tileset_map.txt");
+    
+    Collision_Manager collision_manager(player_manager, enemy_manager, projectile_manager, tile_map);
     
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
@@ -77,9 +79,8 @@ int main()
             n->data->update(delta_time);
         }
         
-        tile_map.check_collision(hero, hero.get_collider());
-        enemy_manager.check_collision(tile_map, player_manager, delta_time);
-        
+        collision_manager.manager_collision(delta_time);
+
         tile_map.draw(window);
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
             n->data->draw(window);

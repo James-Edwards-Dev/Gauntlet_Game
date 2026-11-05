@@ -27,3 +27,7 @@ void Projectile::draw_collider(GamesEngineeringBase::Window& window) const {
 void Projectile::hit(CombatSprite& entity) const {
     entity.damage(hit_damage_);
 }
+
+const Target_Type& Projectile::get_target_type() const {
+    return target_type_;
+}

@@ -57,12 +57,20 @@ public:
             n->data->draw_debug_lines(window);
         }
     }
-    void check_collision(SpriteEntity& entity, const Rect_Collider& collider) {
+    void block(SpriteEntity& entity, const Rect_Collider& collider) {
         for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
             if (n->data->is_overlapping(collider)) {
-                n->data->push_collide(entity, collider);
+                n->data->block_collide(entity, collider);
             }
         }
+    }
+    bool is_overlapping(SpriteEntity& entity, const Rect_Collider& collider) const{
+        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
+            if (n->data->is_overlapping(collider)) {
+                return true;
+            }
+        }
+        return false;
     }
     void load(std::string level_filepath) 
     {

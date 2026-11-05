@@ -72,10 +72,10 @@ private:
         return {0.f, distance_y};
     }
 public:
-    void push_collide(PositionEntity& other_entity, const Rect_Collider& other_collider) const {
+    void block_collide(PositionEntity& other_entity, const Rect_Collider& other_collider) const {
         other_entity.set_position(other_entity.get_position() + calculate_min_overlap_distance(other_collider));
     }
-    void block_collide(PositionEntity& this_entity, PositionEntity& other_entity, const Rect_Collider& other_collider) const {
+    void equal_block(PositionEntity& this_entity, PositionEntity& other_entity, const Rect_Collider& other_collider) const {
         this_entity.set_position(this_entity.get_position() - calculate_min_overlap_distance(other_collider) / 2);
         other_entity.set_position(other_entity.get_position() + calculate_min_overlap_distance(other_collider) / 2);
     }

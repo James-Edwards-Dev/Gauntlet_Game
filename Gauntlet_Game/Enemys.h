@@ -51,9 +51,9 @@ private:
 
 class EnemyManager
 {
+public:
     doubly_linked_list<Enemy*> Enemys_List;
     
-public:
     void add(Enemy* enemy) {
         Enemys_List.append(enemy);
     }
@@ -73,37 +73,6 @@ public:
         for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) {
             Enemy* enemy = node->data;
             enemy->get_collider().draw_debug_lines(window);
-        }
-    }
-    void check_collision(TileMap& tile_map, PlayerManager& players, float delta_time) {
-        for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) 
-        {
-            Enemy* enemy = node->data;
-            Rect_Collider enemy_collider = enemy->get_collider();
-            
-            // Collision with player
-            for (unsigned int i = 0; i < players.get_player_count(); i++) {
-                HeroEntity* player = players.players[i];
-                Rect_Collider player_collider = players.players[i]->get_collider();
-                if (enemy_collider.is_overlapping(player_collider)) {
-                    player_collider.block_collide(*player, *enemy, enemy_collider);
-                    enemy->apply_melee_damage(*player, delta_time);
-                    player->apply_melee_damage(*enemy, delta_time);
-                    
-                    std::cout << "Overlapping player " << i + 1 << "\n";
-                }
-            }
-            // Collision with other enemies
-            // Starting from node->next all previous nodes have already been checked
-            for (doubly_node<Enemy*>* other_node = node->next; other_node != nullptr; other_node = other_node->next) {
-                Enemy* other_enemy = other_node->data;
-                Rect_Collider other_collider = other_enemy->get_collider();
-                if (enemy_collider.is_overlapping(other_collider)) {
-                    enemy_collider.block_collide(*enemy, *other_enemy, other_collider);
-                }
-            }
-            
-            tile_map.check_collision(*enemy, enemy_collider);
         }
     }
 };
