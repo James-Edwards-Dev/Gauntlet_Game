@@ -24,7 +24,7 @@ bool CombatSprite::is_alive() const {
     return alive;
 }
 
-void CombatSprite::create_projectile(Target_Type target, Vec2f direction) const {
+void CombatSprite::create_projectile(const Target_Type target, const Vec2f& direction) const {
     Projectile* new_projectile = new Projectile(
         get_centre(), 
         entity_data_.projectile_damage, 

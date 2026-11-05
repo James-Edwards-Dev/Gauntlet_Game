@@ -5,17 +5,33 @@
 
 class HeroEntity : public CombatSprite
 {
+    float time_since_last_projectile = entity_data_.projectile_rate_of_fire;
+    Vec2f projectile_spawn_direction = Vec2f{1.0f, 0.0f};
+    
 public:
     HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data) 
     : CombatSprite(_position, _camera, projectile_manager, entity_data) {}
     
-    void set_input_axis(const Vec2f& input) {inputAxis = input.normalize();}
+    void set_input_axis(const Vec2f& input) {
+        inputAxis = input.normalize();
+        if (input.x != 0 || input.y != 0) {
+            projectile_spawn_direction = inputAxis;
+        }
+    }
     const Vec2f& get_input_axis() const {return inputAxis;}
     
     virtual void update(float delta_time) override {
         move(get_input_axis() * entity_data_.speed * delta_time);
+        time_since_last_projectile += delta_time;
         
         CombatSprite::update(delta_time);
+    }
+    
+    void fire_projectile() {
+        if (time_since_last_projectile >= entity_data_.projectile_rate_of_fire) {
+            create_projectile(ENEMY, projectile_spawn_direction);
+            time_since_last_projectile = 0;
+        }
     }
     
 protected:

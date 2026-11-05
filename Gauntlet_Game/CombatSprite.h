@@ -24,8 +24,9 @@ public:
     const Rect_Collider& get_collider() const;
     bool is_alive() const;
     
-    void create_projectile(Target_Type target, Vec2f direction) const;
-    
+protected:
+    void create_projectile(const Target_Type target, const Vec2f& direction) const;
+public:
     void damage(const float damage);
     void heal(const float heal);
     

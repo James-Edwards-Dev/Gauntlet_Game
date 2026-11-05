@@ -34,7 +34,6 @@ int main()
     PlayerRogue hero({96.0f, 64.0f}, camera, projectile_manager);
     // PlayerWizard hero({96.0f, 64.0f}, camera, projectile_manager);
     player_manager.add(&hero);
-    hero.create_projectile(ENEMY, Vec2f(1.0f, 0.0f));
     
     player_manager.reset_camera(camera);
     
@@ -65,10 +64,13 @@ int main()
         if (window.keyPressed('A')) input.x = -1.0f;
         if (window.keyPressed('D')) input.x = 1.0f ;
         
+        hero.set_input_axis(input);
+        if (window.keyPressed('Q')) hero.fire_projectile();
+        
         tile_map.update(delta_time);
         
         player_manager.update(delta_time, camera);
-        hero.set_input_axis(input);
+        
         hero.update(delta_time);
         enemy_manager.update(delta_time);
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
