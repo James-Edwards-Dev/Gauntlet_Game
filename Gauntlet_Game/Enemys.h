@@ -13,8 +13,9 @@ public:
         const Vec2f& _position, 
         const Camera& _camera, 
         const PlayerManager& _player_manager,
+        doubly_linked_list<Projectile*>& projectile_manager,
         Entity_Data entity_data) 
-    : CombatSprite(_position, _camera, entity_data), player_manager(_player_manager){}
+    : CombatSprite(_position, _camera, projectile_manager, entity_data), player_manager(_player_manager){}
     
     virtual void update(float delta_time) override {
         HeroEntity* target = find_closest_hero();

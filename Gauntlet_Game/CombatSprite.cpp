@@ -1,9 +1,12 @@
 ﻿#include "CombatSprite.h"
 #include "GameEntities.h"
 
-CombatSprite::CombatSprite(const Vec2f& _position, const Camera& _camera, Entity_Data entity_data) 
+CombatSprite::CombatSprite(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data) 
 : WorldSpriteEntity( _position, entity_data.sprite_img_filepath, _camera),  
-entity_data_(entity_data), health(entity_data.max_health), collider(get_image().width, get_image().height, _position, _camera) 
+projectile_manager_(projectile_manager),
+entity_data_(entity_data), 
+health(entity_data.max_health), 
+collider(get_image().width, get_image().height, _position, _camera) 
 {
     
 }
@@ -19,6 +22,18 @@ const Rect_Collider& CombatSprite::get_collider() const {
 
 bool CombatSprite::is_alive() const {
     return alive;
+}
+
+void CombatSprite::create_projectile(Target_Type target, Vec2f direction) const {
+    Projectile* new_projectile = new Projectile(
+        get_centre(), 
+        entity_data_.projectile_damage, 
+        entity_data_.projectile_speed, 
+        direction, 
+        target, 
+        camera);
+    
+    projectile_manager_.append(new_projectile);
 }
 
 void CombatSprite::damage(const float damage) {

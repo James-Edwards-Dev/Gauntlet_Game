@@ -6,8 +6,8 @@
 class HeroEntity : public CombatSprite
 {
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, Entity_Data entity_data) 
-    : CombatSprite(_position, _camera,entity_data) {}
+    HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data) 
+    : CombatSprite(_position, _camera, projectile_manager, entity_data) {}
     
     void set_input_axis(const Vec2f& input) {inputAxis = input.normalize();}
     const Vec2f& get_input_axis() const {return inputAxis;}
@@ -25,24 +25,24 @@ protected:
 class PlayerWarrior : public HeroEntity
 {
 public:
-    PlayerWarrior(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, Entity_Data(P_Warrior)) {}
+    PlayerWarrior(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Warrior)) {}
     
 };
 
 class PlayerRogue : public HeroEntity
 {
 public:
-    PlayerRogue(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, Entity_Data(P_Rogue)) {}
+    PlayerRogue(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Rogue)) {}
     
 };
 
 class PlayerWizard : public HeroEntity
 {
 public:
-    PlayerWizard(const Vec2f& _position, const Camera& _camera) 
-    : HeroEntity(_position, _camera, Entity_Data(P_Wizard)) {}
+    PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard)) {}
     
 };
 

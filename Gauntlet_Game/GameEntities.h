@@ -22,7 +22,7 @@ public:
     
     Vec2f get_centre() const {
         Vec2f size =  Vec2f(static_cast<float>(get_image().width), static_cast<float>(get_image().height));
-        return get_position() + size;
+        return get_position() + size / 2;
     }
 };
 

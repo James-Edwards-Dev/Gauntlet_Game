@@ -145,7 +145,4 @@ struct doubly_linked_list
         }
         std::cout << "<-T\n";
     }
-    // node<T>* n = new node<T>(d);
-    // n->next =  top;
-    // top = n;
 };
