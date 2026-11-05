@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "GameEntities.h"
 #include "Camera.h"
+#include "CombatSprite.h"
 
 class HeroEntity : public CombatSprite
 {

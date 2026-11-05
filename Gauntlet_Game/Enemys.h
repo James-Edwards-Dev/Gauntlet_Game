@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GameEntities.h"
+#include "CombatSprite.h"
 #include "Players.h"
 #include "TileMap.h"
 

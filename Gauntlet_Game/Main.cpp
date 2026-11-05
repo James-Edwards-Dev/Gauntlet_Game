@@ -28,8 +28,8 @@ int main()
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
-    // PlayerWarrior hero({96.0f, 64.0f}, camera);
-    PlayerRogue hero({96.0f, 64.0f}, camera);
+    PlayerWarrior hero({96.0f, 64.0f}, camera);
+    // PlayerRogue hero({96.0f, 64.0f}, camera);
     // PlayerWizard hero({96.0f, 64.0f}, camera);
     player_manager.add(&hero);
     

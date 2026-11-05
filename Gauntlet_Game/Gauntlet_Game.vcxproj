@@ -154,10 +154,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CombatSprite.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CombatSprite.h" />
     <ClInclude Include="Enemys.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Entity_Data.h" />
