@@ -9,7 +9,7 @@ public:
     HeroEntity(const Vec2f& _position, const Camera& _camera, Entity_Data entity_data) 
     : CombatSprite(_position, _camera,entity_data) {}
     
-    void set_input_axis(const Vec2f& input) {inputAxis = input;}
+    void set_input_axis(const Vec2f& input) {inputAxis = input.normalize();}
     const Vec2f& get_input_axis() const {return inputAxis;}
     
     virtual void update(float delta_time) override {
