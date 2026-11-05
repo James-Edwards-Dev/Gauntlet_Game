@@ -26,13 +26,18 @@ void Collision_Manager::manage_player_collision(const float& delta_time) const
         }
         
         // Player collision with projectiles
-        for (doubly_node<Projectile*>* node = projectile_list_.head; node != nullptr; node = node->next) {
+        for (doubly_node<Projectile*>* node = projectile_list_.head; node != nullptr;) {
+            // We are getting the next node now instead of at the end of each iteration. As if a node is removed node->next is accessing a nullptr
+            doubly_node<Projectile*>* next_node = node->next;
+            
             Projectile* projectile = node->data;
             
-            // Continue if not targeting enemy
-            if (projectile->get_target_type() != PLAYER) continue;
-            
-            projectile->hit(*player);
+            if (projectile->get_target_type() == PLAYER && projectile->get_collider().is_overlapping(player->get_collider())) {
+                projectile->hit(*player);
+                projectile_list_.remove_and_delete_data(node);
+            }
+            // Moving to next node. See comment at the start of the loop to see why we are iterating by doing this
+            node = next_node;
         }
         
         // Player collision with tile map
@@ -56,13 +61,18 @@ void Collision_Manager::manage_enemy_collision() const {
         }
         
         // Enemy collision with projectiles
-        for (doubly_node<Projectile*>* node = projectile_list_.head; node != nullptr; node = node->next) {
+        for (doubly_node<Projectile*>* node = projectile_list_.head; node != nullptr;) {
+            // We are getting the next node now instead of at the end of each iteration. As if a node is removed node->next is accessing a nullptr
+            doubly_node<Projectile*>* next_node = node->next; 
+            
             Projectile* projectile = node->data;
             
-            // Continue if not targeting enemy
-            if (projectile->get_target_type() != ENEMY) continue;
-            
-            projectile->hit(*enemy);
+            if (projectile->get_target_type() == ENEMY && projectile->get_collider().is_overlapping(enemy->get_collider())) {
+                projectile->hit(*enemy);
+                projectile_list_.remove_and_delete_data(node);
+            }
+            // Moving to next node. See comment at the start of the loop to see why we are iterating by doing this
+            node = next_node;
         }
         
         // Enemy collision with tilemap

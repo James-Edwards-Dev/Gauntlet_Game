@@ -134,6 +134,26 @@ struct doubly_linked_list
         size--;
         delete node;
     }
+    void remove_and_delete_data(doubly_node<T>* node) {
+        if (node == nullptr) return;
+        
+        if (node->previous != nullptr) {
+            node->previous->next = node->next;
+        } else {
+            head = node->next;
+        }
+        
+        if (node->next != nullptr) {
+            node->next->previous = node->previous;
+        } else {
+            tail = node->previous;
+        }
+
+        size--;
+        delete node->data;
+        delete node;
+    }
+    
     void display() const 
     {
         std::cout << "H->";
