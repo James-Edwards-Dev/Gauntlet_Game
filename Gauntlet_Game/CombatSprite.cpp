@@ -41,9 +41,10 @@ void CombatSprite::damage(const float damage) {
     // For example if defense is, the entity will take 75% of damage
     float applied_damage = ((100 - entity_data_.defense) / 100) * damage;
     health -= applied_damage;
-        
-    std::cout << "Health: " << health << "\n";
-    if (health <= 0.0f) {std::cout << "You died\n";}
+    
+    if (health <= 0.0f) {
+        defeat();
+    }
 }
 
 void CombatSprite::heal(const float heal) {

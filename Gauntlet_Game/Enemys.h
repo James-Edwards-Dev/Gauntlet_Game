@@ -24,6 +24,9 @@ public:
         
         CombatSprite::update(delta_time);
     }
+    virtual void defeat() override {
+        alive = false;
+    }
     void move(float delta_time, HeroEntity* target) {
         if (target == nullptr) {return;}
         Vec2f direction = (target->get_position() - get_position()).normalize();
@@ -58,9 +61,16 @@ public:
         Enemys_List.append(enemy);
     }
     void update(float delta_time) {
-        for (doubly_node<Enemy*>* node = Enemys_List.head; node != nullptr; node = node->next) {
+        doubly_node<Enemy*>* node = Enemys_List.head;
+        while (node != nullptr) {
+            doubly_node<Enemy*>* next_node = node->next;
             Enemy* enemy = node->data;
             enemy->update(delta_time);
+            
+            if (!enemy->is_alive()) {
+                Enemys_List.remove(node);
+            }
+            node = next_node;
         }
     }
     void draw(GamesEngineeringBase::Window& window) const {

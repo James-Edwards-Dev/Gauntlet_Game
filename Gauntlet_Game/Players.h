@@ -27,6 +27,10 @@ public:
         CombatSprite::update(delta_time);
     }
     
+    virtual void defeat() override {
+        alive = false;
+    }
+    
     void fire_projectile() {
         if (time_since_last_projectile >= entity_data_.projectile_rate_of_fire) {
             create_projectile(ENEMY, projectile_spawn_direction);

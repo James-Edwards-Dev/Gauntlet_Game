@@ -20,6 +20,7 @@ public:
     CombatSprite(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data);
     
     virtual void update(float delta_time) override;
+    virtual void defeat() = 0;
     
     const Rect_Collider& get_collider() const;
     bool is_alive() const;
