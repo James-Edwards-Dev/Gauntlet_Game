@@ -137,13 +137,18 @@ public:
             // Saving player locations for camera update
             Vec2f* player_locations = new Vec2f[player_count];
             
+            unsigned int alive_players = 0;
             for (unsigned int i = 0; i < player_count; i++) {
                 players[i]->update_input(window);
                 players[i]->update(delta_time);
                 
-                player_locations[i] = players[i]->get_position();
+                // Only record alive players for camera
+                if (players[i]->is_alive()) {
+                    player_locations[alive_players] = players[i]->get_position();
+                    alive_players++;
+                }
             }
-            camera.update(delta_time, player_locations, player_count);
+            camera.update(delta_time, player_locations, alive_players);
             delete[] player_locations;
         }
     }
