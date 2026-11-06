@@ -32,11 +32,13 @@ int main()
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
-    // PlayerWarrior hero({96.0f, 64.0f}, camera, projectile_manager);
-    PlayerRogue hero({64.0f, 64.0f}, camera, projectile_manager, 1);
+    
+    PlayerRogue hero1({64.0f, 64.0f}, camera, projectile_manager, 1);
     PlayerWizard hero2({96.0f, 64.0f}, camera, projectile_manager, 2);
-    player_manager.add(&hero);
+    PlayerWarrior hero3({96.0f, 64.0f}, camera, projectile_manager, 3);
+    player_manager.add(&hero1);
     player_manager.add(&hero2);
+    player_manager.add(&hero3);
     
     player_manager.reset_camera(camera);
     
@@ -61,18 +63,9 @@ int main()
         
         if (window.keyPressed(VK_ESCAPE)) running = FALSE;
         
-        Vec2f input{0, 0};
-        if (window.keyPressed('W')) input.y = -1.0f;
-        if (window.keyPressed('S')) input.y = 1.0f;
-        if (window.keyPressed('A')) input.x = -1.0f;
-        if (window.keyPressed('D')) input.x = 1.0f ;
-        
-        hero.set_input_axis(input);
-        if (window.keyPressed('Q')) hero.fire_projectile();
-        
         tile_map.update(delta_time);
         
-        player_manager.update(delta_time, camera);
+        player_manager.update(delta_time, window, camera);
         enemy_manager.update(delta_time);
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
             n->data->update(delta_time);

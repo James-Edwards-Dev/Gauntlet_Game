@@ -12,23 +12,34 @@ class HeroEntity : public CombatSprite
     int down_key;
     int left_key;
     int right_key;
+    int projectile_key;
     
 public:
     HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data, unsigned int player_number) 
     : CombatSprite(_position, _camera, projectile_manager, entity_data) 
     {
+        // Set keys
         switch (player_number) {
             case 2:
+                up_key = 'T';
+                down_key = 'G';
+                left_key = 'F';
+                right_key = 'H';
+                projectile_key = 'Y';
+                break;
+            case 3:
                 up_key = VK_UP; 
                 down_key = VK_DOWN;
                 left_key = VK_LEFT;
                 right_key = VK_RIGHT;
+                projectile_key = 'M';
                 break;
             default:
                 up_key = 'W';
-                down_key = 'D';
+                down_key = 'S';
                 left_key = 'A';
                 right_key = 'D';
+                projectile_key = 'E';
                 break;
         }
     }
@@ -40,6 +51,18 @@ public:
         }
     }
     const Vec2f& get_input_axis() const {return inputAxis;}
+    
+    void update_input(GamesEngineeringBase::Window& window) {
+        Vec2f input{0, 0};
+        if (window.keyPressed(up_key)) {input.y = -1.0f;}
+        if (window.keyPressed(down_key)) {input.y = 1.0f;}
+        if (window.keyPressed(left_key)) {input.x = -1.0f;}
+        if (window.keyPressed(right_key)) {input.x = 1.0f ;}
+        
+        set_input_axis(input);
+        
+        if (window.keyPressed(projectile_key)) {fire_projectile();}
+    }
     
     virtual void update(float delta_time) override {
         if (alive) {
@@ -109,12 +132,13 @@ public:
     unsigned int get_player_count() const { return player_count; }
     unsigned int get_max_players() const { return max_players; }
     
-    void update(float delta_time, FollowCamera& camera) const {
+    void update(float delta_time, GamesEngineeringBase::Window& window, FollowCamera& camera) const {
         if (player_count > 0) {
             // Saving player locations for camera update
             Vec2f* player_locations = new Vec2f[player_count];
             
             for (unsigned int i = 0; i < player_count; i++) {
+                players[i]->update_input(window);
                 players[i]->update(delta_time);
                 
                 player_locations[i] = players[i]->get_position();
