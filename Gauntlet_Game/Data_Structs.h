@@ -166,3 +166,44 @@ struct doubly_linked_list
         std::cout << "<-T\n";
     }
 };
+
+template<typename T>
+struct Dynamic_Array
+{
+protected:
+    unsigned int count = 0; // Number of items elements the array
+    unsigned int array_size; // Current size of the array 
+    T* array;
+public:
+    
+    Dynamic_Array(unsigned int starting_size = 8) : array_size(starting_size){
+        if (array_size < 1) array_size = 1;
+        
+        array = new T[array_size];
+    }
+    
+    ~Dynamic_Array() {
+        delete[] array;
+    }
+    
+    unsigned int size() const { return count; }
+    
+    void append(T data) {
+        if (count >= array_size) {
+            unsigned int new_size = array_size * 2;
+            
+            T* new_array = new T[new_size];
+            for (unsigned int i = 0; i < count; i++) {
+                new_array[i] = array[i];
+            }
+            delete[] array;
+            array = new_array;
+            array_size = new_size;
+        }
+        array[count] = data;
+        count++;
+    }
+    T operator [](unsigned int index) {
+        return array[index];
+    }
+};
