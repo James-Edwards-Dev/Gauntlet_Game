@@ -64,7 +64,7 @@ public:
             }
         }
     }
-    bool is_overlapping(SpriteEntity& entity, const Rect_Collider& collider) const{
+    bool is_overlapping(const Rect_Collider& collider) const{
         for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
             if (n->data->is_overlapping(collider)) {
                 return true;
