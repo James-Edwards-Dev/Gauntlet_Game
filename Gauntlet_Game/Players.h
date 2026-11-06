@@ -8,9 +8,30 @@ class HeroEntity : public CombatSprite
     float time_since_last_projectile = entity_data_.projectile_rate_of_fire;
     Vec2f projectile_spawn_direction = Vec2f{1.0f, 0.0f};
     
+    int up_key;
+    int down_key;
+    int left_key;
+    int right_key;
+    
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data) 
-    : CombatSprite(_position, _camera, projectile_manager, entity_data) {}
+    HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data, unsigned int player_number) 
+    : CombatSprite(_position, _camera, projectile_manager, entity_data) 
+    {
+        switch (player_number) {
+            case 2:
+                up_key = VK_UP; 
+                down_key = VK_DOWN;
+                left_key = VK_LEFT;
+                right_key = VK_RIGHT;
+                break;
+            default:
+                up_key = 'W';
+                down_key = 'D';
+                left_key = 'A';
+                right_key = 'D';
+                break;
+        }
+    }
     
     void set_input_axis(const Vec2f& input) {
         inputAxis = input.normalize();
@@ -47,24 +68,24 @@ protected:
 class PlayerWarrior : public HeroEntity
 {
 public:
-    PlayerWarrior(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Warrior)) {}
+    PlayerWarrior(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Warrior), player_number) {}
     
 };
 
 class PlayerRogue : public HeroEntity
 {
 public:
-    PlayerRogue(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Rogue)) {}
+    PlayerRogue(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Rogue), player_number) {}
     
 };
 
 class PlayerWizard : public HeroEntity
 {
 public:
-    PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard)) {}
+    PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard), player_number) {}
     
 };
 
@@ -90,12 +111,22 @@ public:
     
     void update(float delta_time, FollowCamera& camera) const {
         if (player_count > 0) {
+            // Saving player locations for camera update
             Vec2f* player_locations = new Vec2f[player_count];
+            
             for (unsigned int i = 0; i < player_count; i++) {
+                players[i]->update(delta_time);
+                
                 player_locations[i] = players[i]->get_position();
             }
             camera.update(delta_time, player_locations, player_count);
             delete[] player_locations;
+        }
+    }
+    
+    void draw(GamesEngineeringBase::Window& window) const {
+        for (unsigned int i = 0; i < player_count; i++) {
+            players[i]->draw(window);
         }
     }
     

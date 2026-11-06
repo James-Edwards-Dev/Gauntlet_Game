@@ -33,9 +33,10 @@ int main()
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
     // PlayerWarrior hero({96.0f, 64.0f}, camera, projectile_manager);
-    PlayerRogue hero({96.0f, 64.0f}, camera, projectile_manager);
-    // PlayerWizard hero({96.0f, 64.0f}, camera, projectile_manager);
+    PlayerRogue hero({64.0f, 64.0f}, camera, projectile_manager, 1);
+    PlayerWizard hero2({96.0f, 64.0f}, camera, projectile_manager, 2);
     player_manager.add(&hero);
+    player_manager.add(&hero2);
     
     player_manager.reset_camera(camera);
     
@@ -72,8 +73,6 @@ int main()
         tile_map.update(delta_time);
         
         player_manager.update(delta_time, camera);
-        
-        hero.update(delta_time);
         enemy_manager.update(delta_time);
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
             n->data->update(delta_time);
@@ -85,7 +84,7 @@ int main()
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
             n->data->draw(window);
         }
-        hero.draw(window);
+        player_manager.draw(window);
         enemy_manager.draw(window);
         
         GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
