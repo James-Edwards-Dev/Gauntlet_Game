@@ -21,10 +21,12 @@ public:
     const Vec2f& get_input_axis() const {return inputAxis;}
     
     virtual void update(float delta_time) override {
-        move(get_input_axis() * entity_data_.speed * delta_time);
-        time_since_last_projectile += delta_time;
-        
-        CombatSprite::update(delta_time);
+        if (alive) {
+            move(get_input_axis() * entity_data_.speed * delta_time);
+            time_since_last_projectile += delta_time;
+                    
+            CombatSprite::update(delta_time);
+        }
     }
     
     virtual void defeat() override {
@@ -93,6 +95,7 @@ public:
                 player_locations[i] = players[i]->get_position();
             }
             camera.update(delta_time, player_locations, player_count);
+            delete[] player_locations;
         }
     }
     

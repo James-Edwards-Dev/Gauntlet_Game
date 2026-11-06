@@ -16,6 +16,12 @@ void CombatSprite::update(float delta_time) {
     collider.set_position(get_position());
 }
 
+void CombatSprite::draw(GamesEngineeringBase::Window& window) {
+    if (alive) {
+        WorldSpriteEntity::draw(window);
+    }
+}
+
 const Rect_Collider& CombatSprite::get_collider() const {
     return collider;
 }

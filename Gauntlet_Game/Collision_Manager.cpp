@@ -12,6 +12,8 @@ void Collision_Manager::manage_player_collision(const float& delta_time) const
     for (unsigned int i = 0; i < player_manager_.get_player_count(); i++) {
         HeroEntity* player = player_manager_.players[i];
         
+        if (!player->is_alive()) continue;    
+        
         // Player collision with enemies
         for (doubly_node<Enemy*>* node = enemy_manager_.Enemys_List.head; node != nullptr; node = node->next) {
             Enemy* enemy = node->data;
