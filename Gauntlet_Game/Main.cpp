@@ -33,8 +33,8 @@ int main()
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
     
-    PlayerRogue hero1({64.0f, 64.0f}, camera, projectile_manager, 1);
-    PlayerWizard hero2({96.0f, 64.0f}, camera, projectile_manager, 2);
+    PlayerRogue hero1({32.0f, 64.0f}, camera, projectile_manager, 1);
+    PlayerWizard hero2({64.0f, 64.0f}, camera, projectile_manager, 2);
     PlayerWarrior hero3({96.0f, 64.0f}, camera, projectile_manager, 3);
     player_manager.add(&hero1);
     player_manager.add(&hero2);

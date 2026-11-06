@@ -22,6 +22,9 @@ struct Vec2f
     Vec2f operator/(const float quotient) const {
         return Vec2f{x / quotient, y / quotient};
     }
+    bool operator==(const Vec2f n) const {
+        return x == n.x && y == n.y;
+    }
     float length() const {
         return std::sqrt(x * x + y * y);
     }

@@ -135,7 +135,7 @@ public:
     void update(float delta_time, GamesEngineeringBase::Window& window, FollowCamera& camera) const {
         if (player_count > 0) {
             // Saving player locations for camera update
-            Vec2f* player_locations = new Vec2f[player_count];
+            Vec2f* alive_player_locations = new Vec2f[player_count];
             
             unsigned int alive_players = 0;
             for (unsigned int i = 0; i < player_count; i++) {
@@ -144,12 +144,12 @@ public:
                 
                 // Only record alive players for camera
                 if (players[i]->is_alive()) {
-                    player_locations[alive_players] = players[i]->get_position();
+                    alive_player_locations[alive_players] = players[i]->get_position();
                     alive_players++;
                 }
             }
-            camera.update(delta_time, player_locations, alive_players);
-            delete[] player_locations;
+            camera.update(delta_time, alive_player_locations, alive_players);
+            delete[] alive_player_locations;
         }
     }
     

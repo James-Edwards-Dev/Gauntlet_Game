@@ -34,20 +34,26 @@ public:
     
 private:
     // Calculate the desired camera location
-    Vec2f calc_target_location(Vec2f player_locations[], unsigned int alive_player_count) const {
+    Vec2f calc_target_location(Vec2f alive_player_locations[], unsigned int alive_player_count) const {
         if (alive_player_count <= 0) {return camera_offset;}
         
-        return  player_locations[0] + Vec2f{16.0f, 16.0f} - centre;
+        Vec2f target_location{0.f, 0.f};
+        for (unsigned int i = 0; i < alive_player_count; ++i) {
+            target_location =  target_location + alive_player_locations[i] + Vec2f{16.0f, 16.0f};
+        }
+        return  target_location / static_cast<float>(alive_player_count) - centre;
     }
     
 public:
     // Moves camera to target location instantly
-    void snap_to_target_location(Vec2f player_locations[], unsigned int alive_player_count) {
-        camera_offset = calc_target_location(player_locations, alive_player_count);
+    void snap_to_target_location(Vec2f alive_player_locations[], unsigned int alive_player_count) {
+        camera_offset = calc_target_location(alive_player_locations, alive_player_count);
     }
     // Moves camera towards target location
-    void update(float delta_time, Vec2f player_locations[], unsigned int alive_player_count) {
-        Vec2f target_location = calc_target_location(player_locations, alive_player_count);
+    void update(float delta_time, Vec2f alive_player_locations[], unsigned int alive_player_count) {
+        Vec2f target_location = calc_target_location(alive_player_locations, alive_player_count);
+        
+        if (target_location == camera_offset) return; // This will be trigger if there are no alive players
         
         // Calculate distance from target squared
         float distanceSquared = camera_offset.distanceSquared(target_location);
