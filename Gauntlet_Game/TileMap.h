@@ -25,7 +25,7 @@ private:
     int* layout;
     
     // Stack containing the colliders of all impassable tiles
-    Stack<Rect_Collider*> collider_stack;
+    Dynamic_Array<Rect_Collider*> colliders;
 
 public:
     TileMap(const Vec2f& _position, const Camera& _camera) : WorldSpriteEntity(_position, "resources/tileset.png", _camera) {
@@ -33,7 +33,9 @@ public:
     }
     ~TileMap() {
         delete[] layout;
-        clear_stack(collider_stack);
+        for (unsigned int i = 0; i < colliders.size(); i++) {
+            delete colliders[i];
+        }
     }
     virtual void draw(GamesEngineeringBase::Window& window) override {
         for (int i = 0; i < size_in_titles; i++) {
@@ -53,20 +55,20 @@ public:
         // Doesn't do anything 
     }
     void draw_colliders(GamesEngineeringBase::Window& window, unsigned char r=255, unsigned char g=0, unsigned char b=0) {
-        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
-            n->data->draw_debug_lines(window);
+        for (unsigned int i = 0; i < colliders.size(); i++) {
+            colliders[i]->draw_debug_lines(window);
         }
     }
     void block(SpriteEntity& entity, const Rect_Collider& collider) {
-        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
-            if (n->data->is_overlapping(collider)) {
-                n->data->block_collide(entity, collider);
+        for (unsigned int i = 0; i < colliders.size(); i++) {
+            if (colliders[i]->is_overlapping(collider)) {
+                colliders[i]->block_collide(entity, collider);
             }
         }
     }
-    bool is_overlapping(const Rect_Collider& collider) const{
-        for (node<Rect_Collider*>* n = collider_stack.top; n != nullptr; n = n->next) {
-            if (n->data->is_overlapping(collider)) {
+    bool is_overlapping(const Rect_Collider& collider) {
+        for (unsigned int i = 0; i < colliders.size(); i++) {
+            if (colliders[i]->is_overlapping(collider)) {
                 return true;
             }
         }
@@ -108,7 +110,7 @@ public:
                             float collider_x = (next_array_index % width_in_tiles) * tile_width_pixels;
                             float collider_y = (next_array_index / width_in_tiles) * tile_height_pixels;
                             
-                            collider_stack.push(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), camera));
+                            colliders.append(new Rect_Collider(tile_width_pixels, tile_height_pixels, Vec2f(collider_x, collider_y), camera));
                         }
                         
                         next_array_index++;
