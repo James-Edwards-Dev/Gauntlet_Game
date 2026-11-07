@@ -18,20 +18,32 @@ bool Enemy::get_is_pushable() const {
     return is_pushable;
 }
 
-HeroEntity* Enemy::find_closest_hero() const {
-    float closest_player_distance = std::numeric_limits<float>::max();
-    HeroEntity* closest_player = nullptr;
-        
+// Target hero is:
+// 1. The hero with the lowest attack priority. (LOW, NORMAL, HIGH)
+// 2. If multiple have the same priority (This will happen most of the time) the closest hero is chosen
+HeroEntity* Enemy::find_target_hero() const {
+    float target_distance = std::numeric_limits<float>::max();
+    Attack_Priority target_attack_priority = LOW_PRIORITY;
+    HeroEntity* target_hero = nullptr;
+    
     for (unsigned int i = 0; i < player_manager.get_player_count(); i++) {
-        if (player_manager.players[i] == nullptr || !player_manager.players[i]->is_alive()) {continue;}
-            
+        if (player_manager.players[i] == nullptr || !player_manager.players[i]->is_alive()) continue;
+        
+        Attack_Priority attack_priority = player_manager.players[i]->get_enemy_attack_priority();
+        
+        // Ignore if lower priority then current target
+        // Doing this check here means we don't need to calculate distance unnecessarily
+        if (attack_priority < target_attack_priority) continue;
+        
         float distance = get_centre().distanceSquared(player_manager.players[i]->get_centre());
-        if (distance < abs(closest_player_distance)) {
-            closest_player = player_manager.players[i];
-            closest_player_distance = distance;
+        if (distance < target_distance || attack_priority > target_attack_priority) {
+            target_hero = player_manager.players[i];
+            target_attack_priority = attack_priority;
+            target_distance = distance;
         }
+        
     }
-    return closest_player;
+    return target_hero;
 }
 
 EnemySpawner::EnemySpawner(
@@ -103,7 +115,7 @@ void MovingEnemy::move(float delta_time, HeroEntity* target) {
 }
 
 void MovingEnemy::update(float delta_time) {
-    HeroEntity* target = find_closest_hero();
+    HeroEntity* target = find_target_hero();
         
     move(delta_time, target);
         

@@ -3,6 +3,16 @@
 #include "Camera.h"
 #include "CombatSprite.h"
 
+// This is used to change enemy targeting behavior
+// If player is low priority they are less likely to be targeted by enemies
+// If they are high priority they are more likely to be targeted by enemies
+enum Attack_Priority
+{
+    LOW_PRIORITY,
+    NORMAL_PRIORITY,
+    HIGH_PRIORITY
+};
+
 class HeroEntity : public CombatSprite
 {
     float time_since_last_projectile = entity_data_.projectile_rate_of_fire;
@@ -13,6 +23,17 @@ class HeroEntity : public CombatSprite
     int left_key;
     int right_key;
     int projectile_key;
+    int abilty_key;
+    
+protected:
+    Attack_Priority  enemy_attack_priority = NORMAL_PRIORITY;
+    
+    float ability_up_time = 5.0f;
+    float ability_cooldown_time = 5.0f;
+    
+    bool ability_active = false;
+    float current_ability_up_time = 0;
+    float time_since_last_ability = ability_cooldown_time;
     
 public:
     HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data, unsigned int player_number) 
@@ -26,6 +47,7 @@ public:
                 left_key = 'F';
                 right_key = 'H';
                 projectile_key = 'Y';
+                abilty_key = 'R';
                 break;
             case 3:
                 up_key = VK_UP; 
@@ -33,6 +55,7 @@ public:
                 left_key = VK_LEFT;
                 right_key = VK_RIGHT;
                 projectile_key = 'M';
+                abilty_key = 'N';
                 break;
             default:
                 up_key = 'W';
@@ -40,8 +63,16 @@ public:
                 left_key = 'A';
                 right_key = 'D';
                 projectile_key = 'E';
+                abilty_key = 'Q';
                 break;
         }
+    }
+    
+    virtual void magic_ability() =0;
+    virtual void update_ability(float delta_time) =0;
+    
+    const Attack_Priority& get_enemy_attack_priority() const {
+        return enemy_attack_priority;
     }
     
     void set_input_axis(const Vec2f& input) {
@@ -62,13 +93,26 @@ public:
         set_input_axis(input);
         
         if (window.keyPressed(projectile_key)) {fire_projectile();}
+        
+        
+        if (window.keyPressed(abilty_key) && time_since_last_ability >= ability_cooldown_time) {
+            magic_ability();
+            time_since_last_ability = 0;
+        }
     }
     
     virtual void update(float delta_time) override {
         if (alive) {
             move(get_input_axis() * entity_data_.speed * delta_time);
             time_since_last_projectile += delta_time;
-                    
+            
+            if (ability_active) {
+                update_ability(delta_time);
+            }
+            else if (time_since_last_ability < ability_cooldown_time) {
+                time_since_last_ability += delta_time;
+            }
+            
             CombatSprite::update(delta_time);
         }
     }
@@ -90,18 +134,68 @@ protected:
 
 class PlayerWarrior : public HeroEntity
 {
+    float standard_defence = entity_data_.defense;
+    float increased_defence = 100; // Defence when ability is active
+    float standard_melee_damage = entity_data_.melee_damage;
+    float increased_melee_damage = 100; // Melee damage when ability is active
+    float standard_speed = entity_data_.speed;
+    float decreased_speed = 50; // speed when ability is active
+    
 public:
     PlayerWarrior(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
     : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Warrior), player_number) {}
     
+    virtual void magic_ability() override {
+        entity_data_.defense = increased_defence;
+        entity_data_.melee_damage = increased_melee_damage;
+        entity_data_.speed = decreased_speed;
+        enemy_attack_priority = HIGH_PRIORITY;
+        current_ability_up_time = 0;
+        ability_active = true;
+    }
+    virtual void update_ability(float delta_time) override {
+        if (current_ability_up_time >= ability_up_time) {
+            entity_data_.defense = standard_defence;
+            entity_data_.melee_damage = standard_melee_damage;
+            entity_data_.speed = standard_speed;
+            enemy_attack_priority = NORMAL_PRIORITY;
+            ability_active = false;
+        }
+        else {
+            current_ability_up_time += delta_time;
+        }
+    }
 };
 
 class PlayerRogue : public HeroEntity
 {
+    float standard_speed = entity_data_.speed;
+    float increased_speed = 300.0f; // speed when ability is active
+    float standard_rate_of_fire = entity_data_.projectile_rate_of_fire;
+    float increased_rate_of_fire = 0.1; // speed when ability is active
+    
 public:
     PlayerRogue(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
     : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Rogue), player_number) {}
     
+    virtual void magic_ability() override {
+        entity_data_.speed = increased_speed;
+        entity_data_.projectile_rate_of_fire = increased_rate_of_fire;
+        enemy_attack_priority = LOW_PRIORITY;
+        current_ability_up_time = 0;
+        ability_active = true;
+    }
+    virtual void update_ability(float delta_time) override {
+        if (current_ability_up_time >= ability_up_time) {
+            entity_data_.speed = standard_speed;
+            entity_data_.projectile_rate_of_fire = standard_rate_of_fire;
+            enemy_attack_priority = NORMAL_PRIORITY;
+            ability_active = false;
+        }
+        else {
+            current_ability_up_time += delta_time;
+        }
+    }
 };
 
 class PlayerWizard : public HeroEntity
@@ -110,6 +204,8 @@ public:
     PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
     : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard), player_number) {}
     
+    virtual void magic_ability() override {}
+    virtual void update_ability(float delta_time) override {}
 };
 
 

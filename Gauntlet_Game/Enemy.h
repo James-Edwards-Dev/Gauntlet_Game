@@ -23,7 +23,7 @@ public:
     
 protected:
     // Returns the distance to a closest target
-    HeroEntity* find_closest_hero() const;
+    HeroEntity* find_target_hero() const;
 };
 
 class MovingEnemy;
