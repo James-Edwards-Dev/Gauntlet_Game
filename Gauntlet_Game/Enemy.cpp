@@ -1,5 +1,6 @@
 ﻿#include "Enemy.h"
 #include "Enemy_Manager.h"
+#include <iostream>
 
 Enemy::Enemy(
     const Vec2f& _position, 
@@ -50,7 +51,7 @@ void EnemySpawner::update(float delta_time) {
     Enemy::update(delta_time);
     
     time_since_last_spawn += delta_time;
-    if (time_since_last_spawn >= spawner_data.spawn_time) {
+    if (time_since_last_spawn >= spawner_data.spawn_time && number_of_enemies < spawner_data.max_enemies) {
         spawn_enemy();
         time_since_last_spawn = 0;
     }
@@ -64,6 +65,7 @@ void EnemySpawner::spawn_enemy() {
         projectile_manager_, 
         spawner_data.spawning_entity_);
     enemy_manger.add(new_enemy);
+    number_of_enemies++;
 }
 
 MovingEnemy::MovingEnemy(

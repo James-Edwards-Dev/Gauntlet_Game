@@ -33,8 +33,8 @@ class EnemySpawner : public Enemy
 protected:
     Spawner_Data spawner_data;
     float time_since_last_spawn;
+    unsigned int number_of_enemies = 0;
     
-    doubly_linked_list<MovingEnemy*> spawned_enemies;
     EnemyManager& enemy_manger;
     
 public:
