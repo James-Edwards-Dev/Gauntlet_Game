@@ -19,8 +19,14 @@ void Collision_Manager::manage_player_collision(const float& delta_time) const
             Enemy* enemy = node->data;
             
             if (enemy->get_collider().is_overlapping(player->get_collider())) {
-                // Push player & enemy away from each-other equally
-                enemy->get_collider().equal_block(*enemy, *player, player->get_collider());
+                if (enemy->get_is_pushable()) {
+                    // Push player & enemy away from each-other equally
+                    enemy->get_collider().equal_block(*enemy, *player, player->get_collider());
+                }
+                else {
+                    // Block player
+                    enemy->get_collider().block_collide(*player, player->get_collider());
+                }
                 // Appy melee damage
                 enemy->apply_melee_damage(*player, delta_time);
                 player->apply_melee_damage(*enemy, delta_time);
@@ -55,13 +61,14 @@ void Collision_Manager::manage_enemy_collision() const {
         
         // Enemy collision with other enemies
         // Starting from node->next to avoid checking collision with self and already checked enemies
-        for (doubly_node<Enemy*>* other_enemy_node = enemy_node->next; other_enemy_node != nullptr; other_enemy_node = other_enemy_node->next) {
-            Enemy* other_enemy = other_enemy_node->data;
-            if (enemy->get_collider().is_overlapping(other_enemy->get_collider())) {
-                enemy->get_collider().equal_block(*enemy, *other_enemy, other_enemy->get_collider());
+        if (enemy->get_is_pushable()) {
+            for (doubly_node<Enemy*>* other_enemy_node = enemy_node->next; other_enemy_node != nullptr; other_enemy_node = other_enemy_node->next) {
+                Enemy* other_enemy = other_enemy_node->data;
+                if (other_enemy->get_is_pushable() && enemy->get_collider().is_overlapping(other_enemy->get_collider())) {
+                    enemy->get_collider().equal_block(*enemy, *other_enemy, other_enemy->get_collider());
+                }
             }
         }
-        
         // Enemy collision with projectiles
         doubly_node<Projectile*>* projectile_node = projectile_list_.head;
         while (projectile_node != nullptr) {
