@@ -75,6 +75,7 @@ int main()
         tile_map.draw(window);
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
             n->data->draw(window);
+            // n->data->draw_collider(window);
         }
         player_manager.draw(window);
         enemy_manager.draw(window);

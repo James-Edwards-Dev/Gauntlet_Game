@@ -7,7 +7,7 @@ hit_damage_(damage),
 speed_(speed), 
 direction_(direction), 
 target_type_(target), 
-collider_(get_image().width - 8, get_image().height - 20, position + Vec2f(4, 10), camera_) 
+collider_(get_image().width, get_image().height, position + Vec2f(4, 10), camera_) 
 {
     
 }
@@ -21,7 +21,7 @@ void Projectile::update(float delta_time) {
 }
 
 void Projectile::draw_collider(GamesEngineeringBase::Window& window) const {
-    GERenderer::render_rect_outline(window, collider_.get_width(), collider_.get_height(), collider_.get_position() - camera.camera_offset);
+    get_collider().draw_debug_lines(window);
 }
 
 void Projectile::hit(CombatSprite& entity) const {
