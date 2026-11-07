@@ -47,8 +47,8 @@ int main()
     // enemy_manager.add(&enemy1);
     // enemy_manager.add(&enemy2);
     
-    EnemySpawner enemy_spawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
-    enemy_manager.add(&enemy_spawner);
+    EnemySpawner* enemy_spawner =  new EnemySpawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
+    enemy_manager.add(enemy_spawner);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();

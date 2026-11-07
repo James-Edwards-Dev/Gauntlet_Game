@@ -20,7 +20,7 @@ public:
             enemy->update(delta_time);
             
             if (!enemy->is_alive()) {
-                Enemys_List.remove(node);
+                Enemys_List.remove_and_delete_data(node);
             }
             node = next_node;
         }
