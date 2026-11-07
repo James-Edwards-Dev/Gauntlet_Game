@@ -51,10 +51,14 @@ void EnemySpawner::update(float delta_time) {
     Enemy::update(delta_time);
     
     time_since_last_spawn += delta_time;
-    if (time_since_last_spawn >= spawner_data.spawn_time && number_of_enemies < spawner_data.max_enemies) {
+    if (time_since_last_spawn >= spawner_data.spawn_time && num_of_enemies < spawner_data.max_enemies) {
         spawn_enemy();
         time_since_last_spawn = 0;
     }
+}
+
+void EnemySpawner::decrement_num_of_enemies() {
+    num_of_enemies--;
 }
 
 void EnemySpawner::spawn_enemy() {
@@ -63,9 +67,10 @@ void EnemySpawner::spawn_enemy() {
         camera, 
         player_manager, 
         projectile_manager_, 
-        spawner_data.spawning_entity_);
+        spawner_data.spawning_entity_,
+        this);
     enemy_manger.add(new_enemy);
-    number_of_enemies++;
+    num_of_enemies++;
 }
 
 MovingEnemy::MovingEnemy(
@@ -73,8 +78,10 @@ MovingEnemy::MovingEnemy(
     const Camera& _camera, 
     const PlayerManager& _player_manager,
     doubly_linked_list<Projectile*>& projectile_manager, 
-    Entity_Data entity_data) 
-: Enemy(_position, _camera, _player_manager, projectile_manager, entity_data) {}
+    Entity_Data entity_data,
+    EnemySpawner* _owner = nullptr) 
+: Enemy(_position, _camera, _player_manager, projectile_manager, entity_data)
+, owner(_owner){}
 
 void MovingEnemy::move(float delta_time, HeroEntity* target) {
     if (target == nullptr) {return;}
@@ -89,5 +96,12 @@ void MovingEnemy::update(float delta_time) {
     move(delta_time, target);
         
     Enemy::update(delta_time);
+}
+
+void MovingEnemy::defeat() {
+    if (owner != nullptr) {
+        owner->decrement_num_of_enemies();
+    }
+    Enemy::defeat();
 }
 

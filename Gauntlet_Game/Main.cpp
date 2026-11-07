@@ -42,11 +42,6 @@ int main()
     
     player_manager.reset_camera(camera);
     
-    // MovingEnemy enemy1({320.f, 320.f}, camera, player_manager, projectile_manager, Entity_Data(Entity_Type::E_Goblin));
-    // MovingEnemy enemy2({352.f, 320.f}, camera, player_manager, projectile_manager, Entity_Data(Entity_Type::E_Goblin));
-    // enemy_manager.add(&enemy1);
-    // enemy_manager.add(&enemy2);
-    
     EnemySpawner* enemy_spawner =  new EnemySpawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
     enemy_manager.add(enemy_spawner);
     

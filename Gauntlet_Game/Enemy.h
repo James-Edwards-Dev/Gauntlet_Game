@@ -33,7 +33,7 @@ class EnemySpawner : public Enemy
 protected:
     Spawner_Data spawner_data;
     float time_since_last_spawn;
-    unsigned int number_of_enemies = 0;
+    unsigned int num_of_enemies = 0;
     
     EnemyManager& enemy_manger;
     
@@ -48,20 +48,28 @@ public:
     
     virtual void update(float delta_time) override;
     
+    void decrement_num_of_enemies();
+    
 protected:
     void spawn_enemy();
 };
 
 class MovingEnemy : public Enemy
 {
+    EnemySpawner* owner = nullptr;
+    
 public:
     MovingEnemy(
         const Vec2f& _position, 
         const Camera& _camera, 
         const PlayerManager& _player_manager, 
         doubly_linked_list<Projectile*>& projectile_manager, 
-        Entity_Data entity_data); 
+        Entity_Data entity_data,
+        EnemySpawner* _owner); 
     
     void move(float delta_time, HeroEntity* target);
+    
     virtual void update(float delta_time) override;
+    
+    virtual void defeat() override;
 };
