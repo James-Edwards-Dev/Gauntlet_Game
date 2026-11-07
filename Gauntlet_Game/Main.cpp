@@ -5,17 +5,14 @@
 #include "GameEntities.h"
 #include "TileMap.h"
 #include "GamesEngineeringBase.h"
+#include "MainMenu.h"
 #include "Players.h"
 #include "Projectile.h"
 #include "Vectors.h"
 
-int main()
-{
-    unsigned int window_width = 640;
-    unsigned int window_height= 480;
-    
-    GamesEngineeringBase::Window window;
-    window.create(window_width, window_height, "Gauntlet_Game");
+void start_game(GamesEngineeringBase::Window& window) {
+    unsigned int window_width = window.getWidth();
+    unsigned int window_height= window.getHeight();
     
     PlayerManager player_manager;
     EnemyManager enemy_manager;
@@ -32,6 +29,7 @@ int main()
     
     TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/test_map.txt", enemy_manager, player_manager, projectile_manager);
+    // tile_map.load("resources/level_map.txt", enemy_manager, player_manager, projectile_manager);
     
     Collision_Manager collision_manager(player_manager, enemy_manager, projectile_manager, tile_map);
     
@@ -83,6 +81,19 @@ int main()
         
         window.present();
     }
-    
-    return 0;
+}
+
+int main() {
+    unsigned int window_width = 640;
+    unsigned int window_height= 480;
+
+    GamesEngineeringBase::Window window;
+    window.create(window_width, window_height, "Gauntlet_Game");
+
+    MainMenu main_menu(window);
+
+    main_menu.open_menu();
+    if (!main_menu.get_running()) {return 0;}
+
+    start_game(window);
 }

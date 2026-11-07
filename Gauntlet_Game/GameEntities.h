@@ -18,6 +18,9 @@ public:
     virtual void draw(GamesEngineeringBase::Window& window) override {
         GERenderer::render_image(window, image, get_position());
     }
+    virtual void update(float delta_time) override {
+        // Do nothing
+    }
     const GamesEngineeringBase::Image& get_image() const {return image;}
     
     Vec2f get_centre() const {

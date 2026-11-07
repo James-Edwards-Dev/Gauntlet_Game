@@ -51,7 +51,7 @@ public:
     {
         for (int y = 0; y < window.getHeight(); y += 1) {
             for (int x = 0; x < window.getWidth(); x += 1) {
-                window.draw(x, y, 255, 128, 0);
+                window.draw(x, y, 30, 20, 20);
             }
         }
     }
