@@ -159,6 +159,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
@@ -182,7 +183,6 @@
     <Content Include="resources\goblin.png" />
     <Content Include="resources\rogue.png" />
     <Content Include="resources\test_map.txt" />
-    <Content Include="resources\tileset_map.txt" />
     <Content Include="resources\tileset.png" />
     <Content Include="resources\projectile.png" />
     <Content Include="resources\Valor8x8_CP437_transparent.png" />
