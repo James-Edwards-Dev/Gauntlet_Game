@@ -1,7 +1,7 @@
 
 #include "Collision.h"
 #include "Collision_Manager.h"
-#include "Enemys.h"
+#include "Enemy_Manager.h"
 #include "GameEntities.h"
 #include "TileMap.h"
 #include "GamesEngineeringBase.h"
@@ -34,11 +34,11 @@ int main()
     
     
     PlayerRogue hero1({32.0f, 64.0f}, camera, projectile_manager, 1);
-    PlayerWizard hero2({64.0f, 64.0f}, camera, projectile_manager, 2);
-    PlayerWarrior hero3({96.0f, 64.0f}, camera, projectile_manager, 3);
+    // PlayerWizard hero2({64.0f, 64.0f}, camera, projectile_manager, 2);
+    // PlayerWarrior hero3({96.0f, 64.0f}, camera, projectile_manager, 3);
     player_manager.add(&hero1);
-    player_manager.add(&hero2);
-    player_manager.add(&hero3);
+    // player_manager.add(&hero2);
+    // player_manager.add(&hero3);
     
     player_manager.reset_camera(camera);
     

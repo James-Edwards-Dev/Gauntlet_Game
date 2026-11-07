@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="Collision_Manager.cpp" />
     <ClCompile Include="CombatSprite.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
@@ -163,7 +164,8 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Collision_Manager.h" />
     <ClInclude Include="CombatSprite.h" />
-    <ClInclude Include="Enemys.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Enemy_Manager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Entity_Data.h" />
     <ClInclude Include="GameEntities.h" />
