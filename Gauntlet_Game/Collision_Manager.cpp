@@ -89,8 +89,22 @@ void Collision_Manager::manage_enemy_collision() const {
     }
 }
 
+void Collision_Manager::manage_projectile_tilemap_collision() const {
+    doubly_node<Projectile*>* projectile_node = projectile_list_.head;
+    while (projectile_node != nullptr) {
+        doubly_node<Projectile*>* next_projectile_node = projectile_node->next; 
+            
+        if (tile_map_.is_overlapping(projectile_node->data->get_collider())) {
+            projectile_list_.remove_and_delete_data(projectile_node);
+        }
+        
+        projectile_node = next_projectile_node;
+    }
+}
+
 void Collision_Manager::manager_collision(const float& delta_time) const
 {
     manage_player_collision(delta_time);
     manage_enemy_collision();
+    manage_projectile_tilemap_collision();
 }

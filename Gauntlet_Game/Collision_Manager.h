@@ -16,6 +16,7 @@ public:
 protected:
     void manage_player_collision(const float& delta_time) const;
     void manage_enemy_collision() const;
+    void manage_projectile_tilemap_collision() const;
     
 public:
     void manager_collision(const float& delta_time) const;
