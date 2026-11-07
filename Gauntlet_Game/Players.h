@@ -214,6 +214,8 @@ class PlayerManager
     static constexpr unsigned int max_players = 4;
     unsigned int player_count = 0;
     
+    unsigned int alive_players = 0;
+    
 public:
     HeroEntity* players[max_players]{};
     
@@ -221,6 +223,7 @@ public:
         if (player_count >= max_players) {return false;}
         players[player_count] = player;
         player_count++;
+        alive_players++;
         
         return true;
     }
@@ -242,13 +245,14 @@ public:
     
     unsigned int get_player_count() const { return player_count; }
     unsigned int get_max_players() const { return max_players; }
+    unsigned int get_alive_players() const { return alive_players; }
     
-    void update(float delta_time, GamesEngineeringBase::Window& window, FollowCamera& camera) const {
+    void update(float delta_time, GamesEngineeringBase::Window& window, FollowCamera& camera) {
         if (player_count > 0) {
             // Saving player locations for camera update
             Vec2f* alive_player_locations = new Vec2f[player_count];
             
-            unsigned int alive_players = 0;
+            alive_players = 0;
             for (unsigned int i = 0; i < player_count; i++) {
                 players[i]->update_input(window);
                 players[i]->update(delta_time);

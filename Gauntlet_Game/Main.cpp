@@ -10,6 +10,8 @@
 #include "Projectile.h"
 #include "Vectors.h"
 
+void open_main_menu(GamesEngineeringBase::Window& window);
+
 void start_game(GamesEngineeringBase::Window& window, int characters[], unsigned int num_of_characters) {
     unsigned int window_width = window.getWidth();
     unsigned int window_height= window.getHeight();
@@ -38,7 +40,8 @@ void start_game(GamesEngineeringBase::Window& window, int characters[], unsigned
     float delta_time = timer.dt();
     
     bool running = true;
-    while (running)
+    bool playing = true;
+    while (running && playing)
     {
         delta_time = timer.dt();
         
@@ -68,23 +71,20 @@ void start_game(GamesEngineeringBase::Window& window, int characters[], unsigned
         player_manager.draw(window);
         enemy_manager.draw(window);
         
+        playing = (player_manager.get_alive_players() > 0);
+        
         GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
         
         window.present();
     }
+    open_main_menu(window);
 }
 
-int main() {
-    unsigned int window_width = 640;
-    unsigned int window_height= 480;
-
-    GamesEngineeringBase::Window window;
-    window.create(window_width, window_height, "Gauntlet_Game");
-
+void open_main_menu(GamesEngineeringBase::Window& window) {
     MainMenu* main_menu = new MainMenu(window);
 
     main_menu->open_menu();
-    if (!main_menu->get_running()) {return 0;}
+    if (!main_menu->get_running()) {return;}
     
     int characters[3];
     unsigned int num_of_characters = 0;
@@ -102,8 +102,18 @@ int main() {
     }
     
     delete main_menu;
-
+    
     start_game(window, characters, num_of_characters);
+}
+
+int main() {
+    unsigned int window_width = 640;
+    unsigned int window_height= 480;
+
+    GamesEngineeringBase::Window window;
+    window.create(window_width, window_height, "Gauntlet_Game");
+    
+    open_main_menu(window);
     
     return 0;
 }
