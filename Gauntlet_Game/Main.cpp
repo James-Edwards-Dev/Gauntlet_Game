@@ -10,7 +10,7 @@
 #include "Projectile.h"
 #include "Vectors.h"
 
-void start_game(GamesEngineeringBase::Window& window) {
+void start_game(GamesEngineeringBase::Window& window, int characters[], unsigned int num_of_characters) {
     unsigned int window_width = window.getWidth();
     unsigned int window_height= window.getHeight();
     
@@ -20,12 +20,8 @@ void start_game(GamesEngineeringBase::Window& window) {
     
     FollowCamera camera(window_width, window_height);
     
-    PlayerRogue hero1({32.0f, 64.0f}, camera, projectile_manager, 1);
-    PlayerWizard hero2({64.0f, 64.0f}, camera, projectile_manager, 2);
-    PlayerWarrior hero3({96.0f, 64.0f}, camera, projectile_manager, 3);
-    player_manager.add(&hero1);
-    // player_manager.add(&hero2);
-    // player_manager.add(&hero3);
+    // Creating heroes
+    player_manager.create_players(characters, num_of_characters, camera, projectile_manager);
     
     TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/test_map.txt", enemy_manager, player_manager, projectile_manager);
@@ -37,11 +33,6 @@ void start_game(GamesEngineeringBase::Window& window) {
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
     player_manager.reset_camera(camera);
-    
-    // EnemySpawner* goblin_spawner =  new EnemySpawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
-    // EnemySpawner* barbarian_spawner =  new EnemySpawner({480.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Barbarian));
-    // enemy_manager.add(goblin_spawner);
-    // enemy_manager.add(barbarian_spawner);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
@@ -90,10 +81,29 @@ int main() {
     GamesEngineeringBase::Window window;
     window.create(window_width, window_height, "Gauntlet_Game");
 
-    MainMenu main_menu(window);
+    MainMenu* main_menu = new MainMenu(window);
 
-    main_menu.open_menu();
-    if (!main_menu.get_running()) {return 0;}
+    main_menu->open_menu();
+    if (!main_menu->get_running()) {return 0;}
+    
+    int characters[3];
+    unsigned int num_of_characters = 0;
+    if (main_menu->player_1_selector->has_joined()) {
+        characters[num_of_characters] = main_menu->player_1_selector->get_character_type();
+        num_of_characters++;
+    }
+    if (main_menu->player_2_selector->has_joined()) {
+        characters[num_of_characters] = main_menu->player_2_selector->get_character_type();
+        num_of_characters++;
+    }
+    if (main_menu->player_3_selector->has_joined()) {
+        characters[num_of_characters] = main_menu->player_3_selector->get_character_type();
+        num_of_characters++;
+    }
+    
+    delete main_menu;
 
-    start_game(window);
+    start_game(window, characters, num_of_characters);
+    
+    return 0;
 }

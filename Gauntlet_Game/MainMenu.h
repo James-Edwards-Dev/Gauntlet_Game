@@ -2,25 +2,9 @@
 #include "GameEntities.h"
 #include "GamesEngineeringBase.h"
 
-class MainMenu
-{
-    bool running = true;
-    bool open = true;
-    bool player_joined = true;
-    bool all_ready = false;
-    
-    GamesEngineeringBase::Window& window;
-public:
-    MainMenu(GamesEngineeringBase::Window& window_);
-    
-    bool get_running() const {return running;}
-    
-    void open_menu();
-};
-
 class Character_Selector
 {
-    int character = 0;
+    int character_type = 0;
     unsigned int player_number;
     
     int right_key;
@@ -53,4 +37,30 @@ public:
     void detect_input();
     
     std::string get_character_name() const;
+    
+    int get_character_type() const;
+};
+
+class MainMenu
+{
+    bool running = true;
+    bool open = true;
+    bool player_joined = true;
+    bool all_ready = false;
+    
+    GamesEngineeringBase::Image text_image;
+    
+    GamesEngineeringBase::Window& window;
+public:
+    
+    Character_Selector* player_1_selector;
+    Character_Selector* player_2_selector;
+    Character_Selector* player_3_selector;
+    
+    MainMenu(GamesEngineeringBase::Window& window_);
+    ~MainMenu();
+    
+    bool get_running() const {return running;}
+    
+    void open_menu();
 };

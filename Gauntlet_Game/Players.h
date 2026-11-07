@@ -224,6 +224,21 @@ public:
         
         return true;
     }
+    void create_players(int characters[], unsigned int num_of_characters, Camera& camera, doubly_linked_list<Projectile*>& projectile_manager) {
+        for (unsigned int i = 0; i < num_of_characters; i++) {
+            Vec2f spawn_pos = Vec2f{32.0f, 64.0f} + (Vec2f{32.0f, 0} * i);
+            if (characters[i] == 0) {
+                PlayerWarrior* warrior = new PlayerWarrior(spawn_pos, camera, projectile_manager, i + 1);
+                add(warrior);
+            } else if (characters[i] == 1) {
+                PlayerRogue* rogue = new PlayerRogue(spawn_pos, camera, projectile_manager, i + 1);
+                add(rogue);
+            } else {
+                PlayerWizard* wizard = new PlayerWizard(spawn_pos, camera, projectile_manager, i + 1);
+                add(wizard);
+            }
+        }
+    }
     
     unsigned int get_player_count() const { return player_count; }
     unsigned int get_max_players() const { return max_players; }

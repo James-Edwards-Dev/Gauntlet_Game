@@ -4,53 +4,6 @@
 
 #include "GameEntities.h"
 
-
-MainMenu::MainMenu(GamesEngineeringBase::Window& window_) : window(window_) {
-}
-
-void MainMenu::open_menu() {
-    
-    GamesEngineeringBase::Image text_image;
-    text_image.load("resources/Valor8x8_CP437_transparent.png");
-    BackgroundEntity background(Vec2f(0, 0));
-    
-    Character_Selector Player_1_Selector(1, window, text_image);
-    Character_Selector Player_2_Selector(2, window, text_image);
-    Character_Selector Player_3_Selector(3, window, text_image);
-    
-    GamesEngineeringBase::Timer timer;
-    float delta_time = timer.dt();
-    
-    while (running && open) {
-        window.clear();
-        
-        delta_time = timer.dt();
-        int fps = round(1 / delta_time);
-        GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
-        
-        if (window.keyPressed(VK_ESCAPE)) running = false;
-        GERenderer::render_string(window, text_image, "Gauntlet Game", {8.0f, 32.0f});
-        
-        Player_1_Selector.detect_input();
-        Player_2_Selector.detect_input();
-        Player_3_Selector.detect_input();
-        
-        background.draw(window);
-        Player_1_Selector.draw();
-        Player_2_Selector.draw();
-        Player_3_Selector.draw();
-        
-        player_joined = Player_1_Selector.has_joined() || Player_2_Selector.has_joined() || Player_3_Selector.has_joined(); 
-        all_ready = (!Player_1_Selector.has_joined() || Player_1_Selector.is_ready()) 
-                 && (!Player_2_Selector.has_joined() || Player_2_Selector.is_ready())
-                 && (!Player_3_Selector.has_joined() || Player_3_Selector.is_ready());
-        open = !(player_joined && all_ready);
-        
-        window.present();
-    }
-}
-
-
 Character_Selector::Character_Selector(unsigned int player_number_, GamesEngineeringBase::Window& window_, GamesEngineeringBase::Image& text_image_)
 : player_number(player_number_), window(window_), text_image(text_image_) {
     sprite_location = {
@@ -71,7 +24,7 @@ Character_Selector::Character_Selector(unsigned int player_number_, GamesEnginee
         left_key = 'F';
         ready_key = 'Y';
         leave_key = 'R';
-        character = 1;
+        character_type = 1;
         break;
     default:
         right_key = VK_RIGHT;
@@ -79,7 +32,7 @@ Character_Selector::Character_Selector(unsigned int player_number_, GamesEnginee
         ready_key = 'M';
         leave_key = 'N';
         sprite_location = sprite_location + Vec2f{150.0f, 0};
-        character = 2;
+        character_type = 2;
         break;
     }
     
@@ -104,15 +57,15 @@ bool Character_Selector::is_ready() const {
 
 void Character_Selector::draw() const {
     if (joined) {
-        sprite[character]->draw(window);
-        GERenderer::render_string(window, text_image, get_character_name(), sprite[character]->get_position() + Vec2f{-10.f, 35.f});
+        sprite[character_type]->draw(window);
+        GERenderer::render_string(window, text_image, get_character_name(), sprite[character_type]->get_position() + Vec2f{-10.f, 35.f});
         if (player_number != 3) {
-            GERenderer::render_char(window, text_image, right_key, sprite[character]->get_centre() + Vec2f{25.0f, 0});
-            GERenderer::render_char(window, text_image, left_key, sprite[character]->get_centre() + Vec2f{-25.0f, 0});
+            GERenderer::render_char(window, text_image, right_key, sprite[character_type]->get_centre() + Vec2f{25.0f, 0});
+            GERenderer::render_char(window, text_image, left_key, sprite[character_type]->get_centre() + Vec2f{-25.0f, 0});
         }
         else {
-            GERenderer::render_string(window, text_image, "->", sprite[character]->get_centre() + Vec2f{20.0f, 0});
-            GERenderer::render_string(window, text_image, "<-", sprite[character]->get_centre() + Vec2f{-30.0f, 0});
+            GERenderer::render_string(window, text_image, "->", sprite[character_type]->get_centre() + Vec2f{20.0f, 0});
+            GERenderer::render_string(window, text_image, "<-", sprite[character_type]->get_centre() + Vec2f{-30.0f, 0});
         }
         
         // Drawing ready text
@@ -121,18 +74,18 @@ void Character_Selector::draw() const {
         std::string ready_string = "Ready (";
         ready_string += ready_key;
         ready_string += ") " + is_ready_string;
-        GERenderer::render_string(window, text_image, ready_string, sprite[character]->get_centre() + Vec2f{-50.f, -35.f});
+        GERenderer::render_string(window, text_image, ready_string, sprite[character_type]->get_centre() + Vec2f{-50.f, -35.f});
         
         // Drawing leave text
         std::string leave_string = "Press ";
         leave_string += leave_key;
         leave_string += " to leave";
-        GERenderer::render_string(window, text_image, leave_string, sprite[character]->get_centre() + Vec2f{-55.f, 50});
+        GERenderer::render_string(window, text_image, leave_string, sprite[character_type]->get_centre() + Vec2f{-55.f, 50});
     } else {
         std::string join_string = "Press ";
         join_string += ready_key;
         join_string += " to join!";
-        GERenderer::render_string(window, text_image, join_string, sprite[character]->get_centre() + Vec2f{-50.f, 0});
+        GERenderer::render_string(window, text_image, join_string, sprite[character_type]->get_centre() + Vec2f{-50.f, 0});
     }
 }
 
@@ -140,20 +93,20 @@ void Character_Selector::detect_input() {
     if (joined) {
         if (window.keyPressed(right_key)) {
             if (!right_key_held) {
-                if (character == 0) {
-                    character = 2;
+                if (character_type == 0) {
+                    character_type = 2;
                 } else {
-                    character--;
+                    character_type--;
                 }
                 right_key_held = true;
             }
         } else {right_key_held = false;}
         if (window.keyPressed(left_key)) {
             if (!left_key_held) {
-                if (character == 2) {
-                    character = 0;
+                if (character_type == 2) {
+                    character_type = 0;
                 } else {
-                    character++;
+                    character_type++;
                 }
                 left_key_held = true;
             }
@@ -181,12 +134,66 @@ void Character_Selector::detect_input() {
 }
 
 std::string Character_Selector::get_character_name() const {
-    switch (character) {
+    switch (character_type) {
     case 0:
         return "Warrior";
     case 1:
         return "Rogue";
     default:
         return "Wizard";
+    }
+}
+
+int Character_Selector::get_character_type() const {
+    return character_type;
+}
+
+MainMenu::MainMenu(GamesEngineeringBase::Window& window_) : window(window_) {
+    text_image.load("resources/Valor8x8_CP437_transparent.png");
+    
+    player_1_selector = new Character_Selector(1, window, text_image);
+    player_2_selector = new Character_Selector(2, window, text_image);
+    player_3_selector = new Character_Selector(3, window, text_image);
+}
+
+MainMenu::~MainMenu() {
+    delete player_1_selector;
+    delete player_2_selector;
+    delete player_3_selector;
+}
+
+void MainMenu::open_menu() {
+    
+    BackgroundEntity background(Vec2f(0, 0));
+    
+    GamesEngineeringBase::Timer timer;
+    float delta_time = timer.dt();
+    
+    while (running && open) {
+        window.clear();
+        
+        delta_time = timer.dt();
+        int fps = round(1 / delta_time);
+        GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
+        
+        if (window.keyPressed(VK_ESCAPE)) running = false;
+        GERenderer::render_string(window, text_image, "Gauntlet Game", {8.0f, 32.0f});
+        
+        player_1_selector->detect_input();
+        player_2_selector->detect_input();
+        player_3_selector->detect_input();
+        
+        background.draw(window);
+        player_1_selector->draw();
+        player_2_selector->draw();
+        player_3_selector->draw();
+        
+        player_joined = player_1_selector->has_joined() || player_2_selector->has_joined() || player_3_selector->has_joined(); 
+        all_ready = (!player_1_selector->has_joined() || player_1_selector->is_ready()) 
+                 && (!player_2_selector->has_joined() || player_2_selector->is_ready())
+                 && (!player_3_selector->has_joined() || player_3_selector->is_ready());
+        open = !(player_joined && all_ready);
+        
+        window.present();
     }
 }
