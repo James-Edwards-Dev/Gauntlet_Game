@@ -5,7 +5,8 @@ enum Entity_Type
     P_Warrior,
     P_Rogue,
     P_Wizard,
-    E_Goblin
+    E_Goblin,
+    E_Spawner
 };
 
 struct Entity_Data
@@ -19,14 +20,13 @@ struct Entity_Data
     float speed = 50;
     
     std::string sprite_img_filepath;
-    std::string projectile_img_filepath;
+    std::string projectile_img_filepath = "resources/projectile.png";;
     
     Entity_Data(Entity_Type type) 
     {
         switch (type) {
             case P_Warrior:
                 sprite_img_filepath = "resources/warrior.png";
-                projectile_img_filepath = "resources/projectile.png";
             
                 melee_damage = 70;
                 projectile_damage = 40;
@@ -36,7 +36,6 @@ struct Entity_Data
             
             case P_Rogue:
                 sprite_img_filepath = "resources/rogue.png";
-                projectile_img_filepath = "resources/projectile.png";
             
                 projectile_damage = 60;
                 projectile_speed = 150;
@@ -46,7 +45,6 @@ struct Entity_Data
             
             case P_Wizard:
                 sprite_img_filepath = "resources/wizard.png";
-                projectile_img_filepath = "resources/projectile.png";
             
                 projectile_damage = 100;
                 projectile_speed = 110;
@@ -57,9 +55,24 @@ struct Entity_Data
             
             case E_Goblin:
                 sprite_img_filepath = "resources/goblin.png";
-                projectile_img_filepath = "resources/projectile.png";
             
+                break;
+            
+            case E_Spawner:
+                sprite_img_filepath = "resources/warrior.png";
+                melee_damage = 0;
                 break;
         }
     }
+};
+
+
+
+struct Spawner_Data
+{
+    Entity_Data spawning_entity_;
+    float spawn_time = 1.0f;
+    unsigned int max_enemies = 5;
+    
+    Spawner_Data(const Entity_Data& spawning_entity) : spawning_entity_(spawning_entity) {}
 };

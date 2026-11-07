@@ -42,10 +42,13 @@ int main()
     
     player_manager.reset_camera(camera);
     
-    Enemy enemy1({320.f, 320.f}, camera, player_manager, projectile_manager, Entity_Data(E_Goblin));
-    Enemy enemy2({352.f, 320.f}, camera, player_manager, projectile_manager, Entity_Data(E_Goblin));
-    enemy_manager.add(&enemy1);
-    enemy_manager.add(&enemy2);
+    // MovingEnemy enemy1({320.f, 320.f}, camera, player_manager, projectile_manager, Entity_Data(Entity_Type::E_Goblin));
+    // MovingEnemy enemy2({352.f, 320.f}, camera, player_manager, projectile_manager, Entity_Data(Entity_Type::E_Goblin));
+    // enemy_manager.add(&enemy1);
+    // enemy_manager.add(&enemy2);
+    
+    EnemySpawner enemy_spawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
+    enemy_manager.add(&enemy_spawner);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
