@@ -186,6 +186,7 @@
     <Content Include="resources\tileset.png" />
     <Content Include="resources\projectile.png" />
     <Content Include="resources\Valor8x8_CP437_transparent.png" />
+    <Content Include="resources\barbarian.png" />
     <Content Include="resources\warrior.png" />
     <Content Include="resources\wizard.png" />
   </ItemGroup>

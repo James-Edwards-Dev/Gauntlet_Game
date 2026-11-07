@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Enemy.h"
 #include "Players.h"
 
 class Enemy : public CombatSprite
@@ -26,6 +27,7 @@ protected:
 };
 
 class MovingEnemy;
+class ProjectileFiringEnemy;
 class EnemyManager;
 
 class EnemySpawner : public Enemy
@@ -67,9 +69,30 @@ public:
         Entity_Data entity_data,
         EnemySpawner* _owner); 
     
-    void move(float delta_time, HeroEntity* target);
+    virtual void move(float delta_time, HeroEntity* target);
     
     virtual void update(float delta_time) override;
     
     virtual void defeat() override;
+};
+
+class ProjectileFiringEnemy : public MovingEnemy
+{
+    float time_since_projectile = 0;
+    
+public:
+    ProjectileFiringEnemy(
+        const Vec2f& _position, 
+        const Camera& _camera, 
+        const PlayerManager& _player_manager, 
+        doubly_linked_list<Projectile*>& projectile_manager, 
+        Entity_Data entity_data,
+        EnemySpawner* _owner);
+    
+protected:
+    void try_fire_projectile(const Vec2f& direction, const float& delta_time);
+    
+public:
+    virtual void move(float delta_time, HeroEntity* target);
+    
 };

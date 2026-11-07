@@ -62,14 +62,26 @@ void EnemySpawner::decrement_num_of_enemies() {
 }
 
 void EnemySpawner::spawn_enemy() {
-    MovingEnemy* new_enemy = new MovingEnemy(
-        get_position(), 
-        camera, 
-        player_manager, 
-        projectile_manager_, 
-        spawner_data.spawning_entity_,
-        this);
-    enemy_manger.add(new_enemy);
+    if (spawner_data.spawning_entity_.projectile_rate_of_fire == 0) {
+        MovingEnemy* new_enemy = new MovingEnemy(
+            get_position(), 
+            camera, 
+            player_manager, 
+            projectile_manager_, 
+            spawner_data.spawning_entity_,
+            this);
+        enemy_manger.add(new_enemy);
+    }
+    else {
+        ProjectileFiringEnemy* new_enemy = new ProjectileFiringEnemy(
+            get_position(), 
+            camera, 
+            player_manager, 
+            projectile_manager_, 
+            spawner_data.spawning_entity_,
+            this);
+        enemy_manger.add(new_enemy);
+    }
     num_of_enemies++;
 }
 
@@ -103,5 +115,35 @@ void MovingEnemy::defeat() {
         owner->decrement_num_of_enemies();
     }
     Enemy::defeat();
+}
+
+ProjectileFiringEnemy::ProjectileFiringEnemy(
+    const Vec2f& _position, 
+    const Camera& _camera,
+    const PlayerManager& _player_manager, 
+    doubly_linked_list<Projectile*>& projectile_manager, 
+    Entity_Data entity_data,
+    EnemySpawner* _owner) 
+: MovingEnemy(_position, _camera, _player_manager, projectile_manager, entity_data, _owner)
+{
+    
+}
+
+void ProjectileFiringEnemy::try_fire_projectile(const Vec2f& direction, const float& delta_time) {
+    if (time_since_projectile >= entity_data_.projectile_rate_of_fire) {
+        create_projectile(PLAYER, direction);
+        time_since_projectile = 0;
+    } else {
+        time_since_projectile += delta_time;
+    }
+}
+
+void ProjectileFiringEnemy::move(float delta_time, HeroEntity* target) {
+    if (target == nullptr) {return;}
+    
+    Vec2f direction = (target->get_position() - get_position()).normalize();
+    set_position(get_position() + direction * delta_time * entity_data_.speed);
+    
+    try_fire_projectile(direction, delta_time);
 }
 

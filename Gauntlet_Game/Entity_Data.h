@@ -5,6 +5,7 @@ enum Entity_Type
     P_Warrior,
     P_Rogue,
     P_Wizard,
+    E_Barbarian,
     E_Goblin,
     E_Spawner
 };
@@ -55,7 +56,13 @@ struct Entity_Data
             
             case E_Goblin:
                 sprite_img_filepath = "resources/goblin.png";
+                break;
             
+            case E_Barbarian:
+                // Setting projectile_rate_of_fire to 0 will make this a Moving Enemy 
+                // Instead of a ProjectileFiringEnemy when spawned
+                sprite_img_filepath = "resources/barbarian.png";
+                projectile_rate_of_fire = 0;
                 break;
             
             case E_Spawner:

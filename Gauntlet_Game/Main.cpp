@@ -32,7 +32,6 @@ int main()
     GamesEngineeringBase::Image text_image;
     text_image.load("resources/Valor8x8_CP437_transparent.png");
     
-    
     PlayerRogue hero1({32.0f, 64.0f}, camera, projectile_manager, 1);
     // PlayerWizard hero2({64.0f, 64.0f}, camera, projectile_manager, 2);
     // PlayerWarrior hero3({96.0f, 64.0f}, camera, projectile_manager, 3);
@@ -42,8 +41,10 @@ int main()
     
     player_manager.reset_camera(camera);
     
-    EnemySpawner* enemy_spawner =  new EnemySpawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
-    enemy_manager.add(enemy_spawner);
+    EnemySpawner* goblin_spawner =  new EnemySpawner({320.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
+    EnemySpawner* barbarian_spawner =  new EnemySpawner({480.f, 320.f}, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Barbarian));
+    enemy_manager.add(goblin_spawner);
+    enemy_manager.add(barbarian_spawner);
     
     GamesEngineeringBase::Timer timer;
     float delta_time = timer.dt();
