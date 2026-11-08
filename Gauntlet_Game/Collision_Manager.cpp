@@ -1,7 +1,17 @@
 ﻿#include "Collision_Manager.h"
 
-Collision_Manager::Collision_Manager(PlayerManager& player_manager, EnemyManager& enemy_manager, doubly_linked_list<Projectile*>& projectile_list, TileMap& tile_map)
-    : player_manager_(player_manager), enemy_manager_(enemy_manager), projectile_list_(projectile_list), tile_map_(tile_map)
+Collision_Manager::Collision_Manager(
+    PlayerManager& player_manager, 
+    EnemyManager& enemy_manager, 
+    doubly_linked_list<Projectile*>& 
+    projectile_list, 
+    TileMap& tile_map, 
+    doubly_linked_list<Pick_Up_Item*>& pick_up_manager)
+: player_manager_(player_manager)
+, enemy_manager_(enemy_manager)
+, projectile_list_(projectile_list)
+, tile_map_(tile_map)
+, pick_up_manager_(pick_up_manager)
 {
     
 }
@@ -13,6 +23,17 @@ void Collision_Manager::manage_player_collision(const float& delta_time) const
         HeroEntity* player = player_manager_.players[i];
         
         if (!player->is_alive()) continue;    
+        
+        // Player collision with pick up items
+        doubly_node<Pick_Up_Item*>* pick_up_node = pick_up_manager_.head;
+        while (pick_up_node != nullptr) {
+            doubly_node<Pick_Up_Item*>* next_pick_up_node = pick_up_node->next;
+            
+            if (pick_up_node->data->get_collider().is_overlapping(player->get_collider())) {
+                pick_up_node->data->on_hero_collide(*player);
+            }
+            pick_up_node = next_pick_up_node;
+        }
         
         // Player collision with enemies
         for (doubly_node<Enemy*>* node = enemy_manager_.Enemys_List.head; node != nullptr; node = node->next) {

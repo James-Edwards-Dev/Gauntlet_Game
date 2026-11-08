@@ -218,6 +218,8 @@ class PlayerManager
     
     unsigned int alive_players = 0;
     
+    bool should_game_end_ = false;
+    
 public:
     HeroEntity* players[max_players]{};
     
@@ -248,12 +250,14 @@ public:
     unsigned int get_player_count() const { return player_count; }
     unsigned int get_max_players() const { return max_players; }
     unsigned int get_alive_players() const { return alive_players; }
+    bool should_game_end() const { return should_game_end_; }
     
     void update(float delta_time, GamesEngineeringBase::Window& window, FollowCamera& camera) {
         if (player_count > 0) {
             // Saving player locations for camera update
             Vec2f* alive_player_locations = new Vec2f[player_count];
             
+            should_game_end_ = true;
             alive_players = 0;
             for (unsigned int i = 0; i < player_count; i++) {
                 players[i]->update_input(window);
@@ -263,6 +267,9 @@ public:
                 if (players[i]->is_alive()) {
                     alive_player_locations[alive_players] = players[i]->get_position();
                     alive_players++;
+                    if (!players[i]->finish_line_reached) {
+                        should_game_end_ = false;
+                    }
                 }
             }
             camera.update(delta_time, alive_player_locations, alive_players);

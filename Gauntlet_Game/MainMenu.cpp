@@ -162,7 +162,7 @@ MainMenu::~MainMenu() {
     delete player_3_selector;
 }
 
-void MainMenu::open_menu() {
+void MainMenu::open_menu(bool& running) {
     
     BackgroundEntity background(Vec2f(0, 0));
     

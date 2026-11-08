@@ -7,7 +7,7 @@ Pick_Up_Item::Pick_Up_Item(const Vec2f& _position, const std::string& image_file
 }
 
 void Pick_Up_Item::draw(GamesEngineeringBase::Window& window) {
-    if (!(remove_on_pick_up || picked_up)) {
+    if (!(remove_on_pick_up && picked_up)) {
         CollisionSprite::draw(window);
     }
 }
@@ -26,4 +26,5 @@ Finish_Ladder::Finish_Ladder(const Vec2f& _position, const Camera& _camera)
 
 void Finish_Ladder::pick_up_effect(HeroEntity& hero) {
     hero.finish_line_reached = true;
+    std::cout << "Finished" << std::endl;
 }

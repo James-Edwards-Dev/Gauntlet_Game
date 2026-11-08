@@ -43,7 +43,6 @@ public:
 
 class MainMenu
 {
-    bool running = true;
     bool open = true;
     bool player_joined = true;
     bool all_ready = false;
@@ -60,7 +59,5 @@ public:
     MainMenu(GamesEngineeringBase::Window& window_);
     ~MainMenu();
     
-    bool get_running() const {return running;}
-    
-    void open_menu();
+    void open_menu(bool& running);
 };
