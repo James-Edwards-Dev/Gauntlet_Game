@@ -3,6 +3,8 @@
 #include "GameEntities.h"
 #include "Camera.h"
 
+class HeroEntity;
+
 class CombatSprite;
 
 enum Target_Type
@@ -19,8 +21,9 @@ class Projectile : public WorldSpriteEntity
     
     const Target_Type target_type_;
     Rect_Collider collider_;
-    
 public:
+    HeroEntity* owning_hero = nullptr;
+    
     Projectile(Vec2f position, const float damage, const float speed, Vec2f direction, Target_Type target, const Camera& camera_); 
     
     const Rect_Collider& get_collider() const;

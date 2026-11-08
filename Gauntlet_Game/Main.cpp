@@ -11,7 +11,7 @@
 #include "Projectile.h"
 #include "Vectors.h"
 
-void start_game(GamesEngineeringBase::Window& window, bool& running, int characters[], unsigned int num_of_characters) {
+Gameplay_Stats* start_game(GamesEngineeringBase::Window& window, bool& running, int characters[], unsigned int num_of_characters) {
     unsigned int window_width = window.getWidth();
     unsigned int window_height= window.getHeight();
     
@@ -83,6 +83,8 @@ void start_game(GamesEngineeringBase::Window& window, bool& running, int charact
         
         window.present();
     }
+    
+    return player_manager.get_game_end_stats();
 }
 
 int main() {
@@ -119,7 +121,14 @@ int main() {
         // Check if we have stopped running before standing game
         if (!running) return 0;
         
-        start_game(window, running, characters, num_of_characters);
+        Gameplay_Stats* game_end_stats = start_game(window, running, characters, num_of_characters);
+        
+        if (!running) {
+            delete[] game_end_stats;
+            return 0;
+        }
+        
+        game_end_stats[0].display();
         
         if (!running) return 0;
     }

@@ -25,6 +25,5 @@ Finish_Ladder::Finish_Ladder(const Vec2f& _position, const Camera& _camera)
 }
 
 void Finish_Ladder::pick_up_effect(HeroEntity& hero) {
-    hero.finish_line_reached = true;
-    std::cout << "Finished" << std::endl;
+    hero.gameplay_stats.victory = true;
 }

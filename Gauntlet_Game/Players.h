@@ -3,6 +3,23 @@
 #include "Camera.h"
 #include "CombatSprite.h"
 
+struct Gameplay_Stats
+{
+    float alive_time = 0;
+    unsigned int enemies_defeated = 0;
+    bool victory = false;
+    
+    void display() const {
+        std::cout << "Alive Time:       " << static_cast<int>(alive_time) << std::endl;
+        std::cout << "Enemies Defeated: " << enemies_defeated << std::endl;
+        if (victory) {
+            std::cout << "Victorious" << std::endl;
+        } else {
+            std::cout << "Loss" << std::endl;
+        }
+    }
+};
+
 // This is used to change enemy targeting behavior
 // If player is low priority they are less likely to be targeted by enemies
 // If they are high priority they are more likely to be targeted by enemies
@@ -25,7 +42,7 @@ class HeroEntity : public CombatSprite
     int projectile_key;
     int abilty_key;
 public:
-    bool finish_line_reached = false;
+    Gameplay_Stats gameplay_stats;
     
 protected:
     Attack_Priority  enemy_attack_priority = NORMAL_PRIORITY;
@@ -114,6 +131,7 @@ public:
             else if (time_since_last_ability < ability_cooldown_time) {
                 time_since_last_ability += delta_time;
             }
+            gameplay_stats.alive_time += delta_time;
             
             CombatSprite::update(delta_time);
         }
@@ -125,7 +143,8 @@ public:
     
     void fire_projectile() {
         if (time_since_last_projectile >= entity_data_.projectile_rate_of_fire) {
-            create_projectile(ENEMY, projectile_spawn_direction);
+            Projectile* projectile = create_projectile(ENEMY, projectile_spawn_direction);
+            projectile->owning_hero = this;
             time_since_last_projectile = 0;
         }
     }
@@ -252,6 +271,15 @@ public:
     unsigned int get_alive_players() const { return alive_players; }
     bool should_game_end() const { return should_game_end_; }
     
+    Gameplay_Stats* get_game_end_stats() const {
+        Gameplay_Stats* game_end_stats = new Gameplay_Stats[4];
+        for (unsigned int i = 0; i < get_player_count(); i++) {
+            game_end_stats[i] = players[i]->gameplay_stats;
+            game_end_stats[i].display();
+        } 
+        return game_end_stats;
+    }
+    
     void update(float delta_time, GamesEngineeringBase::Window& window, FollowCamera& camera) {
         if (player_count > 0) {
             // Saving player locations for camera update
@@ -267,7 +295,7 @@ public:
                 if (players[i]->is_alive()) {
                     alive_player_locations[alive_players] = players[i]->get_position();
                     alive_players++;
-                    if (!players[i]->finish_line_reached) {
+                    if (!players[i]->gameplay_stats.victory) {
                         should_game_end_ = false;
                     }
                 }

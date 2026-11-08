@@ -51,6 +51,10 @@ void Collision_Manager::manage_player_collision(const float& delta_time) const
                 // Appy melee damage
                 enemy->apply_melee_damage(*player, delta_time);
                 player->apply_melee_damage(*enemy, delta_time);
+                
+                if (!enemy->is_alive()) {
+                    player->gameplay_stats.enemies_defeated++;
+                }
             }
         }
         
@@ -100,6 +104,11 @@ void Collision_Manager::manage_enemy_collision() const {
             
             if (projectile->get_target_type() == ENEMY && projectile->get_collider().is_overlapping(enemy->get_collider())) {
                 projectile->hit(*enemy);
+                
+                if (!enemy->is_alive() && projectile->owning_hero != nullptr) {
+                    projectile->owning_hero->gameplay_stats.enemies_defeated++;
+                }
+                
                 projectile_list_.remove_and_delete_data(projectile_node);
             }
             projectile_node = next_projectile_node;

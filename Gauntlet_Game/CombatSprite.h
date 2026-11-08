@@ -24,7 +24,7 @@ public:
     bool is_alive() const;
     
 protected:
-    void create_projectile(const Target_Type target, const Vec2f& direction) const;
+    Projectile* create_projectile(const Target_Type target, const Vec2f& direction) const;
 public:
     void damage(const float damage);
     void heal(const float heal);
