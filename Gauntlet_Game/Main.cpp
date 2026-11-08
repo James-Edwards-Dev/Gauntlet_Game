@@ -82,6 +82,24 @@ Gameplay_Stats* start_game(GamesEngineeringBase::Window& window, bool& running, 
         window.present();
     }
     
+    // Deleting all pick up's and projectiles
+    doubly_node<Pick_Up_Item*>* pick_up_item_node = pick_up_manager.head;
+    while (pick_up_item_node != nullptr) {
+        doubly_node<Pick_Up_Item*>* next = pick_up_item_node->next;
+        
+        delete pick_up_item_node->data;
+        
+        pick_up_item_node = next;
+    }
+    doubly_node<Projectile*>* projectile_node = projectile_manager.head;
+    while (projectile_node != nullptr) {
+        doubly_node<Projectile*>* next = projectile_node->next;
+        
+        delete projectile_node->data;
+        
+        projectile_node = next;
+    }
+    
     return player_manager.get_game_end_stats();
 }
 
