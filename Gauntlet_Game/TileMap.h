@@ -4,6 +4,7 @@
 #include "Data_Structs.h"
 #include "Enemy_Manager.h"
 #include "GameEntities.h"
+#include "Pick_Up_Item.h"
 
 class TileMap : public WorldSpriteEntity
 {
@@ -36,7 +37,7 @@ public:
     
     bool is_overlapping(const Rect_Collider& collider);
     
-    void load(std::string level_filepath, EnemyManager& enemy_manager, const PlayerManager& player_manager, doubly_linked_list<Projectile*>& projectile_manager);
+    void load(std::string level_filepath, EnemyManager& enemy_manager, const PlayerManager& player_manager, doubly_linked_list<Projectile*>& projectile_manager, doubly_linked_list<Pick_Up_Item*>& pick_up_manager);
     
 protected:
     int converted_num_to_tile(const int& num) const; 
@@ -46,7 +47,8 @@ protected:
         const int& next_array_index, 
         EnemyManager& enemy_manager, 
         const PlayerManager& player_manager, 
-        doubly_linked_list<Projectile*>& projectile_manager);
+        doubly_linked_list<Projectile*>& projectile_manager,
+        doubly_linked_list<Pick_Up_Item*>& pick_up_manager);
 
 
 };

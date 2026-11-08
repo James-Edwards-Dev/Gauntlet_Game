@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "Pick_Up_Item.h"
+
 TileMap::TileMap(const Vec2f& _position, const Camera& _camera) 
 : WorldSpriteEntity(_position, "resources/tileset.png", _camera)
 {
@@ -62,7 +64,8 @@ void TileMap::load(
     std::string level_filepath, 
     EnemyManager& enemy_manager, 
     const PlayerManager& player_manager, 
-    doubly_linked_list<Projectile*>& projectile_manager) 
+    doubly_linked_list<Projectile*>& projectile_manager,
+    doubly_linked_list<Pick_Up_Item*>& pick_up_manager) 
 {
     std::ifstream infile(level_filepath);
     if (!infile.is_open()) {
@@ -92,7 +95,7 @@ void TileMap::load(
             else {
                 for (int i = 0; i < std::stoi(word); i++) {
                     layout[next_array_index] = converted_num_to_tile(next_tile);
-                    spawn_entity_or_colliders(next_tile, next_array_index, enemy_manager, player_manager, projectile_manager);
+                    spawn_entity_or_colliders(next_tile, next_array_index, enemy_manager, player_manager, projectile_manager, pick_up_manager);
                     next_array_index++;
                 }
             }
@@ -110,12 +113,13 @@ int TileMap::converted_num_to_tile(const int& num) const {
     }
 }
 
-void TileMap::spawn_entity_or_colliders(const int& num, const int& next_array_index, EnemyManager& enemy_manager, const PlayerManager& player_manager, doubly_linked_list<Projectile*>& projectile_manager) {
+void TileMap::spawn_entity_or_colliders(const int& num, const int& next_array_index, EnemyManager& enemy_manager, const PlayerManager& player_manager, doubly_linked_list<Projectile*>& projectile_manager, doubly_linked_list<Pick_Up_Item*>& pick_up_manager) {
     Vec2f spawn_location{
         static_cast<float>((next_array_index % width_in_tiles) * tile_width_pixels), 
         static_cast<float>((next_array_index / width_in_tiles) * tile_height_pixels)
     };
     EnemySpawner* new_enemy;
+    Pick_Up_Item* new_pick_up;
         
     switch (num) {
     case 1:
@@ -128,6 +132,10 @@ void TileMap::spawn_entity_or_colliders(const int& num, const int& next_array_in
     case 3:
         new_enemy = new EnemySpawner(spawn_location, camera, player_manager, enemy_manager, projectile_manager, Entity_Data(E_Goblin));
         enemy_manager.add(new_enemy);
+        break;
+    case 4:
+        new_pick_up = new Finish_Ladder(spawn_location, camera);
+        pick_up_manager.append(new_pick_up);
         break;
     }
 }
