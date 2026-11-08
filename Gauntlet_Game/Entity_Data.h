@@ -28,34 +28,39 @@ struct Entity_Data
         switch (type) {
             case P_Warrior:
                 sprite_img_filepath = "resources/warrior.png";
-            
-                melee_damage = 70;
-                projectile_damage = 40;
-                speed = 60;
+                
+                max_health = 500;
+                melee_damage = 100;
+                projectile_damage = 50;
+                speed = 65;
                 defense = 40; // Knight has a buff for defense also
                 break;
             
             case P_Rogue:
                 sprite_img_filepath = "resources/rogue.png";
             
-                projectile_damage = 60;
-                projectile_speed = 150;
-                projectile_rate_of_fire = 1.5;
+                max_health = 500;
+                projectile_damage = 70;
+                projectile_speed = 170;
+                projectile_rate_of_fire = 0.5;
                 speed = 100;
                 break;
             
             case P_Wizard:
                 sprite_img_filepath = "resources/wizard.png";
             
-                projectile_damage = 100;
-                projectile_speed = 110;
-                projectile_rate_of_fire = 1.25;
-                defense = 0;
-                speed = 65;
+                max_health = 500;
+                melee_damage = 75;
+                projectile_damage = 150;
+                projectile_speed = 120;
+                projectile_rate_of_fire = 0.75;
+                defense = 5;
+                speed = 70;
                 break;
             
             case E_Goblin:
                 sprite_img_filepath = "resources/goblin.png";
+                defense = 0;
                 break;
             
             case E_Barbarian:
@@ -63,11 +68,14 @@ struct Entity_Data
                 // Instead of a ProjectileFiringEnemy when spawned
                 sprite_img_filepath = "resources/barbarian.png";
                 projectile_rate_of_fire = 0;
+                speed = 45;
                 break;
             
             case E_Spawner:
                 sprite_img_filepath = "resources/warrior.png";
                 melee_damage = 0;
+                max_health = 80;
+                defense = 0;
                 break;
         }
     }
@@ -78,8 +86,8 @@ struct Entity_Data
 struct Spawner_Data
 {
     Entity_Data spawning_entity_;
-    float spawn_time = 1.0f;
-    unsigned int max_enemies = 5;
+    float spawn_time = 2.0f;
+    unsigned int max_enemies = 6;
     
     Spawner_Data(const Entity_Data& spawning_entity) : spawning_entity_(spawning_entity) {}
 };

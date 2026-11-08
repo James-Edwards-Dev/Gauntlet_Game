@@ -66,8 +66,8 @@ public:
 protected:
     Attack_Priority  enemy_attack_priority = NORMAL_PRIORITY;
     
-    float ability_up_time = 5.0f;
-    float ability_cooldown_time = 5.0f;
+    float ability_up_time = 8.0f;
+    float ability_cooldown_time = 8.0f;
     
     bool ability_active = false;
     float current_ability_up_time = 0;
@@ -176,11 +176,11 @@ protected:
 class PlayerWarrior : public HeroEntity
 {
     float standard_defence = entity_data_.defense;
-    float increased_defence = 100; // Defence when ability is active
+    float increased_defence = 80; // Defence when ability is active
     float standard_melee_damage = entity_data_.melee_damage;
-    float increased_melee_damage = 100; // Melee damage when ability is active
+    float increased_melee_damage = 200; // Melee damage when ability is active
     float standard_speed = entity_data_.speed;
-    float decreased_speed = 50; // speed when ability is active
+    float decreased_speed = 45; // speed when ability is active
     
 public:
     PlayerWarrior(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
@@ -211,9 +211,7 @@ public:
 class PlayerRogue : public HeroEntity
 {
     float standard_speed = entity_data_.speed;
-    float increased_speed = 300.0f; // speed when ability is active
-    float standard_rate_of_fire = entity_data_.projectile_rate_of_fire;
-    float increased_rate_of_fire = 0.1; // speed when ability is active
+    float increased_speed = 250.0f; // speed when ability is active
     
 public:
     PlayerRogue(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
@@ -221,7 +219,6 @@ public:
     
     virtual void magic_ability() override {
         entity_data_.speed = increased_speed;
-        entity_data_.projectile_rate_of_fire = increased_rate_of_fire;
         enemy_attack_priority = LOW_PRIORITY;
         current_ability_up_time = 0;
         ability_active = true;
@@ -229,7 +226,6 @@ public:
     virtual void update_ability(float delta_time) override {
         if (current_ability_up_time >= ability_up_time) {
             entity_data_.speed = standard_speed;
-            entity_data_.projectile_rate_of_fire = standard_rate_of_fire;
             enemy_attack_priority = NORMAL_PRIORITY;
             ability_active = false;
         }

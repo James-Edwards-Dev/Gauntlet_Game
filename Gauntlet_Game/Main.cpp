@@ -27,8 +27,8 @@ Gameplay_Stats* start_game(GamesEngineeringBase::Window& window, bool& running, 
     player_manager.create_players(characters, num_of_characters, camera, projectile_manager);
     
     TileMap tile_map({0, 0}, camera);
-    // tile_map.load("resources/level.txt", enemy_manager, player_manager, projectile_manager, pick_up_manager);
-    tile_map.load("resources/test_arena.txt", enemy_manager, player_manager, projectile_manager, pick_up_manager);
+    tile_map.load("resources/level.txt", enemy_manager, player_manager, projectile_manager, pick_up_manager);
+    // tile_map.load("resources/test_arena.txt", enemy_manager, player_manager, projectile_manager, pick_up_manager);
     
     Collision_Manager collision_manager(player_manager, enemy_manager, projectile_manager, tile_map, pick_up_manager);
     
