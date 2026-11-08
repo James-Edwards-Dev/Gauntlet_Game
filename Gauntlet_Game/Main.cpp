@@ -6,6 +6,7 @@
 #include "TileMap.h"
 #include "GamesEngineeringBase.h"
 #include "MainMenu.h"
+#include "Pick_Up_Item.h"
 #include "Players.h"
 #include "Projectile.h"
 #include "Vectors.h"
@@ -19,8 +20,12 @@ void start_game(GamesEngineeringBase::Window& window, int characters[], unsigned
     PlayerManager player_manager;
     EnemyManager enemy_manager;
     doubly_linked_list<Projectile*> projectile_manager;
+    doubly_linked_list<Pick_Up_Item*> pick_up_manager;
     
     FollowCamera camera(window_width, window_height);
+    
+    Finish_Ladder* finish_ladder = new Finish_Ladder({128.f, 64.f}, camera);
+    pick_up_manager.append(finish_ladder);
     
     // Creating heroes
     player_manager.create_players(characters, num_of_characters, camera, projectile_manager);
@@ -67,6 +72,10 @@ void start_game(GamesEngineeringBase::Window& window, int characters[], unsigned
         for (doubly_node<Projectile*>* n = projectile_manager.head; n != nullptr; n = n->next) {
             n->data->draw(window);
             // n->data->draw_collider(window);
+        }
+        for (doubly_node<Pick_Up_Item*>* n = pick_up_manager.head; n != nullptr; n = n->next) {
+            n->data->draw(window);
+            n->data->draw_collider(window);
         }
         player_manager.draw(window);
         enemy_manager.draw(window);

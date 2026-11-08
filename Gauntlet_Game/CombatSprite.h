@@ -18,7 +18,6 @@ protected:
 public:
     CombatSprite(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data);
     
-    virtual void update(float delta_time) override;
     virtual void draw(GamesEngineeringBase::Window& window) override;
     virtual void defeat() = 0;
     

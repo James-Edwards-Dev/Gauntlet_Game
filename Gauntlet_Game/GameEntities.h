@@ -52,6 +52,10 @@ public:
     : WorldSpriteEntity(_position, image_filename, _camera)
     , collider(get_image().width, get_image().height, _position, _camera) {}
     
+    virtual void update(float delta_time) override {
+        collider.set_position(get_position());
+    }
+    
     const Rect_Collider& get_collider() const{
         return collider;
     }

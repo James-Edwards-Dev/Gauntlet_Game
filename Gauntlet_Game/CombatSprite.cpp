@@ -10,11 +10,6 @@ health(entity_data.max_health)
     
 }
 
-void CombatSprite::update(float delta_time) {
-    // Moving collider
-    collider.set_position(get_position());
-}
-
 void CombatSprite::draw(GamesEngineeringBase::Window& window) {
     if (alive) {
         WorldSpriteEntity::draw(window);

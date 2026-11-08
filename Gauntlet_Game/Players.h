@@ -24,6 +24,8 @@ class HeroEntity : public CombatSprite
     int right_key;
     int projectile_key;
     int abilty_key;
+public:
+    bool finish_line_reached = false;
     
 protected:
     Attack_Priority  enemy_attack_priority = NORMAL_PRIORITY;

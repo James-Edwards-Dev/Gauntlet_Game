@@ -159,6 +159,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Pick_Up_Item.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
@@ -174,6 +175,7 @@
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GERenderer.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Pick_Up_Item.h" />
     <ClInclude Include="Players.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="TileMap.h" />
@@ -182,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data_Structs.h" />
+    <Content Include="resources\finish_ladder.png" />
     <Content Include="resources\goblin.png" />
     <Content Include="resources\level_map.txt" />
     <Content Include="resources\rogue.png" />
