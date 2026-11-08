@@ -51,9 +51,10 @@ enum Attack_Priority
 
 class HeroEntity : public CombatSprite
 {
+protected:
     float time_since_last_projectile = entity_data_.projectile_rate_of_fire;
     Vec2f projectile_spawn_direction = Vec2f{1.0f, 0.0f};
-    
+private:
     int up_key;
     int down_key;
     int left_key;
@@ -237,12 +238,29 @@ public:
 
 class PlayerWizard : public HeroEntity
 {
+    EnemyManager& enemy_manager_;
 public:
-    PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard), player_number) {}
+    PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, EnemyManager& enemy_manager, unsigned int player_number) 
+    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard), player_number), enemy_manager_(enemy_manager) {}
     
-    virtual void magic_ability() override {}
-    virtual void update_ability(float delta_time) override {}
+    virtual void magic_ability() override {
+        if (time_since_last_ability >= ability_cooldown_time) {
+            WizardAbility* ability = new WizardAbility(
+                get_centre(),
+                projectile_spawn_direction,
+                camera,
+                enemy_manager_);
+            ability->owning_hero = this;
+            projectile_manager_.append(ability);
+            time_since_last_ability = 0;
+        }
+    }
+    
+    virtual void update_ability(float delta_time) override {
+        if (time_since_last_ability < ability_cooldown_time) {
+            time_since_last_ability += delta_time;
+        }
+    }
 };
 
 
@@ -266,7 +284,7 @@ public:
         
         return true;
     }
-    void create_players(int characters[], unsigned int num_of_characters, Camera& camera, doubly_linked_list<Projectile*>& projectile_manager) {
+    void create_players(int characters[], unsigned int num_of_characters, Camera& camera, doubly_linked_list<Projectile*>& projectile_manager, EnemyManager& enemy_manager) {
         for (unsigned int i = 0; i < num_of_characters; i++) {
             Vec2f spawn_pos = Vec2f{32.0f, 64.0f} + (Vec2f{32.0f, 0} * i);
             if (characters[i] == 0) {
@@ -278,7 +296,7 @@ public:
                 add(new_player);
                 new_player->gameplay_stats.hero_type = characters[i];
             } else {
-                PlayerWizard* new_player = new PlayerWizard(spawn_pos, camera, projectile_manager, i + 1);
+                PlayerWizard* new_player = new PlayerWizard(spawn_pos, camera, projectile_manager, enemy_manager, i + 1);
                 add(new_player);
                 new_player->gameplay_stats.hero_type = characters[i];
             }

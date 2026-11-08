@@ -35,11 +35,11 @@ HeroEntity* Enemy::find_target_hero() const {
         // Doing this check here means we don't need to calculate distance unnecessarily
         if (attack_priority < target_attack_priority) continue;
         
-        float distance = get_centre().distanceSquared(player_manager.players[i]->get_centre());
-        if (distance < target_distance || attack_priority > target_attack_priority) {
+        float distance_squared = get_centre().distanceSquared(player_manager.players[i]->get_centre());
+        if (distance_squared < target_distance || attack_priority > target_attack_priority) {
             target_hero = player_manager.players[i];
             target_attack_priority = attack_priority;
-            target_distance = distance;
+            target_distance = distance_squared;
         }
         
     }

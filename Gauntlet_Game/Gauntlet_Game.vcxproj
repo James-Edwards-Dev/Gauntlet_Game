@@ -197,6 +197,7 @@
     <Content Include="resources\barbarian.png" />
     <Content Include="resources\warrior.png" />
     <Content Include="resources\wizard.png" />
+    <Content Include="resources\wizard_ability.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

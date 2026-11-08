@@ -24,7 +24,7 @@ Gameplay_Stats* start_game(GamesEngineeringBase::Window& window, bool& running, 
     FollowCamera camera(window_width, window_height);
     
     // Creating heroes
-    player_manager.create_players(characters, num_of_characters, camera, projectile_manager);
+    player_manager.create_players(characters, num_of_characters, camera, projectile_manager, enemy_manager);
     
     TileMap tile_map({0, 0}, camera);
     tile_map.load("resources/level.txt", enemy_manager, player_manager, projectile_manager, pick_up_manager);
