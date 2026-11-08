@@ -9,6 +9,7 @@
 #include "Pick_Up_Item.h"
 #include "Players.h"
 #include "Projectile.h"
+#include "Tally_Screen.h"
 #include "Vectors.h"
 
 Gameplay_Stats* start_game(GamesEngineeringBase::Window& window, bool& running, int characters[], unsigned int num_of_characters) {
@@ -98,7 +99,7 @@ int main() {
     
     while (running) {
         MainMenu* main_menu = new MainMenu(window);
-
+        
         main_menu->open_menu(running);
     
         int characters[3];
@@ -128,7 +129,9 @@ int main() {
             return 0;
         }
         
-        game_end_stats[0].display();
+        Tally_Screen* tally_screen = new Tally_Screen(window, game_end_stats, num_of_characters);
+        tally_screen->open_menu(running);
+        delete[] game_end_stats;
         
         if (!running) return 0;
     }

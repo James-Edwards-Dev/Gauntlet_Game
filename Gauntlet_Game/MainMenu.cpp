@@ -174,10 +174,8 @@ void MainMenu::open_menu(bool& running) {
         
         delta_time = timer.dt();
         int fps = round(1 / delta_time);
-        GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
         
         if (window.keyPressed(VK_ESCAPE)) running = false;
-        GERenderer::render_string(window, text_image, "Gauntlet Game", {8.0f, 32.0f});
         
         player_1_selector->detect_input();
         player_2_selector->detect_input();
@@ -187,6 +185,9 @@ void MainMenu::open_menu(bool& running) {
         player_1_selector->draw();
         player_2_selector->draw();
         player_3_selector->draw();
+        
+        GERenderer::render_string(window, text_image, "FPS " + std::to_string(fps), {8.0f, 8.0f});
+        GERenderer::render_string(window, text_image, "Gauntlet Game", {8.0f, 32.0f});
         
         player_joined = player_1_selector->has_joined() || player_2_selector->has_joined() || player_3_selector->has_joined(); 
         all_ready = (!player_1_selector->has_joined() || player_1_selector->is_ready()) 

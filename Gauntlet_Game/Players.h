@@ -8,6 +8,8 @@ struct Gameplay_Stats
     float alive_time = 0;
     unsigned int enemies_defeated = 0;
     bool victory = false;
+    unsigned int player_num;
+    unsigned int hero_type = 0;
     
     void display() const {
         std::cout << "Alive Time:       " << static_cast<int>(alive_time) << std::endl;
@@ -17,6 +19,23 @@ struct Gameplay_Stats
         } else {
             std::cout << "Loss" << std::endl;
         }
+    }
+    
+    void draw(const Vec2f& location, GamesEngineeringBase::Window& window, const GamesEngineeringBase::Image& text_image) const {
+        Vec2f row_size = {0, 32.0f};
+        std::string tile_string = "Player " + std::to_string(player_num);
+        std::string str_alive_time = "Alive Time:        " + std::to_string(static_cast<int>(alive_time));
+        std::string str_enemies_defeated = "Enemies Defeated:  " + std::to_string(enemies_defeated);
+        std::string result_message;
+        if (victory) {
+            result_message = "Victorious!";
+        } else {
+            result_message = "You Lost!";
+        }
+        GERenderer::render_string(window, text_image, tile_string, location - row_size * 3);
+        GERenderer::render_string(window, text_image, str_alive_time, location);
+        GERenderer::render_string(window, text_image, str_enemies_defeated, location + row_size);
+        GERenderer::render_string(window, text_image, result_message, location + (row_size * 3));
     }
 };
 
@@ -58,6 +77,7 @@ public:
     HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data, unsigned int player_number) 
     : CombatSprite(_position, _camera, projectile_manager, entity_data) 
     {
+        gameplay_stats.player_num = player_number;
         // Set keys
         switch (player_number) {
             case 2:
@@ -254,14 +274,17 @@ public:
         for (unsigned int i = 0; i < num_of_characters; i++) {
             Vec2f spawn_pos = Vec2f{32.0f, 64.0f} + (Vec2f{32.0f, 0} * i);
             if (characters[i] == 0) {
-                PlayerWarrior* warrior = new PlayerWarrior(spawn_pos, camera, projectile_manager, i + 1);
-                add(warrior);
+                PlayerWarrior* new_player = new PlayerWarrior(spawn_pos, camera, projectile_manager, i + 1);
+                new_player->gameplay_stats.hero_type = characters[i];
+                add(new_player);
             } else if (characters[i] == 1) {
-                PlayerRogue* rogue = new PlayerRogue(spawn_pos, camera, projectile_manager, i + 1);
-                add(rogue);
+                PlayerRogue* new_player = new PlayerRogue(spawn_pos, camera, projectile_manager, i + 1);
+                add(new_player);
+                new_player->gameplay_stats.hero_type = characters[i];
             } else {
-                PlayerWizard* wizard = new PlayerWizard(spawn_pos, camera, projectile_manager, i + 1);
-                add(wizard);
+                PlayerWizard* new_player = new PlayerWizard(spawn_pos, camera, projectile_manager, i + 1);
+                add(new_player);
+                new_player->gameplay_stats.hero_type = characters[i];
             }
         }
     }
