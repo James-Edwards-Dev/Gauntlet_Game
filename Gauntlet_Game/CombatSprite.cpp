@@ -2,11 +2,10 @@
 #include "GameEntities.h"
 
 CombatSprite::CombatSprite(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data) 
-: WorldSpriteEntity( _position, entity_data.sprite_img_filepath, _camera),  
+: CollisionSprite( _position, entity_data.sprite_img_filepath, _camera),  
 projectile_manager_(projectile_manager),
 entity_data_(entity_data), 
-health(entity_data.max_health), 
-collider(get_image().width, get_image().height, _position, _camera) 
+health(entity_data.max_health)
 {
     
 }
@@ -20,10 +19,6 @@ void CombatSprite::draw(GamesEngineeringBase::Window& window) {
     if (alive) {
         WorldSpriteEntity::draw(window);
     }
-}
-
-const Rect_Collider& CombatSprite::get_collider() const {
-    return collider;
 }
 
 bool CombatSprite::is_alive() const {

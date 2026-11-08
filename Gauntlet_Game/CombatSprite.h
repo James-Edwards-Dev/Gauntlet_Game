@@ -5,14 +5,13 @@
 #include "GameEntities.h"
 #include "Projectile.h"
 
-class CombatSprite : public WorldSpriteEntity
+class CombatSprite : public CollisionSprite
 {
 protected:
     float health;
     bool alive = true;
     
     Entity_Data entity_data_;
-    Rect_Collider collider;
     
     doubly_linked_list<Projectile*>& projectile_manager_;
     
@@ -23,7 +22,6 @@ public:
     virtual void draw(GamesEngineeringBase::Window& window) override;
     virtual void defeat() = 0;
     
-    const Rect_Collider& get_collider() const;
     bool is_alive() const;
     
 protected:
