@@ -190,6 +190,7 @@
     <Content Include="resources\goblin.png" />
     <Content Include="resources\level.txt" />
     <Content Include="resources\rogue.png" />
+    <Content Include="resources\spawner.png" />
     <Content Include="resources\test_arena.txt" />
     <Content Include="resources\tileset.png" />
     <Content Include="resources\projectile.png" />

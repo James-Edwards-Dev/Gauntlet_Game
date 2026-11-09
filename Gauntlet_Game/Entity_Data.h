@@ -72,7 +72,7 @@ struct Entity_Data
                 break;
             
             case E_Spawner:
-                sprite_img_filepath = "resources/warrior.png";
+                sprite_img_filepath = "resources/spawner.png";
                 melee_damage = 0;
                 max_health = 80;
                 defense = 0;
