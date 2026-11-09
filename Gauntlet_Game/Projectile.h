@@ -3,9 +3,9 @@
 #include "GameEntities.h"
 #include "Camera.h"
 
-class HeroEntity;
+class Player;
 class EnemyManager;
-class CombatSprite;
+class CombatEntity;
 
 enum Target_Type
 {
@@ -22,7 +22,7 @@ class Projectile : public WorldSpriteEntity
     const Target_Type target_type_;
     Rect_Collider collider_;
 public:
-    HeroEntity* owning_hero = nullptr;
+    Player* owning_hero = nullptr;
     
     Projectile(Vec2f position, const float damage, const float speed, Vec2f direction, Target_Type target, const Camera& camera_, std::string image_filename = "resources/projectile.png"); 
     
@@ -32,7 +32,7 @@ public:
     
     void draw_collider(GamesEngineeringBase::Window& window) const;
     
-    virtual void hit(CombatSprite& entity) const;
+    virtual void hit(CombatEntity& entity) const;
     
     const Target_Type& get_target_type() const;
 };
@@ -45,5 +45,5 @@ class WizardAbility : public Projectile
 public:
     WizardAbility(const Vec2f& position, const Vec2f& direction, const Camera& camera_, EnemyManager& enemy_manager_);
     
-    virtual void hit(CombatSprite& entity) const override;
+    virtual void hit(CombatEntity& entity) const override;
 };

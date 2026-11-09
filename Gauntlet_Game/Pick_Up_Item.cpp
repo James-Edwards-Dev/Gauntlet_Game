@@ -12,7 +12,7 @@ void Pick_Up_Item::draw(GamesEngineeringBase::Window& window) {
     }
 }
 
-void Pick_Up_Item::on_hero_collide(HeroEntity& hero) {
+void Pick_Up_Item::on_hero_collide(Player& hero) {
     picked_up = true;
     pick_up_effect(hero);
 }
@@ -24,6 +24,6 @@ Finish_Ladder::Finish_Ladder(const Vec2f& _position, const Camera& _camera)
     
 }
 
-void Finish_Ladder::pick_up_effect(HeroEntity& hero) {
+void Finish_Ladder::pick_up_effect(Player& hero) {
     hero.gameplay_stats.victory = true;
 }

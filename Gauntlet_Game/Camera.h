@@ -39,7 +39,7 @@ private:
         
         Vec2f target_location{0.f, 0.f};
         for (unsigned int i = 0; i < alive_player_count; ++i) {
-            target_location =  target_location + alive_player_locations[i] + Vec2f{16.0f, 16.0f};
+            target_location =  target_location + alive_player_locations[i];
         }
         return  target_location / static_cast<float>(alive_player_count) - centre;
     }
@@ -55,7 +55,10 @@ public:
         
         if (target_location == camera_offset) return; // This will be trigger if there are no alive players
         
-        // Calculate distance from target squared
+        // We will stop the camera from moving when it is very close to the player so it doesn't stutter
+        
+        // Distance squared is used because we don't require the exact distance and is more efficient than
+        // Getting the exact distance because we don't have to calculate the square root
         float distanceSquared = camera_offset.distanceSquared(target_location);
         
         // Speed up when far away

@@ -20,7 +20,7 @@ Collision_Manager::Collision_Manager(
 void Collision_Manager::manage_player_collision(const float& delta_time) const
 {
     for (unsigned int i = 0; i < player_manager_.get_player_count(); i++) {
-        HeroEntity* player = player_manager_.players[i];
+        Player* player = player_manager_.players[i];
         
         if (!player->is_alive()) continue;    
         

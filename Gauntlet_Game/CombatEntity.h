@@ -5,7 +5,7 @@
 #include "GameEntities.h"
 #include "Projectile.h"
 
-class CombatSprite : public CollisionSprite
+class CombatEntity : public CollisionSprite
 {
 protected:
     float health;
@@ -16,7 +16,7 @@ protected:
     doubly_linked_list<Projectile*>& projectile_manager_;
     
 public:
-    CombatSprite(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data);
+    CombatEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data);
     
     virtual void draw(GamesEngineeringBase::Window& window) override;
     virtual void defeat() = 0;
@@ -29,5 +29,5 @@ public:
     void damage(const float damage);
     void heal(const float heal);
     
-    void apply_melee_damage(CombatSprite& other_entity, float delta_time) const ;
+    void apply_melee_damage(CombatEntity& other_entity, float delta_time) const ;
 };

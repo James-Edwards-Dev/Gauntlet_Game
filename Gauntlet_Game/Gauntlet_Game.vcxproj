@@ -155,7 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision_Manager.cpp" />
-    <ClCompile Include="CombatSprite.cpp" />
+    <ClCompile Include="CombatEntity.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -167,7 +167,7 @@
   <ItemGroup>
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Collision_Manager.h" />
-    <ClInclude Include="CombatSprite.h" />
+    <ClInclude Include="CombatEntity.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_Manager.h" />
     <ClInclude Include="Entity.h" />

@@ -8,7 +8,7 @@ Enemy::Enemy(
     const PlayerManager& _player_manager,
     doubly_linked_list<Projectile*>& projectile_manager, 
     Entity_Data entity_data) 
-: CombatSprite(_position, _camera, projectile_manager, entity_data), player_manager(_player_manager){}
+: CombatEntity(_position, _camera, projectile_manager, entity_data), player_manager(_player_manager){}
 
 void Enemy::defeat() {
     alive = false;
@@ -21,10 +21,10 @@ bool Enemy::get_is_pushable() const {
 // Target hero is:
 // 1. The hero with the lowest attack priority. (LOW, NORMAL, HIGH)
 // 2. If multiple have the same priority (This will happen most of the time) the closest hero is chosen
-HeroEntity* Enemy::find_target_hero() const {
+Player* Enemy::find_target_hero() const {
     float target_distance = std::numeric_limits<float>::max();
     Attack_Priority target_attack_priority = LOW_PRIORITY;
-    HeroEntity* target_hero = nullptr;
+    Player* target_hero = nullptr;
     
     for (unsigned int i = 0; i < player_manager.get_player_count(); i++) {
         if (player_manager.players[i] == nullptr || !player_manager.players[i]->is_alive()) continue;
@@ -107,7 +107,7 @@ MovingEnemy::MovingEnemy(
 : Enemy(_position, _camera, _player_manager, projectile_manager, entity_data)
 , owner(_owner){}
 
-void MovingEnemy::move(float delta_time, HeroEntity* target) {
+void MovingEnemy::move(float delta_time, Player* target) {
     if (target == nullptr) {return;}
     
     Vec2f direction = (target->get_position() - get_position()).normalize();
@@ -115,7 +115,7 @@ void MovingEnemy::move(float delta_time, HeroEntity* target) {
 }
 
 void MovingEnemy::update(float delta_time) {
-    HeroEntity* target = find_target_hero();
+    Player* target = find_target_hero();
         
     move(delta_time, target);
         
@@ -150,7 +150,7 @@ void ProjectileFiringEnemy::try_fire_projectile(const Vec2f& direction, const fl
     }
 }
 
-void ProjectileFiringEnemy::move(float delta_time, HeroEntity* target) {
+void ProjectileFiringEnemy::move(float delta_time, Player* target) {
     if (target == nullptr) {return;}
     
     Vec2f direction = (target->get_position() - get_position()).normalize();

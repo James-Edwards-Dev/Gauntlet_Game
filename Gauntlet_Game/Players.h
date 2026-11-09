@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Camera.h"
-#include "CombatSprite.h"
+#include "CombatEntity.h"
 
 struct Gameplay_Stats
 {
@@ -49,7 +49,7 @@ enum Attack_Priority
     HIGH_PRIORITY
 };
 
-class HeroEntity : public CombatSprite
+class Player : public CombatEntity
 {
 protected:
     float time_since_last_projectile = entity_data_.projectile_rate_of_fire;
@@ -75,8 +75,8 @@ protected:
     float time_since_last_ability = ability_cooldown_time;
     
 public:
-    HeroEntity(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data, unsigned int player_number) 
-    : CombatSprite(_position, _camera, projectile_manager, entity_data) 
+    Player(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, Entity_Data entity_data, unsigned int player_number) 
+    : CombatEntity(_position, _camera, projectile_manager, entity_data) 
     {
         gameplay_stats.player_num = player_number;
         // Set keys
@@ -108,7 +108,7 @@ public:
         }
     }
     
-    virtual void magic_ability() =0;
+    virtual void use_ability() =0;
     virtual void update_ability(float delta_time) =0;
     
     const Attack_Priority& get_enemy_attack_priority() const {
@@ -136,7 +136,7 @@ public:
         
         
         if (window.keyPressed(abilty_key) && time_since_last_ability >= ability_cooldown_time) {
-            magic_ability();
+            use_ability();
             time_since_last_ability = 0;
         }
     }
@@ -154,7 +154,7 @@ public:
             }
             gameplay_stats.alive_time += delta_time;
             
-            CombatSprite::update(delta_time);
+            CombatEntity::update(delta_time);
         }
     }
     
@@ -174,7 +174,7 @@ protected:
     Vec2f inputAxis{0.0f, 0.0f};
 };
 
-class PlayerWarrior : public HeroEntity
+class PlayerWarrior : public Player
 {
     float standard_defence = entity_data_.defense;
     float increased_defence = 80; // Defence when ability is active
@@ -185,9 +185,9 @@ class PlayerWarrior : public HeroEntity
     
 public:
     PlayerWarrior(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Warrior), player_number) {}
+    : Player(_position, _camera, projectile_manager, Entity_Data(P_Warrior), player_number) {}
     
-    virtual void magic_ability() override {
+    virtual void use_ability() override {
         entity_data_.defense = increased_defence;
         entity_data_.melee_damage = increased_melee_damage;
         entity_data_.speed = decreased_speed;
@@ -209,16 +209,16 @@ public:
     }
 };
 
-class PlayerRogue : public HeroEntity
+class PlayerRogue : public Player
 {
     float standard_speed = entity_data_.speed;
     float increased_speed = 250.0f; // speed when ability is active
     
 public:
     PlayerRogue(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, unsigned int player_number) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Rogue), player_number) {}
+    : Player(_position, _camera, projectile_manager, Entity_Data(P_Rogue), player_number) {}
     
-    virtual void magic_ability() override {
+    virtual void use_ability() override {
         entity_data_.speed = increased_speed;
         enemy_attack_priority = LOW_PRIORITY;
         current_ability_up_time = 0;
@@ -236,14 +236,14 @@ public:
     }
 };
 
-class PlayerWizard : public HeroEntity
+class PlayerWizard : public Player
 {
     EnemyManager& enemy_manager_;
 public:
     PlayerWizard(const Vec2f& _position, const Camera& _camera, doubly_linked_list<Projectile*>& projectile_manager, EnemyManager& enemy_manager, unsigned int player_number) 
-    : HeroEntity(_position, _camera, projectile_manager, Entity_Data(P_Wizard), player_number), enemy_manager_(enemy_manager) {}
+    : Player(_position, _camera, projectile_manager, Entity_Data(P_Wizard), player_number), enemy_manager_(enemy_manager) {}
     
-    virtual void magic_ability() override {
+    virtual void use_ability() override {
         if (time_since_last_ability >= ability_cooldown_time) {
             WizardAbility* ability = new WizardAbility(
                 get_centre(),
@@ -274,9 +274,9 @@ class PlayerManager
     bool should_game_end_ = false;
     
 public:
-    HeroEntity* players[max_players]{};
+    Player* players[max_players]{};
     
-    bool add(HeroEntity* player) {
+    bool add(Player* player) {
         if (player_count >= max_players) {return false;}
         players[player_count] = player;
         player_count++;
@@ -330,7 +330,7 @@ public:
                 
                 // Only record alive players for camera
                 if (players[i]->is_alive()) {
-                    alive_player_locations[alive_players] = players[i]->get_position();
+                    alive_player_locations[alive_players] = players[i]->get_centre();
                     alive_players++;
                     if (!players[i]->gameplay_stats.victory) {
                         should_game_end_ = false;

@@ -21,7 +21,7 @@ struct Entity_Data
     float speed = 50;
     
     std::string sprite_img_filepath;
-    std::string projectile_img_filepath = "resources/projectile.png";;
+    std::string projectile_img_filepath = "resources/projectile.png";
     
     Entity_Data(Entity_Type type) 
     {
@@ -80,8 +80,6 @@ struct Entity_Data
         }
     }
 };
-
-
 
 struct Spawner_Data
 {

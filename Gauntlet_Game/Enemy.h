@@ -2,7 +2,7 @@
 #include "Enemy.h"
 #include "Players.h"
 
-class Enemy : public CombatSprite
+class Enemy : public CombatEntity
 {
 protected:
     bool is_pushable = true;
@@ -23,7 +23,7 @@ public:
     
 protected:
     // Returns the distance to a closest target
-    HeroEntity* find_target_hero() const;
+    Player* find_target_hero() const;
 };
 
 class MovingEnemy;
@@ -69,7 +69,7 @@ public:
         Entity_Data entity_data,
         EnemySpawner* _owner); 
     
-    virtual void move(float delta_time, HeroEntity* target);
+    virtual void move(float delta_time, Player* target);
     
     virtual void update(float delta_time) override;
     
@@ -93,6 +93,6 @@ protected:
     void try_fire_projectile(const Vec2f& direction, const float& delta_time);
     
 public:
-    virtual void move(float delta_time, HeroEntity* target);
+    virtual void move(float delta_time, Player* target);
     
 };
