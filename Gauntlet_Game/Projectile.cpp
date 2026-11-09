@@ -1,5 +1,5 @@
 ﻿#include "Projectile.h"
-#include "CombatSprite.h"
+#include "CombatEntity.h"
 #include "Enemy.h"
 #include "Enemy_Manager.h"
 
@@ -26,7 +26,7 @@ void Projectile::draw_collider(GamesEngineeringBase::Window& window) const {
     get_collider().draw_debug_lines(window);
 }
 
-void Projectile::hit(CombatSprite& entity) const {
+void Projectile::hit(CombatEntity& entity) const {
     entity.damage(hit_damage_);
 }
 
@@ -42,9 +42,7 @@ WizardAbility::WizardAbility(const Vec2f& position, const Vec2f& direction, cons
 
 // Find the n closest enemies and to the enemy that was hit by the projectile and destroy them
 // (Including the enemy that was hit originally)
-void WizardAbility::hit(CombatSprite& entity) const {
-    Projectile::hit(entity);
-    
+void WizardAbility::hit(CombatEntity& entity) const {
     // If there is n enemies or less
     // Defeat all of them in a loop and return
     if (enemy_manager.Enemys_List.size <= n_affected_enemies) {
@@ -59,53 +57,35 @@ void WizardAbility::hit(CombatSprite& entity) const {
         }
         return;
     }
-    // If there is more than n enemies. We will create a sorted array of enemies (of size n) and destroy all enemies in that array
-    Enemy* n_closest_enemies[n_affected_enemies];
-    float n_closest_distance_squared[n_affected_enemies];
-    int found = 0;
-    
-    doubly_node<Enemy*>* enemy_node = enemy_manager.Enemys_List.head;
-    while (enemy_node != nullptr) {
-        doubly_node<Enemy*>* next_node = enemy_node->next;
-        Enemy* enemy = enemy_node->data;
+    // We will loop through the enemy list n times
+    // Defeating the closest enemy each time
+    // When they are defeated they are marked at as not alive, so they cannot get chosen twice
+    for (unsigned int i = 0; i < n_affected_enemies; i++) {
+        doubly_node<Enemy*>* enemy_node = enemy_manager.Enemys_List.head;
+        float min_distance = std::numeric_limits<float>::max();
+        Enemy* min_distance_enemy = nullptr;
         
-        if (!enemy->is_alive()){
+        while (enemy_node != nullptr) {
+            doubly_node<Enemy*>* next_node = enemy_node->next;
+            Enemy* enemy = enemy_node->data;
+            
+            // Ignore if not alive
+            if (!enemy->is_alive()) {
+                enemy_node = next_node;
+                continue;
+            }
+            
+            // Check if closer than current closest enemy
+            float distance_squared = get_centre().distanceSquared(enemy->get_centre());
+            if (distance_squared < min_distance) {
+                min_distance_enemy = enemy;
+                min_distance = distance_squared;
+            }
             enemy_node = next_node;
-            continue;
         }
-        float distance_squared = get_centre().distanceSquared(enemy->get_centre());
-        
-        // If the array is full and the distance is larger than the furthest enemy in the array we continue 
-        // If we haven't continued the current enemy will be stored in the array
-        if (found == n_affected_enemies && distance_squared >= n_closest_distance_squared[n_affected_enemies - 1]){
-            enemy_node = next_node;
-            continue;
+        if (min_distance_enemy != nullptr) {
+            min_distance_enemy->defeat();
+            owning_hero->gameplay_stats.enemies_defeated++;
         }
-        
-        int i;
-        if (found < n_affected_enemies) {
-            i = found;
-        } else {
-            i = n_affected_enemies - 1;
-        }
-        // Check if the distance at i - 1 is more than the distance of this element
-        // If it is shift the elements (overwriting the largest distance)
-        while (i > 0 && n_closest_distance_squared[i - 1] > distance_squared) {
-            n_closest_distance_squared[i] = n_closest_distance_squared[i - 1];
-            n_closest_enemies[i] = n_closest_enemies[i - 1];
-            i--;
-        }
-        // Overwrite the data stored at i with the new element
-        n_closest_distance_squared[i] = distance_squared;
-        n_closest_enemies[i] = enemy;
-        if (found < n_affected_enemies) found++;
-        
-        enemy_node = next_node;
-    }
-    
-    // Defeating the closest N enemies
-    for (int i = 0; i < found; i++) {
-        n_closest_enemies[i]->defeat();
-        owning_hero->gameplay_stats.enemies_defeated++;
     }
 }
