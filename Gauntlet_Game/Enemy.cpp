@@ -21,7 +21,7 @@ bool Enemy::get_is_pushable() const {
 // Target hero is:
 // 1. The hero with the lowest attack priority. (LOW, NORMAL, HIGH)
 // 2. If multiple have the same priority (This will happen most of the time) the closest hero is chosen
-Player* Enemy::find_target_hero() const {
+Player* Enemy::find_target_player() const {
     float target_distance = std::numeric_limits<float>::max();
     Attack_Priority target_attack_priority = LOW_PRIORITY;
     Player* target_hero = nullptr;
@@ -115,7 +115,7 @@ void MovingEnemy::move(float delta_time, Player* target) {
 }
 
 void MovingEnemy::update(float delta_time) {
-    Player* target = find_target_hero();
+    Player* target = find_target_player();
         
     move(delta_time, target);
         

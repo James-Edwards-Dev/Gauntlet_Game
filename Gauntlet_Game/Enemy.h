@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Enemy.h"
+
 #include "Players.h"
 
 class Enemy : public CombatEntity
@@ -23,7 +23,7 @@ public:
     
 protected:
     // Returns the distance to a closest target
-    Player* find_target_hero() const;
+    Player* find_target_player() const;
 };
 
 class MovingEnemy;
