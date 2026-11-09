@@ -81,7 +81,7 @@ public:
         gameplay_stats.player_num = player_number;
         // Set keys
         switch (player_number) {
-            case 2:
+            case 3:
                 up_key = 'T';
                 down_key = 'G';
                 left_key = 'F';
@@ -89,7 +89,7 @@ public:
                 projectile_key = 'Y';
                 abilty_key = 'R';
                 break;
-            case 3:
+            case 2:
                 up_key = VK_UP; 
                 down_key = VK_DOWN;
                 left_key = VK_LEFT;

@@ -20,19 +20,19 @@ Character_Selector::Character_Selector(unsigned int player_number_, GamesEnginee
         sprite_location = sprite_location - Vec2f{150.0f, 0};
         break;
     case 2:
-        right_key = 'H';
-        left_key = 'F';
-        ready_key = 'Y';
-        leave_key = 'R';
-        character_type = 1;
-        break;
-    default:
         right_key = VK_RIGHT;
         left_key = VK_LEFT;
         ready_key = 'M';
         leave_key = 'N';
-        sprite_location = sprite_location + Vec2f{150.0f, 0};
+        character_type = 1;
+        break;
+    default:
+        right_key = 'H';
+        left_key = 'F';
+        ready_key = 'Y';
+        leave_key = 'R';
         character_type = 2;
+        sprite_location = sprite_location + Vec2f{150.0f, 0};
         break;
     }
     
@@ -59,7 +59,7 @@ void Character_Selector::draw() const {
     if (joined) {
         sprite[character_type]->draw(window);
         GERenderer::render_string(window, text_image, get_character_name(), sprite[character_type]->get_position() + Vec2f{-10.f, 35.f});
-        if (player_number != 3) {
+        if (player_number != 2) {
             GERenderer::render_char(window, text_image, right_key, sprite[character_type]->get_centre() + Vec2f{25.0f, 0});
             GERenderer::render_char(window, text_image, left_key, sprite[character_type]->get_centre() + Vec2f{-25.0f, 0});
         }
